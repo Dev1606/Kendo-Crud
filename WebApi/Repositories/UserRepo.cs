@@ -18,8 +18,9 @@ namespace WebApi.Repositories
             _httpContextAccessor = httpContextAccessor;
             _conn = new NpgsqlConnection(_ConnectionString);
         }
-        public void RegistrationDetail(UserModel user)
+        public bool RegistrationDetail(UserModel user)
         {
+            int rowseffected = 0;
             try
             {
                 _conn.Open();
@@ -28,7 +29,7 @@ namespace WebApi.Repositories
                     cmd.Parameters.Add("@username", NpgsqlTypes.NpgsqlDbType.Varchar).Value = user.c_uname;
                     cmd.Parameters.AddWithValue("@email", user.c_uemail);
                     cmd.Parameters.AddWithValue("@password", user.c_password);
-                    cmd.ExecuteNonQuery();
+                    rowseffected = cmd.ExecuteNonQuery();
                 }
             }
             catch (Exception e)
@@ -39,9 +40,12 @@ namespace WebApi.Repositories
             {
                 _conn.Close();
             }
-            var session = _httpContextAccessor.HttpContext.Session;
-            session.SetString("username", user.c_uname);
-            session.SetInt32("userid", user.c_uid);
+            if(rowseffected>0){
+                return true;
+            }else{
+                return false;
+            }
+
         }
     }
 }

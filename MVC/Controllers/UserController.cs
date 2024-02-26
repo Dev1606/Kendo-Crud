@@ -27,11 +27,11 @@ namespace MVC.Controllers
         {
             return View();
         }
-        
+
         [HttpPost]
         public IActionResult Register(UserModel user)
         {
-            var status = _userInterface.Register(user);
+            var status = _userInterface.RegistrationDetail(user);
             if(status){
                 return View("Login","User");
             }else{
