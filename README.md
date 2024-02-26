@@ -5,6 +5,7 @@
 User Repositories method name:
 
       bool Login(LoginModel user);
+            -> Session = userid, username
       bool Register(UserModel user);
 
 Jemin -> Repo Login
