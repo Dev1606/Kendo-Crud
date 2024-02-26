@@ -15,3 +15,7 @@ Dev -> Controller Login
 Ishika -> View
 Vensi -> Repo
 Dattesh -> Database + Controller
+---------------****************---------------
+Conflicting pull and push
+      git config --global pull.rebase true
+---------------****************---------------
