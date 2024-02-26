@@ -5,22 +5,38 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using WebApi.Models;
+using WebApi.Repositories;
 
 namespace MVC.Controllers
 {
-    [Route("[controller]")]
+    // [Route("[controller]")]
     public class UserController : Controller
     {
         private readonly ILogger<UserController> _logger;
+        private readonly IUserInterface _userInterface;
 
-        public UserController(ILogger<UserController> logger)
+        public UserController(ILogger<UserController> logger, IUserInterface userInterface)
         {
             _logger = logger;
+            _userInterface = userInterface;
         }
 
-        public IActionResult Index()
+        [HttpGet]
+        public IActionResult Register()
         {
             return View();
+        }
+        
+        [HttpPost]
+        public IActionResult Register(UserModel user)
+        {
+            var status = _userInterface.Register(user);
+            if(status){
+                return View("Login","User");
+            }else{
+                return RedirectToAction("Register","User");
+            }
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
