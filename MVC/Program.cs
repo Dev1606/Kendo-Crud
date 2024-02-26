@@ -1,8 +1,13 @@
+using WebApi.Repositories;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddHttpContextAccessor();
+builder.Services.AddSingleton<IEmpInterface,EmpRepo>();
+builder.Services.AddSingleton<IUserInterface,UserRepo>();
+
 builder.Services.AddSession(Options=>{
     Options.IdleTimeout=TimeSpan.FromMinutes(10);
 });
