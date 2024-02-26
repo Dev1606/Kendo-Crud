@@ -13,12 +13,13 @@ namespace WebApi.Repositories
         private readonly string? _ConnectionString;
         private readonly NpgsqlConnection _conn;
 
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
         public UserRepo(IConfiguration configuration,IHttpContextAccessor httpContextAccessor)
         {
             _ConnectionString = configuration.GetConnectionString("ConStr");
             _conn = new NpgsqlConnection(_ConnectionString);
-
+            _httpContextAccessor = httpContextAccessor;
         }
 
         public UserModel Login(LoginModel login)
