@@ -1,1 +1,34 @@
-<h1>Register</h1>
+@using WebApi.Models;
+@model UserModel;
+<h1 class="row justify-content-center">Register</h1>
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <form>
+        <div class="form-group">
+          <label for="uname">UserName:</label>
+          <input type="uname" class="form-control" id="uname" placeholder="Please provide a username" asp-for="c_uname" >
+          <span asp-validation-for="c_uname" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+          <label for="email">Email address:</label>
+          <input type="email" class="form-control" id="email" aria-describedby="emailHelp"
+            placeholder="Please enter email" asp-for="c_uemail">
+            <span asp-validation-for="c_uemail" class="text-danger"></span>
+          <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+        </div>
+        <div class="form-group">
+          <label for="password">Password:</label>
+          <input type="password" class="form-control" id="password" placeholder="Password" asp-for="c_password">
+           <span asp-validation-for="c_password" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+          <label for="cpassword">Confirm Password:</label>
+          <input type="cpassword" class="form-control" id="cpassword" placeholder="Confirm Password">
+             <span asp-validation-for="c_confirmpassword" class="text-danger"></span>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
+    </div>
+  </div>
+</div>
