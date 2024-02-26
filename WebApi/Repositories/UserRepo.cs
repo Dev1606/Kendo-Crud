@@ -9,14 +9,14 @@ namespace WebApi.Repositories
 {
     public class UserRepo : IUserInterface
     {
-        private readonly string? conn;
+        private readonly string? _ConnectionString;
          private readonly IHttpContextAccessor _httpContextAccessor;
         private NpgsqlConnection _conn;
         public UserRepo(IConfiguration configuration, IHttpContextAccessor httpContextAccessor)
         {
-            conn = configuration.GetConnectionString("ConStr");
+            _ConnectionString = configuration.GetConnectionString("ConStr");
             _httpContextAccessor = httpContextAccessor;
-            _conn = new NpgsqlConnection(conn);
+            _conn = new NpgsqlConnection(_ConnectionString);
         }
         public void RegistrationDetail(UserModel user)
         {
