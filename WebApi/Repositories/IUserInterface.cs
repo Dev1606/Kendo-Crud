@@ -8,6 +8,6 @@ namespace WebApi.Repositories
 {
     public interface IUserInterface
     {
-        UserModel Login(LoginModel login);
+        bool Login(LoginModel login);
     }
 }

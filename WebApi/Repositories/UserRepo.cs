@@ -22,9 +22,9 @@ namespace WebApi.Repositories
             _httpContextAccessor = httpContextAccessor;
         }
 
-        public UserModel Login(LoginModel login)
+        public bool Login(LoginModel login)
         {
-            UserModel user = new UserModel();
+            bool isUserAuthenticated = false;
             try
             {
                 _conn.Open();
@@ -36,11 +36,10 @@ namespace WebApi.Repositories
                     {
                         if (reader.Read())
                         {
-                            user.c_uid = (int)reader["c_uid"];
-                            user.c_uname = (string)reader["c_uname"];
-                            user.c_uemail = (string)reader["c_uemail"];
-                            user.c_password = (string)reader["c_password"];
-                            user.c_role = (int)reader["c_role"];  
+                            isUserAuthenticated = true;
+                            var session = _httpContextAccessor.HttpContext.Session;
+                            session.SetString("username", reader["c_uname"].ToString());
+                            session.SetInt32("userid", (int)reader["c_uid"]);
                         }
                     }
                 }
@@ -53,7 +52,7 @@ namespace WebApi.Repositories
             {
                 _conn.Close();
             }
-            return user;
+            return isUserAuthenticated;
         }
 
     }
