@@ -10,21 +10,24 @@ namespace WebApi.Repositories
 {
     public class UserRepo : IUserInterface
     {
-        private readonly string? _conn;
+        private readonly string? _ConnectionString;
+        private readonly NpgsqlConnection _conn;
 
-        private NpgsqlConnection connection;
 
         public UserRepo(IConfiguration configuration,IHttpContextAccessor httpContextAccessor)
         {
-            _conn = configuration.GetConnectionString("ConStr");
-            connection = new NpgsqlConnection(_conn);
+            _ConnectionString = configuration.GetConnectionString("ConStr");
+            _conn = new NpgsqlConnection(_ConnectionString);
+
         }
 
         public UserModel Login(LoginModel login)
         {
             UserModel user = new UserModel();
-            try{
-                using (var cmd = new NpgsqlCommand("Select * from mvc_master_project.t_user  Where c_uemail=@uemail and c_password=@password",connection))
+            try
+            {
+                _conn.Open();
+                using (var cmd = new NpgsqlCommand("Select * from mvc_master_project.t_user  Where c_uemail=@uemail and c_password=@password",_conn))
                 {
                     cmd.Parameters.AddWithValue("@uemail", login.c_uemail);
                     cmd.Parameters.AddWithValue("@password", login.c_password);
@@ -47,7 +50,7 @@ namespace WebApi.Repositories
             }
             finally
             {
-                connection.Close();
+                _conn.Close();
             }
             return user;
         }
