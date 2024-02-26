@@ -8,6 +8,6 @@ namespace WebApi.Repositories
 {
     public interface IUserInterface
     {
-        void RegistrationDetail(UserModel user);
+        bool RegistrationDetail(UserModel user);
     }
 }
