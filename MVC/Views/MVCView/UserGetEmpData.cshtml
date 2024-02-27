@@ -1,0 +1,40 @@
+@using WebApi.Models;
+@model List<EmpModel>; // Assuming you are passing a list of EmpModel to the view
+
+@{
+    ViewData["Title"] = "All Employees";
+}
+
+<div class="container">
+    <h2>All Employees</h2>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Employee Name</th>
+                <th>Gender</th>
+                <th>Date of Birth</th>
+                <th>Shift</th>
+                <th>Department</th>
+                <th>Image</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if(Model!=null){
+            @foreach (var employee in Model)
+            {
+                <tr class="table-primary">
+                    <td>@employee.c_empname</td>
+                    <td>@employee.c_empgender</td>
+                    <td>@employee.c_dob.ToString("MM/dd/yyyy")</td>
+                    <td>@string.Join(",",employee.c_shift)</td>
+                    <td>@employee.c_department</td>
+                    <td>@employee.c_empimage</td>
+                </tr>
+            }
+            }else{
+                <p>Data not available</p>
+            }
+        </tbody>
+    </table>
+</div>

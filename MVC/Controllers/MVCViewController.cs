@@ -82,7 +82,7 @@ namespace MVC.Controllers
                 employee.c_empimage = uniqueFileName;
             }
             _empRepo.UserAddEmpData(employee);
-            return View("UserGetEmpData");
+            return RedirectToAction("UserGetEmpData");
         }
 
         #endregion 

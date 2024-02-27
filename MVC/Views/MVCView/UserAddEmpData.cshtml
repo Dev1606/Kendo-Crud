@@ -1,0 +1,80 @@
+@using WebApi.Models;
+@model EmpModel;
+
+@{
+    ViewData["Title"] = "AddEmployee";
+}
+
+<div class="container">
+    <h2>Add Employee</h2>
+
+    <form method="POST" asp-action="UserAddEmpData" class="needs-validation" enctype="multicart/form-data">
+        <div class="form-group">
+            <label asp-for="c_empname">Employee Name:</label>
+            <input asp-for="c_empname" class="form-control" required />
+            <div class="invalid-feedback">
+                Please enter the Employee name.
+            </div>
+        </div>
+
+        
+        <div class="mb-3">
+                <label class="form-label">Gender: </label><br>
+                @Html.RadioButtonFor(m => m.c_empgender, "Male") Male
+                @Html.RadioButtonFor(m => m.c_empgender, "Female") Female
+            </div>
+            
+        <div class="form-group">
+            <label asp-for="c_dob">Date of Birth:</label>
+            <input asp-for="c_dob" class="form-control" type="date" required />
+            <div class="invalid-feedback">
+                Please enter the Date of Birth.
+            </div>
+        </div>
+
+            <div class="mb-3">
+                @* <label asp-for="c_dob">Shift :</label>
+                @Html.CheckBoxFor(m => m.c_shift, "Morning") Morning
+                @Html.CheckBoxFor(m => m.c_shift, "Afternooon") Afternoon   *@
+            </div>
+
+        <div class="mb-3">
+                       <label asp-for="c_department">Select Course:</label>
+            <select asp-for="c_department" class="form-control" required>
+                <option value="">-- Select Course --</option>
+                @foreach (var course in  ViewBag.Departments)
+                {
+                    <option value="@course">@course</option>
+                }
+            </select>
+            <div class="invalid-feedback">
+                Please select a course.
+            </div>
+        </div>
+
+        <div class="mb-3">
+                        <label class="form-label">Shift : </label>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="reading" value="Morning" name="c_shift[]">
+                            <label class="form-check-label" for="Morning">Morning</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="Singing" value="Afternoon" name="c_shift[]">
+                            <label class="form-check-label" for="Afternoon">Afternoon</label>
+                        </div>
+           </div>
+
+        <div class="form-group">
+            <label asp-for="c_image">Image:</label>
+            <input asp-for="c_image" type="file" class="form-control-file" required />
+            <div class="invalid-feedback">
+                Please upload an image.
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Add Employee</button>
+        <a asp-action="GetAllEmpData" class="btn btn-secondary">Back to List</a>
+    </form>
+</div>
+
+

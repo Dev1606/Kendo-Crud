@@ -79,10 +79,10 @@ namespace WebApi.Repositories
                             {
                                 c_empid = (int)reader["c_empid"],
                                 c_empname = (string)reader["c_empname"],
-                                c_empgender = (string)reader["c_gender"],
+                                c_empgender = (string)reader["c_empgender"],
                                 c_dob = (DateTime)reader["c_dob"],
                                 c_shift = (string[])reader["c_shift"],
-                                c_department = (string)reader["d_department"],
+                                c_department = (string)reader["c_department"],
                                 c_empimage = (string)reader["c_empimage"]
                             };
                             Employees.Add(Employee);
@@ -112,16 +112,18 @@ namespace WebApi.Repositories
             {
                 try
                 {
-                    var qry = "INSERT INTO mvc_master_project.t_emp(c_empid, c_empname, c_empgender, c_dob, c_shift, c_department, c_empimage) VALUES (@c_empid, @c_empname, @c_empgender, @c_dob, @c_shift, @c_department, @c_empimage);";
+                    var qry = "INSERT INTO mvc_master_project.t_emp(c_empname, c_empgender, c_dob, c_shift, c_department, c_empimage) VALUES (@c_empname, @c_empgender, @c_dob, @c_shift, @c_department, @c_empimage);";
                     using (NpgsqlCommand cmd = new NpgsqlCommand(qry, con))
                     {
-                        cmd.Parameters.AddWithValue("@c_empid", employee.c_empid);
                         cmd.Parameters.AddWithValue("@c_empname", employee.c_empname);
                         cmd.Parameters.AddWithValue("@c_empgender", employee.c_empgender);
                         cmd.Parameters.AddWithValue("@c_dob", employee.c_dob);
+                        string hobbies = string.Join(",", employee.c_shift);
+                        cmd.Parameters.AddWithValue("@c_shift", employee.c_shift);
                         cmd.Parameters.AddWithValue("@c_shift", employee.c_shift);
                         cmd.Parameters.AddWithValue("@c_department", employee.c_department);
                         cmd.Parameters.AddWithValue("@c_empimage", employee.c_empimage);
+                        
 
                         con.Open();
                         rowseffected = cmd.ExecuteNonQuery();
