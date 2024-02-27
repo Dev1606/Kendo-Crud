@@ -7,7 +7,7 @@
 
 <div>
     <div>
-        <form asp-action="AdminUpdateEmpData" method="post" asp-controller="MVCView">
+        <form asp-action="AdminUpdateEmpData" method="post" asp-controller="MVCView" enctype="multipart/form-data">
             <div>
                 <input type="hidden"  asp-for="c_empid"/>
                 <label >Employee Name: </label><br />
@@ -47,7 +47,7 @@
             </div><br>
             <div>
                 <label>Employee Image:</label>
-                <input type="file" accept=".png,.jpg,.jpeg" asp-for="c_image" /><br />
+                <input type="file" accept=".png,.jpg,.jpeg" asp-for="Image" /><br />
                 @* <img src="@Url.Content(Model.ImgPath)" alt="No Image" width=200 height=200/><br /> *@
             </div>
 

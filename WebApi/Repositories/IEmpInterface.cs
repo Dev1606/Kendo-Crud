@@ -18,7 +18,7 @@ namespace WebApi.Repositories
 
         #region User Repo Methods
 
-        String[] GetDepartment();
+        // String[] GetDepartment();
         List<EmpModel> UserGetEmpData();
         bool UserAddEmpData(EmpModel employee);
 

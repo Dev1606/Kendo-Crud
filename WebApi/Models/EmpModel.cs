@@ -18,6 +18,6 @@ namespace WebApi.Models
         [Display(Name = "Image")]
         [Required(ErrorMessage = "Please Select an Image.")]
         public string c_empimage {get; set;} = string.Empty;
-        public IFormFile  Image {get;set;} //IFormFile For File Upload
+        public IFormFile Image {get;set;} //IFormFile For File Upload
     }
 }

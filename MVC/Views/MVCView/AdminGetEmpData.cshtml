@@ -33,7 +33,7 @@
                     <td>@employee.c_dob.Date.ToShortDateString()</td>
                     <td>@string.Join(", ", employee.c_shift)</td>
                     <td>@employee.c_department</td>
-                    <td><img src="@employee.c_empimage" alt="Employee Image" style="max-width: 100px;" /></td>
+                    <td><img src="~/uploadsimg/@employee.c_empimage" alt="Employee Image" style="max-width: 100px;" /></td>
                     <td>
                         <a asp-action="AdminUpdateEmpData" asp-route-id="@employee.c_empid" class="btn btn-warning">Edit</a>
                         <a asp-action="AdminDeleteEmp" asp-controller="MVCView" asp-route-id="@employee.c_empid" class="btn btn-danger">Delete</a>

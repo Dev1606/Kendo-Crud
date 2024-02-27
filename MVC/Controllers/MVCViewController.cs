@@ -76,6 +76,24 @@ namespace MVC.Controllers
         [HttpPost]
         public IActionResult AdminUpdateEmpData(EmpModel emp)
         {
+
+            //Code For File Upload:
+            if (emp.Image != null && emp.Image.Length > 0)
+            {
+                var uploadsFolder = Path.Combine(_environment.WebRootPath, "uploadsimg");
+                var uniqueFileName = Guid.NewGuid().ToString() + "_" + emp.Image.FileName;
+                //var uniqueFileName =  item.Image.FileName; //To Get Only File Name
+                var filePath = Path.Combine(uploadsFolder, uniqueFileName);
+
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    emp.Image.CopyTo(stream);
+                }
+
+                // Save The File Path To Our DB Table In c_image Field:
+                emp.c_empimage = uniqueFileName;
+            }
+            
             _empRepo.UpdateEmp(emp);
             return RedirectToAction("AdminGetEmpData");
         }
@@ -106,11 +124,11 @@ namespace MVC.Controllers
         }
 
         //department dropdown
-        [HttpGet]
-        public string[] GetDepartment()
-        {
-            return _empRepo.GetDepartment();
-        }
+        // [HttpGet]
+        // public string[] GetDepartment()
+        // {
+        //     return _empRepo.GetDepartment();
+        // }
 
         // Add
         [HttpGet]
