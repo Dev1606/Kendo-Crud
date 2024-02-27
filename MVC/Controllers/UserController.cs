@@ -43,7 +43,21 @@ namespace MVC.Controllers
             {
                 if (_userrepo.Login(user))
                 {
-                    return RedirectToAction("Index", "Home");
+                    if (session.GetInt32("isRole") == 0)
+                    {
+                        // User
+                        return RedirectToAction("Index", "MVCView");
+                    }
+                    else if (session.GetInt32("isRole") == 1)
+                    {
+                        // Admin
+                        return RedirectToAction("Index", "Home");
+                    }
+                    else
+                    {
+                        // login.ErrorMessage = "Invalid email or password";
+                        return View();
+                    }
                 }
                 else
                 {
@@ -54,6 +68,13 @@ namespace MVC.Controllers
             {
                 return RedirectToAction("Login", "User");
             }
+        }
+
+        public IActionResult Logout()
+        {
+            var session = _httpContextAccessor.HttpContext.Session;
+            session.Clear();
+            return RedirectToAction("Login","User");
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

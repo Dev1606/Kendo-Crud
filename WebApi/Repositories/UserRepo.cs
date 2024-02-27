@@ -38,8 +38,20 @@ namespace WebApi.Repositories
                         {
                             isUserAuthenticated = true;
                             var session = _httpContextAccessor.HttpContext.Session;
-                            session.SetString("username", reader["c_uname"].ToString());
                             session.SetInt32("userid", (int)reader["c_uid"]);
+                            session.SetString("username", reader["c_uname"].ToString());
+
+                            // Login with Role
+                            int userRoleId = (int)reader["c_role"];
+
+                            if (userRoleId == 0)
+                            {
+                                session.SetInt32("isRole", 0);
+                            }
+                            else if (userRoleId == 1)
+                            {
+                                session.SetInt32("isRole", 1);
+                            }
                         }
                     }
                 }
