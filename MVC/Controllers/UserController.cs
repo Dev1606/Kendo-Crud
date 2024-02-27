@@ -24,9 +24,21 @@ namespace MVC.Controllers
             _httpContextAccessor = httpContextAccessor;
         }
 
-        public IActionResult Index()
+        [HttpGet]
+        public IActionResult Register()
         {
             return View();
+        }
+
+        [HttpPost]
+        public IActionResult Register(UserModel user)
+        {
+            var status = _userrepo.RegistrationDetail(user);
+            if(status){
+                return View("Login","User");
+            }else{
+                return RedirectToAction("Register","User");
+            }
         }
 
         [HttpGet]

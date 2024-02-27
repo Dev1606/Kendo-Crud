@@ -11,17 +11,41 @@ namespace WebApi.Repositories
     public class UserRepo : IUserInterface
     {
         private readonly string? _ConnectionString;
-        private readonly NpgsqlConnection _conn;
-
         private readonly IHttpContextAccessor _httpContextAccessor;
-
-        public UserRepo(IConfiguration configuration,IHttpContextAccessor httpContextAccessor)
+        private NpgsqlConnection _conn;
+        public UserRepo(IConfiguration configuration, IHttpContextAccessor httpContextAccessor)
         {
             _ConnectionString = configuration.GetConnectionString("ConStr");
-            _conn = new NpgsqlConnection(_ConnectionString);
             _httpContextAccessor = httpContextAccessor;
+            _conn = new NpgsqlConnection(_ConnectionString);
         }
+        public bool RegistrationDetail(UserModel user)
+        {
+            int rowseffected = 0;
+            try
+            {
+                _conn.Open();
+                using (var cmd = new NpgsqlCommand("Insert INTO mvc_master_project.t_user(c_uname,c_uemail,c_password) values(@username,@email,@password)", _conn))
+                {
+                    cmd.Parameters.Add("@username", NpgsqlTypes.NpgsqlDbType.Varchar).Value = user.c_uname;
+                    cmd.Parameters.AddWithValue("@email", user.c_uemail);
+                    cmd.Parameters.AddWithValue("@password", user.c_password);
+                    rowseffected = cmd.ExecuteNonQuery();
+                }
+            }
+            catch (Exception e)
+            {
+              Console.WriteLine("Error occured at Register" + e);
+            }
+            
+            if(rowseffected>0){
+                return true;
+            }else{
+                return false;
+            }
 
+        }
+        
         public bool Login(LoginModel login)
         {
             bool isUserAuthenticated = false;
@@ -64,8 +88,7 @@ namespace WebApi.Repositories
             {
                 _conn.Close();
             }
-            return isUserAuthenticated;
-        }
 
+            return isUserAuthenticated;
     }
 }
