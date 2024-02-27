@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using WebApi.Repositories;
+using WebApi.Repositories.API_Repositories;
+
 
 namespace WebApi.Controllers
 {
@@ -11,9 +12,9 @@ namespace WebApi.Controllers
     [Route("api/[controller]")]
     public class UserApiController : ControllerBase
     {
-        private readonly IUserInterface _userInterface;
-        public UserApiController(IUserInterface userInterface){
-            _userInterface = userInterface;
+        private readonly IUserAPIInterface _userAPIInterface;
+        public UserApiController(IUserAPIInterface userAPIInterface){
+            _userAPIInterface = userAPIInterface;
         }
     }
 }

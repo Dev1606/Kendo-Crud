@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using WebApi.Repositories;
+using WebApi.Repositories.API_Repositories;
+
 
 namespace WebApi.Controllers
 {
@@ -11,9 +12,9 @@ namespace WebApi.Controllers
     [Route("api/[controller]")]
     public class MVCApiController : ControllerBase
     {
-        private readonly IEmpInterface _empInterface;
-        public MVCApiController(IEmpInterface empInterface){
-            _empInterface = empInterface;
+        private readonly IEmpAPIInterface _empAPIInterface;
+        public MVCApiController(IEmpAPIInterface empAPIInterface){
+            _empAPIInterface = empAPIInterface;
         }
 
         #region Admin API Calls
