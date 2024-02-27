@@ -1,0 +1,53 @@
+@using WebApi.Models
+@model List<EmpModel>
+
+@{
+    ViewData["Title"] = "AdminGetEmpData";
+}
+
+<h1>Employee Data</h1>
+
+<div class="table-responsive">
+   <table class="table table-dark table-striped">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Gender</th>
+            <th>Date of birth</th>
+            <th>Shift</th>
+            <th>Department</th>
+            <th>Image</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model != null && Model.Count > 0)
+        {
+            foreach (var employee in Model)
+            {
+                <tr>
+                    <td>@employee.c_empid</td>
+                    <td>@employee.c_empname</td>
+                    <td>@employee.c_empgender</td>
+                    <td>@employee.c_dob.Date.ToShortDateString()</td>
+                    <td>@string.Join(", ", employee.c_shift)</td>
+                    <td>@employee.c_department</td>
+                    <td><img src="@employee.c_empimage" alt="Employee Image" style="max-width: 100px;" /></td>
+                    <td>
+                        <a asp-action="AdminUpdateEmpData" asp-route-id="@employee.c_empid" class="btn btn-warning">Edit</a>
+                        <a asp-action="AdminDeleteEmp" asp-controller="MVCView" asp-route-id="@employee.c_empid" class="btn btn-danger">Delete</a>
+                    </td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="8">No data available</td>
+            </tr>
+        }
+    </tbody>
+   </table> 
+</div>
+
