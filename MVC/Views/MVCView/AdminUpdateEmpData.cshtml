@@ -7,11 +7,11 @@
 
 <div>
     <div>
-        <form asp-action="UpdateEmployee" method="Update" asp-controller="MVCView">
+        <form asp-action="AdminUpdateEmpData" method="post" asp-controller="MVCView">
             <div>
-                <input type="hidden" name="Id" asp-for="c_empid" />
-                <label for="name">Employee Name: </label><br />
-                <input type="text" name="Name" asp-for="c_empname" id="name" required /><br />
+                <input type="hidden"  asp-for="c_empid"/>
+                <label >Employee Name: </label><br />
+                <input type="text" asp-for="c_empname"  required /><br />
             </div>
             <div>
                 <label>Gender:</label>
@@ -21,7 +21,7 @@
 
             <div>
                 <label>Date of Birth: </label><br />
-                <input type="date" id="dob" name="DOB" asp-for="c_dob" required /><br />
+                <input type="date" id="dob" asp-for="c_dob" required /><br />
             </div>
             <div class="mb-3">
                 <label class="form-label">Shifts:</label>
@@ -47,11 +47,11 @@
             </div><br>
             <div>
                 <label>Employee Image:</label>
-                <input type="file" name="ImageUpload" accept=".png,.jpg,.jpeg" asp-for="c_image" /><br />
+                <input type="file" accept=".png,.jpg,.jpeg" asp-for="c_image" /><br />
                 @* <img src="@Url.Content(Model.ImgPath)" alt="No Image" width=200 height=200/><br /> *@
             </div>
 
-            <button type="submit" class="btn btn-primary" asp-action="AdminGetEmpData">UpdateEmployee</button>
+            <button type="submit" class="btn btn-primary">UpdateEmployee</button>
             <a asp-action="AdminGetEmpData" class="btn btn-secondary">Back to List</a>
         </form>
     </div>

@@ -178,19 +178,20 @@ namespace WebApi.Repositories
             {
                 try
                 {
-                    var qry = "UPDATE mvc_master_project.t_emp SET c_empname=@c_empname, c_empgender=@c_empgender, c_dob=@c_dob, c_shift=@c_shift, c_department=@c_department, c_empimage=@c_empimage WHERE c_empid=@id;";
+                    var qry = "UPDATE mvc_master_project.t_emp SET c_empname=@c_empname, c_empgender=@c_empgender, c_dob=@c_dob, c_shift=@c_shift, c_department=@c_department, c_empimage=@c_empimage WHERE c_empid=@c_empid;";
                     using (NpgsqlCommand cmd = new NpgsqlCommand(qry, con))
                     {
-                        cmd.Parameters.AddWithValue("@id", emp.c_empid);
+                        cmd.Parameters.AddWithValue("@c_empid", emp.c_empid);
                         cmd.Parameters.AddWithValue("@c_empname", emp.c_empname);
                         cmd.Parameters.AddWithValue("@c_empgender", emp.c_empgender);
                         cmd.Parameters.AddWithValue("@c_dob", emp.c_dob);
                         cmd.Parameters.AddWithValue("@c_shift", emp.c_shift);
                         cmd.Parameters.AddWithValue("@c_department", emp.c_department);
                         cmd.Parameters.AddWithValue("@c_empimage", emp.c_empimage);
+                        Console.WriteLine("Emp details @ repo"+ emp.c_empid+emp.c_empname+ emp.c_empgender+emp.c_dob+emp.c_shift+ emp.c_department+emp.c_empimage);
 
-                        string hobbies = string.Join(",", emp.c_shift);
-                        cmd.Parameters.AddWithValue("@ch", emp.c_shift);
+                        // string c_shift = string.Join(",", emp.c_shift);
+                        // cmd.Parameters.AddWithValue("@c_shift", emp.c_shift);
                         con.Open();
                         cmd.ExecuteNonQuery();
                     }
