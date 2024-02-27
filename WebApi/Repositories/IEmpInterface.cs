@@ -7,6 +7,10 @@ namespace WebApi.Repositories
 {
     public interface IEmpInterface
     {
-        
+        #region Admin Repo Methods
+        #endregion
+
+        #region User Repo Methods
+        #endregion 
     }
 }
