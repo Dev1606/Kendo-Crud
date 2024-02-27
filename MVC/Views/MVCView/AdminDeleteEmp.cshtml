@@ -1,0 +1,23 @@
+@using WebApi.Models
+@model EmpModel
+
+@{
+    ViewData["Title"] = "DeleteEmployee";
+}
+
+<h2>Delete Student</h2>
+
+<div>
+    <strong>ID</strong> @Model.c_empid <br />
+    <strong>Name</strong> @Model.c_empname <br />
+    <strong>Gender</strong> @Model.c_empgender <br />
+    <strong>Date Of Birth</strong> @Model.c_dob <br />
+    <strong>Department</strong> @Model.c_department <br />
+    <strong>Image</strong> @Model.c_empimage <br />
+</div>
+
+<form asp-action="AdminDeleteEmpConfirm" asp-route-id="@Model.c_empid" method="post">
+    <button type="submit">Delete Employee</button>
+</form>
+
+<a asp-action="AdminGetEmpData">Back to List</a>

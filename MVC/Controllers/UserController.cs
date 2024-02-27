@@ -63,7 +63,7 @@ namespace MVC.Controllers
                     else if (session.GetInt32("isRole") == 1)
                     {
                         // Admin
-                        return RedirectToAction("Index", "Home");
+                        return RedirectToAction("AdminGetEmpData", "MVCView");
                     }
                     else
                     {

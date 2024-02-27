@@ -1,0 +1,58 @@
+@model WebApi.Models.EmpModel
+@{
+    ViewData["Title"] = "Admin Update Employee Data";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<div>
+    <div>
+        <form asp-action="AdminUpdateEmpData" method="post" asp-controller="MVCView">
+            <div>
+                <input type="hidden"  asp-for="c_empid"/>
+                <label >Employee Name: </label><br />
+                <input type="text" asp-for="c_empname"  required /><br />
+            </div>
+            <div>
+                <label>Gender:</label>
+                @Html.RadioButtonFor(m => m.c_empgender, "Male") Male
+                @Html.RadioButtonFor(m => m.c_empgender, "Female") Female
+            </div>
+
+            <div>
+                <label>Date of Birth: </label><br />
+                <input type="date" id="dob" asp-for="c_dob" required /><br />
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Shifts:</label>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="reading" value="Morning" name="c_shift[]">
+                    <label class="form-check-label" for="Morning">Morning</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="Singing" value="Afternoon" name="c_shift[]">
+                    <label class="form-check-label" for="Afternoon">Afternoon</label>
+                </div>
+
+            </div>
+            <div>
+                <label asp-for="c_department">Department:</label>
+                <select asp-for="c_department" class="form-control" required>
+                    <option value="">-- Select Department --</option>
+                    @foreach (var department in ViewBag.Departments)
+                    {
+                        <option value="@department">@department</option>
+                    }
+                </select>
+            </div><br>
+            <div>
+                <label>Employee Image:</label>
+                <input type="file" accept=".png,.jpg,.jpeg" asp-for="c_image" /><br />
+                @* <img src="@Url.Content(Model.ImgPath)" alt="No Image" width=200 height=200/><br /> *@
+            </div>
+
+            <button type="submit" class="btn btn-primary">UpdateEmployee</button>
+            <a asp-action="AdminGetEmpData" class="btn btn-secondary">Back to List</a>
+        </form>
+    </div>
+</div>
