@@ -37,12 +37,19 @@ namespace MVC.Controllers
         #endregion
 
         #region User Methods
+        //department dropdown
+        public string[] GetDepartment()
+        {
+            string[] departments = _empRepo.GetDepartment();
+            return departments;
+        }
+
         // Get
         [HttpPost]
         public IActionResult UserGetEmpData()
         {
             var Employees = _empRepo.UserGetEmpData();
-            return Json(Employees);
+            return View(Employees);
         }
 
         // Add
@@ -52,14 +59,13 @@ namespace MVC.Controllers
             var status = _empRepo.UserAddEmpData(employee);
             if (status)
             {
-                return Json(new { Success = true, message = "Employee Added Successfully !!!!" });
+                return View("Employee Added Successfully !!!!");
             }
             else
             {
-                return Json(new { Success = false, message = "There was some Error" });
+                return View("There was some Error");
             }
         }
-
 
         #endregion 
 

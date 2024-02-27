@@ -27,6 +27,36 @@ namespace WebApi.Repositories
         #endregion
 
         #region User Repo Methods
+
+        //Get department In Dropdwn
+        public string[] GetDepartment()
+        {
+            var department = new List<string>();
+            using (NpgsqlConnection con = new NpgsqlConnection(_ConnectionString))
+            {
+                try
+                {
+                    con.Open();
+                    using (NpgsqlCommand cmd = new NpgsqlCommand("SELECT c_department FROM mvc_master_project.t_department;", con))
+                    {
+                        var reader = cmd.ExecuteReader();
+                        while (reader.Read())
+                        {
+                            department.Add((string)reader["c_department"]);
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine("#### Get Department helper error ##### " + e);
+                }
+                finally
+                {
+                    con.Close();
+                }
+            }
+            return department.ToArray();
+        }
         // UserGetEmpData
         public List<EmpModel> UserGetEmpData()
         {
