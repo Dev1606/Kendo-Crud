@@ -65,6 +65,7 @@ namespace MVC.Controllers
         [HttpGet]
         public IActionResult AdminUpdateEmpData(int id)
         {
+            ViewBag.Departments = _empRepo.GetDepartment();
             var empUpdate = _empRepo.GetEmpDetail(id);
             return View(empUpdate);
         }
