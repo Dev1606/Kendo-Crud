@@ -66,21 +66,22 @@ namespace MVC.Controllers
         public IActionResult UserAddEmpData(EmpModel employee)
         {
             //Code For File Upload:
-            if (employee.c_image != null && employee.c_image.Length > 0)
+            if (employee.Image != null && employee.Image.Length > 0)
             {
                 var uploadsFolder = Path.Combine(_environment.WebRootPath, "uploadsimg");
-                var uniqueFileName = Guid.NewGuid().ToString() + "_" + employee.c_image.FileName;
+                var uniqueFileName = Guid.NewGuid().ToString() + "_" + employee.Image.FileName;
                 //var uniqueFileName =  item.Image.FileName; //To Get Only File Name
                 var filePath = Path.Combine(uploadsFolder, uniqueFileName);
 
                 using (var stream = new FileStream(filePath, FileMode.Create))
                 {
-                    employee.c_image.CopyTo(stream);
+                    employee.Image.CopyTo(stream);
                 }
 
                 // Save The File Path To Our DB Table In c_image Field:
                 employee.c_empimage = uniqueFileName;
             }
+
             _empRepo.UserAddEmpData(employee);
             return RedirectToAction("UserGetEmpData");
         }

@@ -8,7 +8,7 @@
 <div class="container">
     <h2>Add Employee</h2>
 
-    <form method="POST" asp-action="UserAddEmpData" class="needs-validation" enctype="multicart/form-data">
+    <form method="POST" asp-action="UserAddEmpData" class="needs-validation" enctype="multipart/form-data">
         <div class="form-group">
             <label asp-for="c_empname">Employee Name:</label>
             <input asp-for="c_empname" class="form-control" required />
@@ -65,15 +65,19 @@
            </div>
 
         <div class="form-group">
-            <label asp-for="c_image">Image:</label>
-            <input asp-for="c_image" type="file" class="form-control-file" required />
+            @* <label asp-for="Image">Image:</label>
+           
+             <input type="file" class="form-control" id="inputImage" asp-for="Image">
             <div class="invalid-feedback">
                 Please upload an image.
-            </div>
+            </div> *@
+            <label for="inputImage" class="form-label" asp-for="Image">Image: </label>
+                <input type="file" class="form-control" id="inputImage" asp-for="Image">
+                <span class="text-danger">@Html.ValidationMessageFor(EmpModel => EmpModel.c_empimage)</span>
         </div>
 
         <button type="submit" class="btn btn-primary">Add Employee</button>
-        <a asp-action="GetAllEmpData" class="btn btn-secondary">Back to List</a>
+        @* <a asp-action="GetAllEmpData" class="btn btn-secondary">Back to List</a> *@
     </form>
 </div>
 
