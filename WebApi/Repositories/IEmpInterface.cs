@@ -11,7 +11,7 @@ namespace WebApi.Repositories
         #region Admin Repo Methods
         List<EmpModel> GetEmpData();
         string[] GetDepartment();
-        EmpModel GetEmpDetail();
+        EmpModel GetEmpDetail(int id);
         bool DeleteEmp(int id);
         bool UpdateEmp(EmpModel emp);
         #endregion
