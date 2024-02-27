@@ -1,1 +1,29 @@
-<h1>Login</h1>
+@model WebApi.Models.LoginModel
+
+@{
+    ViewData["Title"] = "Login";
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <h2>Login</h2>
+        <form method="POST" asp-controller="User" asp-action="Login">
+            <div class="mb-3">
+                <label for="inputEmail" class="form-label">Email address</label>
+                <input type="email" class="form-control" id="inputEmail" placeholder="Email" asp-for="c_uemail"/>
+                <span class="text-danger" asp-validation-for="c_uemail"></span>
+            </div>
+            <div class="mb-3">
+                <label for="inputPassword" class="form-label">Password</label>
+                <input type="password" class="form-control" id="inputPassword" placeholder="Password" asp-for="c_password"/>
+                <span class="text-danger" asp-validation-for="c_password"></span>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Login</button>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -1,0 +1,23 @@
+@{
+    var session = Context.Session;
+
+    if (!string.IsNullOrEmpty(session.GetString("username")))
+    {
+        <ul class="navbar-nav navbar-right">
+            <li class="nav-item">
+                <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Logout">Logout</a>
+            </li>
+        </ul>
+    }
+    else
+    {
+        <ul class="navbar-nav navbar-right">
+            <li class="nav-item">
+                <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Login">Login</a>
+            </li>
+            @* <li class="nav-item">
+                <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Register">Register</a>
+            </li> *@
+        </ul>
+    }
+}
