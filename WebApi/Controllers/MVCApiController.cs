@@ -35,7 +35,7 @@ namespace WebApi.Controllers
             return _empAPIInterface.GetDepartment();
         }
 
-        [HttpPost]
+        [HttpGet]
         [Route("GetEmpDetail")]
         public IActionResult GetEmpDetail(int id)
         {
@@ -45,7 +45,7 @@ namespace WebApi.Controllers
 
         [HttpPut]
         [Route("UpdateEmpData")]
-        public IActionResult UpdateEmp([FromForm]EmpModel emp)
+        public IActionResult UpdateEmp(EmpModel emp)
         {
             _empAPIInterface.UpdateEmp(emp);
             return Ok("Employee Updated Succcessfully");
