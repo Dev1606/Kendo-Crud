@@ -16,10 +16,13 @@ namespace MVC.Controllers
         private readonly ILogger<MVCViewController> _logger;
         private readonly IEmpInterface _empRepo;
 
-        public MVCViewController(ILogger<MVCViewController> logger, IEmpInterface empRepo)
+        private readonly IWebHostEnvironment _environment;
+
+        public MVCViewController(ILogger<MVCViewController> logger, IEmpInterface empRepo, IWebHostEnvironment environment)
         {
             _logger = logger;
             _empRepo = empRepo;
+            _environment = environment;
         }
 
         /*
@@ -37,34 +40,49 @@ namespace MVC.Controllers
         #endregion
 
         #region User Methods
-        //department dropdown
-        public string[] GetDepartment()
-        {
-            string[] departments = _empRepo.GetDepartment();
-            return departments;
-        }
-
         // Get
-        [HttpPost]
+        [HttpGet]
         public IActionResult UserGetEmpData()
         {
             var Employees = _empRepo.UserGetEmpData();
             return View(Employees);
         }
 
+        //department dropdown
+        [HttpGet]
+        public string[] GetDepartment()
+        {
+            return _empRepo.GetDepartment();
+        }
+
         // Add
+        [HttpGet]
+        public IActionResult UserAddEmpData()
+        {
+            ViewBag.Departments = _empRepo.GetDepartment();
+            return View();
+        }
         [HttpPost]
         public IActionResult UserAddEmpData(EmpModel employee)
         {
-            var status = _empRepo.UserAddEmpData(employee);
-            if (status)
+            //Code For File Upload:
+            if (employee.c_image != null && employee.c_image.Length > 0)
             {
-                return View("Employee Added Successfully !!!!");
+                var uploadsFolder = Path.Combine(_environment.WebRootPath, "uploadsimg");
+                var uniqueFileName = Guid.NewGuid().ToString() + "_" + employee.c_image.FileName;
+                //var uniqueFileName =  item.Image.FileName; //To Get Only File Name
+                var filePath = Path.Combine(uploadsFolder, uniqueFileName);
+
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    employee.c_image.CopyTo(stream);
+                }
+
+                // Save The File Path To Our DB Table In c_image Field:
+                employee.c_empimage = uniqueFileName;
             }
-            else
-            {
-                return View("There was some Error");
-            }
+            _empRepo.UserAddEmpData(employee);
+            return View("UserGetEmpData");
         }
 
         #endregion 
