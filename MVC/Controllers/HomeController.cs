@@ -15,11 +15,21 @@ public class HomeController : Controller
 
     public IActionResult Index()
     {
+        string username = HttpContext.Session.GetString("username");
+        if(username == null)
+        {
+            return RedirectToAction("Login","User");
+        }
         return View();
     }
 
     public IActionResult Privacy()
     {
+        string username = HttpContext.Session.GetString("username");
+        if(username == null)
+        {
+            return RedirectToAction("Login","User");
+        }
         return View();
     }
 

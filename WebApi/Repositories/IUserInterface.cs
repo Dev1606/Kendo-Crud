@@ -9,5 +9,6 @@ namespace WebApi.Repositories
     public interface IUserInterface
     {
         bool RegistrationDetail(UserModel user);
+        bool Login(LoginModel login);
     }
 }
