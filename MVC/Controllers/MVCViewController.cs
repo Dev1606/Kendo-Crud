@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using WebApi.Models;
 using WebApi.Repositories;
 
 namespace MVC.Controllers
@@ -36,6 +37,21 @@ namespace MVC.Controllers
         #endregion
 
         #region User Methods
+        [HttpPost]
+        public IActionResult UserAddEmpData(EmpModel employee)
+        {
+            var status = _empRepo.UserAddEmpData(employee);
+            if (status)
+            {
+                return Json(new { Success = true, message = "Employee Added Successfully !!!!" });
+            }
+            else
+            {
+                return Json(new { Success = false, message = "There was some Error" });
+            }
+        }
+
+
         #endregion 
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
