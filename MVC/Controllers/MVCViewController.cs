@@ -41,15 +41,53 @@ namespace MVC.Controllers
         }
 
         #region Admin Methods
+
+        [HttpGet]
         public IActionResult AdminGetEmpData()
         {
-            //Validate using Session
-            return View();
+            var empData = _empRepo.GetEmpData();
+            return View(empData);
         }
-        public IActionResult AdminUpdateEmpData()
+
+        [HttpGet]
+        public string[] GetDepartment()
         {
-            //Validate using Session
-            return View();
+            return _empRepo.GetDepartment();
+        }
+
+        [HttpGet]
+        public IActionResult GetEmpDetail(int id)
+        {
+            var empDetail = _empRepo.GetEmpDetail(id);
+            return View(empDetail);
+        }
+
+        [HttpGet]
+        public IActionResult AdminUpdateEmpData(int id)
+        {
+            var empUpdate = _empRepo.GetEmpDetail(id);
+            return View(empUpdate);
+        }
+
+        [HttpPost]
+        public IActionResult AdminUpdateEmpData(EmpModel emp)
+        {
+            _empRepo.UpdateEmp(emp);
+            return RedirectToAction("AdminGetEmpData");
+        }
+
+        [HttpGet]
+        public IActionResult DeleteEmpData(int id)
+        {
+            var empDelete = _empRepo.GetEmpDetail(id);
+            return View(empDelete);
+        }
+
+        [HttpPost]
+        public IActionResult AdminDeleteEmpData(int id)
+        {
+            _empRepo.DeleteEmp(id);
+            return RedirectToAction("AdminGetEmpData");
         }
 
         #endregion
