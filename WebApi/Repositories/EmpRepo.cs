@@ -81,6 +81,48 @@ namespace WebApi.Repositories
             }
             return Department.ToArray();
         }
+
+        public EmpModel GetEmpDetail(int id){
+            var emp = new EmpModel();
+            using(NpgsqlConnection con = new NpgsqlConnection(_ConnectionString)){
+                try{
+                    var qry = "SELECT c_empid, c_empname, c_empgender, c_dob, c_shift, c_department, c_empimage FROM mvc_master_project.t_emp WHERE c_empid = @id";
+                    using(NpgsqlCommand cmd = new NpgsqlCommand(qry,con)){
+                        cmd.Parameters.AddWithValue("@id",id);
+                        con.Open();
+                        var reader = cmd.ExecuteReader();
+
+                        while(reader.Read()){
+
+                            emp = new EmpModel{
+                                c_empid = (int)reader["c_empid"],
+                                c_empname = (string)reader["c_empname"],
+                                c_empgender = (string)reader["c_empgender"],
+                                c_dob = (DateTime)reader["c_dob"],
+                                c_shift = (string[])reader["c_shift"],
+                                c_department = (string)reader["c_department"],
+                                c_empimage = (string)reader["c_empimage"]
+                            };
+                        }
+
+                    }
+
+                }catch(Exception e){
+                    Console.WriteLine("######nGet Specific Student Helper error: "+e);
+                }finally{
+                    con.Close();
+                }
+            }
+            return emp;
+        }
+
+        public bool DeleteEmp(int id){
+            return true;
+        }
+
+        public bool UpdateEmp(EmpModel emp){
+            return true;
+        }
         
         #endregion
 
