@@ -44,7 +44,7 @@ namespace WebApi.Controllers
             //Code For File Upload:
             if (emp.Image != null && emp.Image.Length > 0)
             {
-                var uploadsFolder = Path.Combine("D:/Priyanshi_Intern/Master_Project/Kendo-Crud/MVC/wwwroot", "uploadsimg");
+                var uploadsFolder = Path.Combine("../MVC/wwwroot", "uploadsimg");
                 var uniqueFileName = Guid.NewGuid().ToString() + "_" + emp.Image.FileName;
                 //var uniqueFileName =  item.Image.FileName; //To Get Only File Name
                 var filePath = Path.Combine(uploadsFolder, uniqueFileName);
