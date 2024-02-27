@@ -118,8 +118,7 @@ namespace WebApi.Repositories
                         cmd.Parameters.AddWithValue("@c_empname", employee.c_empname);
                         cmd.Parameters.AddWithValue("@c_empgender", employee.c_empgender);
                         cmd.Parameters.AddWithValue("@c_dob", employee.c_dob);
-                        string hobbies = string.Join(",", employee.c_shift);
-                        cmd.Parameters.AddWithValue("@c_shift", employee.c_shift);
+                        string shift = string.Join(",", employee.c_shift);
                         cmd.Parameters.AddWithValue("@c_shift", employee.c_shift);
                         cmd.Parameters.AddWithValue("@c_department", employee.c_department);
                         cmd.Parameters.AddWithValue("@c_empimage", employee.c_empimage);
