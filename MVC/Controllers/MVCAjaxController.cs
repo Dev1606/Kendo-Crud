@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using WebApi.Repositories.API_Repositories;
 
 namespace MVC.Controllers
 {
@@ -12,10 +13,12 @@ namespace MVC.Controllers
     public class MVCAjaxController : Controller
     {
         private readonly ILogger<MVCAjaxController> _logger;
+        private readonly IEmpAPIInterface _empAPIRepo;
 
-        public MVCAjaxController(ILogger<MVCAjaxController> logger)
+        public MVCAjaxController(ILogger<MVCAjaxController> logger, IEmpAPIInterface empAPIRepo)
         {
             _logger = logger;
+            _empAPIRepo = empAPIRepo;
         }
 
         public IActionResult Index()
