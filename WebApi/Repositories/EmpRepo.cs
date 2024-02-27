@@ -27,7 +27,53 @@ namespace WebApi.Repositories
         #endregion
 
         #region User Repo Methods
+        // UserGetEmpData
+        public List<EmpModel> UserGetEmpData()
+        {
+            var Employees = new List<EmpModel>();
 
+            using (NpgsqlConnection con = new NpgsqlConnection(_ConnectionString))
+            {
+                try
+                {
+                    var qry = "SELECT c_empid, c_empname, c_empgender, c_dob, c_shift, c_department, c_empimage FROM mvc_master_project.t_emp;";
+                    using (NpgsqlCommand cmd = new NpgsqlCommand(qry, con))
+                    {
+                        con.Open();
+                        var reader = cmd.ExecuteReader();
+
+                        while (reader.Read())
+                        {
+
+                            var Employee = new EmpModel
+                            {
+                                c_empid = (int)reader["c_empid"],
+                                c_empname = (string)reader["c_empname"],
+                                c_empgender = (string)reader["c_gender"],
+                                c_dob = (DateTime)reader["c_dob"],
+                                c_shift = (string[])reader["c_shift"],
+                                c_department = (string)reader["d_department"],
+                                c_empimage = (string)reader["c_empimage"]
+                            };
+                            Employees.Add(Employee);
+                        }
+
+                    }
+
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine("------> Get Employee Helper error: " + e);
+                }
+                finally
+                {
+                    con.Close();
+                }
+            }
+            return Employees;
+        }
+
+        // UserAddEmp Data
         public bool UserAddEmpData(EmpModel employee)
         {
             int rowseffected = 0;

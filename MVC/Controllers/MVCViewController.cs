@@ -37,6 +37,15 @@ namespace MVC.Controllers
         #endregion
 
         #region User Methods
+        // Get
+        [HttpPost]
+        public IActionResult UserGetEmpData()
+        {
+            var Employees = _empRepo.UserGetEmpData();
+            return Json(Employees);
+        }
+
+        // Add
         [HttpPost]
         public IActionResult UserAddEmpData(EmpModel employee)
         {

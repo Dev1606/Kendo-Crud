@@ -12,7 +12,7 @@ namespace WebApi.Repositories
         #endregion
 
         #region User Repo Methods
-
+        List<EmpModel> UserGetEmpData();
         bool UserAddEmpData(EmpModel employee);
 
         #endregion 
