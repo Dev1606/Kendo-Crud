@@ -35,24 +35,30 @@ namespace WebApi.Repositories
             }
             catch (Exception e)
             {
-              Console.WriteLine("Error occured at Register" + e);
+                Console.WriteLine("Error occured at Register" + e);
             }
-            
-            if(rowseffected>0){
+            finally{
+                _conn.Close();
+            }
+
+            if (rowseffected > 0)
+            {
                 return true;
-            }else{
+            }
+            else
+            {
                 return false;
             }
 
         }
-        
+
         public bool Login(LoginModel login)
         {
             bool isUserAuthenticated = false;
             try
             {
                 _conn.Open();
-                using (var cmd = new NpgsqlCommand("Select * from mvc_master_project.t_user  Where c_uemail=@uemail and c_password=@password",_conn))
+                using (var cmd = new NpgsqlCommand("Select * from mvc_master_project.t_user  Where c_uemail=@uemail and c_password=@password", _conn))
                 {
                     cmd.Parameters.AddWithValue("@uemail", login.c_uemail);
                     cmd.Parameters.AddWithValue("@password", login.c_password);
@@ -80,9 +86,9 @@ namespace WebApi.Repositories
                     }
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                Console.WriteLine("Error In Login"+ex);
+                Console.WriteLine("Error In Login" + ex);
             }
             finally
             {
@@ -90,5 +96,7 @@ namespace WebApi.Repositories
             }
 
             return isUserAuthenticated;
+        }
+    
     }
 }

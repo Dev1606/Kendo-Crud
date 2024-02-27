@@ -35,7 +35,7 @@ namespace MVC.Controllers
         {
             var status = _userrepo.RegistrationDetail(user);
             if(status){
-                return View("Login","User");
+                return View("Login");
             }else{
                 return RedirectToAction("Register","User");
             }
