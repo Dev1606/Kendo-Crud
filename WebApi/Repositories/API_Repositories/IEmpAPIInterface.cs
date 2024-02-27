@@ -8,6 +8,14 @@ namespace WebApi.Repositories.API_Repositories
 {
     public interface IEmpAPIInterface
     {
+
+        #region User Repo Methods
+        // String[] GetDepartment();
+        List<EmpModel> UserGetEmpData();
+        bool UserAddEmpData(EmpModel employee);
+
+        #endregion 
+          
         #region Admin Repo Methods
         List<EmpModel> GetEmpData();
         string[] GetDepartment();
@@ -18,6 +26,5 @@ namespace WebApi.Repositories.API_Repositories
 
         #region User Repo Methods
         #endregion 
-
     }
 }
