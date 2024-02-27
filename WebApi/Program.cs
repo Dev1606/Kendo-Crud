@@ -14,7 +14,7 @@ builder.Services.AddSession(Options=>{
 });
 
 builder.Services.AddSwaggerGen();
-builder.Services.AddSingleton<IEmpInterface,EmpRepo>();
+// builder.Services.AddSingleton<IEmpInterface,EmpRepo>();
 builder.Services.AddSingleton<IUserInterface,UserRepo>();
 
 builder.Services.AddCors(p => p.AddPolicy("corsapp",builder =>

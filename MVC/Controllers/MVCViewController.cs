@@ -77,14 +77,14 @@ namespace MVC.Controllers
         }
 
         [HttpGet]
-        public IActionResult DeleteEmpData(int id)
+        public IActionResult AdminDeleteEmp(int id)
         {
             var empDelete = _empRepo.GetEmpDetail(id);
             return View(empDelete);
         }
 
         [HttpPost]
-        public IActionResult AdminDeleteEmpData(int id)
+        public IActionResult AdminDeleteEmpConfirm(int id)
         {
             _empRepo.DeleteEmp(id);
             return RedirectToAction("AdminGetEmpData");
