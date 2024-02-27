@@ -52,7 +52,7 @@ namespace WebApi.Repositories
                     }
 
                 }catch(Exception e){
-                    Console.WriteLine("######nGet Employee Data error: "+e);
+                    Console.WriteLine("###### Get Employee Data error: "+e);
                 }finally{
                     con.Close();
                 }
@@ -73,7 +73,7 @@ namespace WebApi.Repositories
                         }
                     }
                 }catch(Exception e){
-                    Console.WriteLine("#### Get Department data helper error ##### "+e);
+                    Console.WriteLine("#### Get Department data error"+e);
 
                 }finally{
                     con.Close();
@@ -108,7 +108,7 @@ namespace WebApi.Repositories
                     }
 
                 }catch(Exception e){
-                    Console.WriteLine("######nGet Specific Student Helper error: "+e);
+                    Console.WriteLine("###### Get Employee Detail error: "+e);
                 }finally{
                     con.Close();
                 }
@@ -117,10 +117,46 @@ namespace WebApi.Repositories
         }
 
         public bool DeleteEmp(int id){
+           using(NpgsqlConnection con = new NpgsqlConnection(_ConnectionString)){
+                try{
+                    var qry = "DELETE FROM mvc_master_project.t_emp WHERE c_empid=@id;";
+                    using(NpgsqlCommand cmd = new NpgsqlCommand(qry,con)){
+                        cmd.Parameters.AddWithValue("@id",id);
+                        con.Open();
+                        cmd.ExecuteNonQuery();
+                    }
+
+                }catch(Exception e){
+                    Console.WriteLine("#### Delete Employee Data Error : "+e);
+                }finally{
+                    con.Close();
+                }
+            }
             return true;
         }
 
         public bool UpdateEmp(EmpModel emp){
+            using(NpgsqlConnection con = new NpgsqlConnection(_ConnectionString)){
+                try{
+                    var qry = "UPDATE mvc_master_project.t_emp SET c_empname=@c_empname, c_empgender=@c_empgender, c_dob=@c_dob, c_shift=@c_shift, c_department=@c_department, c_empimage=@c_empimage WHERE c_empid=@id;";
+                    using(NpgsqlCommand cmd = new NpgsqlCommand(qry,con)){
+                        cmd.Parameters.AddWithValue("@id",emp.c_empid);
+                        cmd.Parameters.AddWithValue("@c_empname",emp.c_empname);
+                        cmd.Parameters.AddWithValue("@c_empgender",emp.c_empgender);
+                        cmd.Parameters.AddWithValue("@c_dob",emp.c_dob);
+                        cmd.Parameters.AddWithValue("@c_shift",emp.c_shift);
+                        cmd.Parameters.AddWithValue("@c_department",emp.c_department);
+                        cmd.Parameters.AddWithValue("@c_empimage",emp.c_empimage);
+                        con.Open();
+                        cmd.ExecuteNonQuery();
+                    }
+
+                }catch(Exception e){
+                    Console.WriteLine("####  Update Employee Data Error : "+e);
+                }finally{
+                    con.Close();
+                }
+            }
             return true;
         }
         
