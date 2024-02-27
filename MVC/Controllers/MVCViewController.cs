@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using WebApi.Models;
 using WebApi.Repositories;
 
 namespace MVC.Controllers
@@ -14,11 +15,13 @@ namespace MVC.Controllers
     {
         private readonly ILogger<MVCViewController> _logger;
         private readonly IEmpInterface _empRepo;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public MVCViewController(ILogger<MVCViewController> logger, IEmpInterface empRepo)
+        public MVCViewController(ILogger<MVCViewController> logger, IEmpInterface empRepo, IHttpContextAccessor httpContextAccessor)
         {
             _logger = logger;
             _empRepo = empRepo;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         /*
@@ -28,11 +31,27 @@ namespace MVC.Controllers
         */
         public IActionResult Index()
         {
-            //Validate using Session 
+            //Validate using Session
+            string username = HttpContext.Session.GetString("username");
+            if(username == null)
+            {
+                return RedirectToAction("Login","User");
+            }
             return View();
         }
 
         #region Admin Methods
+        public IActionResult AdminGetEmpData()
+        {
+            //Validate using Session
+            return View();
+        }
+        public IActionResult AdminUpdateEmpData()
+        {
+            //Validate using Session
+            return View();
+        }
+
         #endregion
 
         #region User Methods
