@@ -14,12 +14,12 @@ namespace MVC.Controllers
     public class UserController : Controller
     {
         private readonly ILogger<UserController> _logger;
-        private readonly IUserInterface _userInterface;
+        private readonly IUserInterface _userrepo;
 
-        public UserController(ILogger<UserController> logger, IUserInterface userInterface)
+        public UserController(ILogger<UserController> logger, IUserInterface userrepo)
         {
             _logger = logger;
-            _userInterface = userInterface;
+            _userrepo = userrepo;
         }
 
         [HttpGet]
@@ -31,7 +31,7 @@ namespace MVC.Controllers
         [HttpPost]
         public IActionResult Register(UserModel user)
         {
-            var status = _userInterface.RegistrationDetail(user);
+            var status = _userrepo.RegistrationDetail(user);
             if(status){
                 return View("Login","User");
             }else{
