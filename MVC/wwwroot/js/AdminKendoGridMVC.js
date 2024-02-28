@@ -2,16 +2,16 @@ $(document).ready(function(){
     var dataSource = new kendo.data.DataSource({
         transport: {
             read: {
-                url: "/MVCViewController/AdminGetEmpData",
+                url: "https://localhost:7074/kendoGrid/AdminGetEmpData",
                 dataType: "json"
             },
             update: {
-                url: "/MVCViewController/AdminUpdateEmpData",
+                url: "https://localhost:7074/kendoGrid/AdminUpdateEmpData",
                 type: "POST",
                 dataType: "json"
             },
             destroy: {
-                url: "/MVCViewController/AdminDeleteEmp",
+                url: "https://localhost:7074/kendoGrid/AdminDeleteEmpConfirm",
                 type: "POST",
                 dataType: "json"
             }
@@ -38,7 +38,12 @@ $(document).ready(function(){
         columns: [
         {field: "c_empid", title: "ID"},
         {field: "c_empname", title: "Employee Name"},
-        {field: "c_empgender", title: "Gender"},
+        {field: "c_empgender", title: "Gender",editor: function (container, options) {
+            $('<input id="engine1" type="radio" name="' + options.field + '" value="Male" selectable="true" />').appendTo(container);
+            $('<label for="engine1">Male</label>').appendTo(container);
+            $('<input id="engine2" type="radio" name="' + options.field + '" value="Female"/>').appendTo(container);
+            $('<label for="engine2">Female</label>').appendTo(container);
+        }},
         {field: "c_dob", title: "DOB"},
         {field: "c_shift", title: "Shift"},
         {field: "c_department", title: "Department"},
