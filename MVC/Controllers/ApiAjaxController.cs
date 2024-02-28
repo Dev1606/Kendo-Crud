@@ -5,6 +5,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using WebApi.Models;
+using WebApi.Repositories;
 
 namespace MVC.Controllers
 {
@@ -12,12 +14,12 @@ namespace MVC.Controllers
     public class ApiAjaxController : Controller
     {
         private readonly ILogger<ApiAjaxController> _logger;
+          private readonly IEmpInterface _empAPIInterface;
 
-        public ApiAjaxController(ILogger<ApiAjaxController> logger)
+        public ApiAjaxController(IEmpInterface empAPIInterface)
         {
-            _logger = logger;
+            _empAPIInterface = empAPIInterface;
         }
-
         public IActionResult Index()
         {
             return View();

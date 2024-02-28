@@ -62,12 +62,11 @@ $(document).ready(function () {
                     row += '<td>' + emp.c_dob + '</td>';
                     row += '<td>' + emp.c_shift + '</td>';
                     row += '<td>' + emp.c_department + '</td>';
-                    row += '<td>' + emp.c_empimage + '</td>';
+                    row += '<td> <img src="'+ emp.c_empimage +'" alt="Image Not Found" style="height: 15%;width:15%;"></td>';
                     row += '<td>';
                     row += '<div class="d-flex justify-content-between">';
                     row += '<button type="button" id="edit" class="btn btn-outline-success edit" data-id="' + emp.c_empid + '">Edit</button>';
                     row += '<button type="button" id="del" class="btn btn-outline-danger delete" data-id="' + emp.c_empid + '">Delete</button>';
-
                     row += '</div>';
                     row += '</td>';
                     row += '</tr>';
@@ -104,7 +103,7 @@ $(document).ready(function () {
             $('#EditEmpDob').val(formatDateForInput(employee.c_dob));
             $("#EditEmpDepartment").val(employee.c_department).map;
             $('input[name="EditEmpShift"]').val(employee.c_shift);
-            $('#EditEmpImage').val(employee.Image);
+            $('#EditEmpImage').val(employee.c_empimage);
             $('#EditModel').modal('show');
         });
     });
@@ -138,13 +137,15 @@ $(document).ready(function () {
     //Delete employee
     $(document).on('click', '#del', function () {
         var Id = $(this).data('id');
+        console.log(Id);
         if (confirm("Are you sure you want to delete this data?")) {
             $.ajax({
-                url: 'https://localhost:7068/api/MVCApi/DeleteEmpData',
+                url: 'https://localhost:7068/api/MVCApi/DeleteEmpData?id='+Id,
                 type: 'DELETE',
-                data: JSON.stringify(Id),
+                dataType:"json",
                 contentType: "application/json",
                 success: function (data) {
+                    console.log(data);
                     GetAll();
                     alert(data.message);
                 }

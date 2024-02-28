@@ -48,7 +48,7 @@ namespace WebApi.Controllers
         public IActionResult UpdateEmp(EmpModel emp)
         {
             _empAPIInterface.UpdateEmp(emp);
-            return Ok("Employee Updated Succcessfully");
+            return Ok(new{success=true,message="Student updated successfully"});
         }
 
         [HttpDelete]
@@ -56,7 +56,7 @@ namespace WebApi.Controllers
         public IActionResult DeleteEmp(int id)
         {
             _empAPIInterface.DeleteEmp(id);
-            return Ok("Employee Deleted Succcessfully");
+            return Ok(new{success=true,message="Student deleted successfully"});
         }
 
         #endregion
