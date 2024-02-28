@@ -1,7 +1,7 @@
 @{
-    ViewData["Title"] = "MVC Ajax";
+    ViewData["Title"] = "MVC Ajax User";
 }
-
+<center><h2>@ViewData["Title"]</h2></center>
 
 <div class="table-responsive">
     @* Add Button *@
@@ -26,7 +26,6 @@
             <th scope="col">Shift</th>
             <th scope="col">Department</th>
             <th scope="col">Image</th>
-            <th scope="col">Action</th>
         </thead>
         <tbody id="TableContent">
 
@@ -60,19 +59,19 @@
                     <div class="mb-3">
                         <label>Gender: </label>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="EmpGender" id="Male" value="M">
+                            <input class="form-check-input" type="radio" name="EmpGender" id="Male" value="Male">
                             <label class="form-check-label" for="English">
                                 Male
                             </label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="EmpGender" id="Female" value="F">
+                            <input class="form-check-input" type="radio" name="EmpGender" id="Female" value="Female">
                             <label class="form-check-label" for="Female">
                                 Female
                             </label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="EmpGender" id="Others" value="O">
+                            <input class="form-check-input" type="radio" name="EmpGender" id="Others" value="Others">
                             <label class="form-check-label" for="Others">
                                 Others
                             </label>
@@ -141,110 +140,6 @@
     #endregion
 }
 
-@{
-    #region Edit Modal
-}
-<!-- Edit Modal -->
-<div class="modal fade" id="EditStudentModel" tabindex="-1" aria-labelledby="EditStudentModelLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h1 class="modal-title fs-5" id="EditStudentModelLabel">Edit Student</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <form method="post">
-                <div class="modal-body">
-                    @* Employee Name *@
-                    <div class="mb-3">
-                        <label>Student Name: </label>
-                        <input type="text" id="EditEmpName">
-                        <span class="text-danger" id="EditEmpNameHelp"></span>
-                    </div>
-                    @* Gender *@
-                    <div class="mb-3">
-                        <label>Gender: </label>
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="EditEmpGender" id="Male" value="M">
-                            <label class="form-check-label" for="English">
-                                Male
-                            </label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="EditEmpGender" id="Female" value="F">
-                            <label class="form-check-label" for="Female">
-                                Female
-                            </label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="EditEmpGender" id="Others" value="O">
-                            <label class="form-check-label" for="Others">
-                                Others
-                            </label>
-                        </div>
-                        <span class="text-danger" id="EditEmpGenderHelp"></span>
-                    </div>
-                    @* DOB *@
-                    <div class="mb-3">
-                        <label> DOB: </label>
-                        <input type="date" id="EditEmpDob">
-                        <span class="text-danger" id="EditEmpDobHelp"></span>
-                    </div>
-                    @* Shift *@
-                    <div class="mb-3">
-                        <label>Shift: </label>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" name="EditEmpShift" value="Morning"
-                                id="Morning">
-                            <label class="form-check-label" for="Morning">
-                                Morning
-                            </label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" name="EditEmpShift" value="Afternoon"
-                                id="Afternoon">
-                            <label class="form-check-label" for="Afternoon">
-                                Afternoon
-                            </label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" name="EditEmpShift" value="Night"
-                                id="Night">
-                            <label class="form-check-label" for="Night">
-                                Night
-                            </label>
-                        </div>
-                        <span class="text-danger" id="EditEmpShiftHelp"></span>
-                    </div>
-                    @* Course *@
-                    <div class="mb-3">
-                        <div class="dropdown">
-                            <label>Course Name: </label>
-                            <select class="btn btn-secondary dropdown-toggle" id="EditEmpDepartment"
-                                name="EmpDepartmentDropdown" id="EmpDepartmentDropdown">
-
-                            </select>
-                        </div>
-                        <span class="text-danger" id="EditEmpDepartmentHelp"></span>
-                    </div>
-                    @* Image *@
-                    <div class="mb-3">
-                        <label for="EditEmpImage" class="form-label">Choose An Image</label>
-                        <input class="form-control" type="file" id="EditEmpImage">
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" id="FinalEditBtn"
-                        data-bs-dismiss="modal">Edit</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-@{
-    #endregion
-}
-
 @section Scripts{
-    <script src="~/js/MVCAjaxIndex.js" asp-append-version="true"></script>
+    <script src="~/js/MVCUserAjaxIndex.js" asp-append-version="true"></script>
 }

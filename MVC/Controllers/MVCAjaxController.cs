@@ -30,6 +30,10 @@ namespace MVC.Controllers
         {
             return View();
         }
+        public IActionResult UserIndex()
+        {
+            return View();
+        }
 
         #region Admin Methods
 
@@ -133,6 +137,7 @@ namespace MVC.Controllers
             //Code For File Upload:
             if (employee.Image != null && employee.Image.Length > 0)
             {
+                Console.WriteLine("IN the image upload");
                 var uploadsFolder = Path.Combine(_environment.WebRootPath, "uploadsimg");
                 var uniqueFileName = Guid.NewGuid().ToString() + "_" + employee.Image.FileName;
                 //var uniqueFileName =  item.Image.FileName; //To Get Only File Name
@@ -148,7 +153,7 @@ namespace MVC.Controllers
             }
 
             _empRepo.UserAddEmpData(employee);
-            return RedirectToAction("UserGetEmpData");
+            return Json(new {success = true, message = "Employee Added"});
         }
 
         #endregion 
