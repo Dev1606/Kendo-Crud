@@ -1,0 +1,88 @@
+@model List<WebApi.Models.EmpModel>
+@{
+    ViewData["Title"] = "Index Of MVC API";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<link rel="stylesheet" href="https://kendo.cdn.telerik.com/2021.2.616/styles/kendo.common.min.css" />
+<link rel="stylesheet" href="https://kendo.cdn.telerik.com/2021.2.616/styles/kendo.default.min.css" />
+
+<div id="grid"></div>
+
+@section Scripts{
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://kendo.cdn.telerik.com/2021.2.616/js/kendo.all.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            var dataSource= new  kendo.data.DataSource({
+                transport: {
+                    read: {
+                        url:"https://localhost:7068/api/MVCApi/GetEmpData",
+                        //type:"GET",
+                        dataType:"json"
+                    },
+                    update: {
+                        url: function(data){
+                            return "https://localhost:7068/api/MVCApi/UpdateEmpData";
+                        },
+                        type:"PUT",
+                       contentType:"application/json"
+                    },
+                    destroy: {
+                        url: function(data){
+                            return "https://localhost:7068/api/MVCApi/DeleteEmpData?id="+data.c_empid;
+                        },
+                        type:"DELETE",
+                        contentType:"application/json"
+                    },
+                    parameterMap:function(options,operation){
+                    if(operation !== "read" ){
+                        console.log(options);
+                        return JSON.stringify(options);
+                    }
+                }   
+                },
+                pageSize:10,
+                schema:{
+                    model:{id:"c_empid",
+                    fields:{
+                        c_empid:{type:"number",editable:false,nullable:false},
+                        c_empname:{type: "string", validation:{required:true}},
+                        c_empgender:{type: "string", validation:{required:true}},
+                        c_dob:{type: "date", validation:{required:true}},
+                        c_shift:{type: "string", validation:{required:true}},
+                        c_department:{type: "string", validation:{required:true}},
+                        c_empimage:{type: "string", validation:{required:true}},
+                    }
+                    }
+                }
+            });
+            $("#grid").kendoGrid({
+                dataSource: dataSource,
+                columns :[
+                {field:"c_empid",title:"Emp ID"},
+                {field:"c_empname",title:"Emp Name"},
+                {field:"c_empgender",title:"Gender"},
+                {field:"c_dob",title:"DOB"},
+                {field:"c_shift",title:"Shift"},
+                {field:"c_department",title:"Department"},
+                {field:"c_empimage",title:"Image"},
+                {command:["edit","destroy"],title:"&nbsp;",width:"200px"}],
+                editable: "popup",
+                toolbar:["create"],
+                pageable: true,
+                sortable: true,
+                filterable:true,
+            });
+            dataSource.bind("requestEnd",function(e){
+                if(e.type==="create"||e.type==="update"||e.type==="destroy"){
+                    dataSource.read();
+                }
+            });
+            $("#grid").on("click",".k-grid-cancel-changes",function(){
+                dataSource.cancelChanges();
+            })  ;     
+         });
+    </script>
+}
