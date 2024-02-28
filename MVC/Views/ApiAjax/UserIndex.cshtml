@@ -1,0 +1,143 @@
+@{
+    ViewData["Title"] = "MVC Ajax";
+}
+
+
+<div class="table-responsive">
+    @* Add Button *@
+    <button type="button" class="btn btn-primary mb-3" id="AddEmployeeModalBtn" data-bs-toggle="modal"
+        data-bs-target="#AddEmployeeModal">
+        Add Button
+    </button>
+
+    <center>
+        @* Message *@
+        <div class="alert alert-success text-center" role="alert" id="messageSuccess"></div>
+        <div class="alert alert-danger text-center" role="alert" id="messageFail"></div>
+    </center>
+
+    @* Table HTML *@
+    <table class="table text-center">
+        <thead>
+            <th scope="col">Employee Id</th>
+            <th scope="col">Employee Name</th>
+            <th scope="col">Gender</th>
+            <th scope="col">DOB</th>
+            <th scope="col">Shift</th>
+            <th scope="col">Department</th>
+            <th scope="col">Image</th>
+        </thead>
+        <tbody id="TableContent11">
+
+        </tbody>
+    </table>
+</div>
+
+@{
+    #region Add Modal
+}
+<!-- Add Modal -->
+<div class="modal fade" id="AddEmployeeModal" tabindex="-1" aria-labelledby="AddStudentModelLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="AddStudentModelLabel">Add Student</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form method="post" enctype="multipart/form-data">
+                <div class="modal-body">
+                    @* Employee Name *@
+                    <div class="mb-3">
+                        <input id="Empid" hidden> 
+                        <label>Employee Name: </label>
+                        <input type="text" id="EmpName">
+                        <span class="text-danger" id="EditEmpNameHelp"></span>
+                    </div>
+                    @* Gender *@
+                    <div class="mb-3">
+                        <label>Gender: </label>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="EmpGender" id="Male" value="Male">
+                            <label class="form-check-label" for="English">
+                                Male
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="EmpGender" id="Female" value="Female">
+                            <label class="form-check-label" for="Female">
+                                Female
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="EmpGender" id="Others" value="Other">
+                            <label class="form-check-label" for="Others">
+                                Others
+                            </label>
+                        </div>
+                        <span class="text-danger" id="EditEmpGenderHelp"></span>
+                    </div>
+                    @* DOB *@
+                    <div class="mb-3">
+                        <label> DOB: </label>
+                        <input type="date" id="EmpDob">
+                        <span class="text-danger" id="EditEmpDobHelp"></span>
+                    </div>
+                    @* Shift *@
+                    <div class="mb-3">
+                        <label>Shift: </label>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="EmpShift" value="Morning"
+                                id="Morning">
+                            <label class="form-check-label" for="Morning">
+                                Morning
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="EmpShift" value="Afternoon"
+                                id="Afternoon">
+                            <label class="form-check-label" for="Afternoon">
+                                Afternoon
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="EmpShift" value="Night"
+                                id="Night">
+                            <label class="form-check-label" for="Night">
+                                Night
+                            </label>
+                        </div>
+                        <span class="text-danger" id="EditEmpShiftHelp"></span>
+                    </div>
+                    @* Course *@
+                    <div class="mb-3">
+                        <div class="dropdown">
+                            <label>Department Name: </label>
+                            <select class="btn btn-secondary dropdown-toggle" id="EditEmpDepartment"
+                                name="EmpDepartmentDropdown" id="EmpDepartmentDropdown">
+
+                            </select>
+                        </div>
+                        <span class="text-danger" id="EditEmpDepartmentHelp"></span>
+                    </div>
+                    @* Image *@
+                    <div class="mb-3">
+                        <label for="EditEmpImage" class="form-label">Choose An Image</label>
+                        <input class="form-control" type="file" id="EmpImage">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="printbtn"
+                        data-bs-dismiss="modal">Add</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+@{
+    #endregion
+}
+
+@section Scripts{
+    <script src="~/js/ApiAjaxIndex.js" asp-append-version="true"></script>
+}
