@@ -1,1 +1,26 @@
-<h2>Kendo Login</h2>
+@{
+    ViewData["Title"] = "KendoComponentMVC Page";
+}
+
+<div class="continer">
+    <div class="row col-6 offset-3">
+        <h1>Login</h1>
+        @* Email *@
+        <div class="row">
+            <input id="txtlgEmail">
+        </div>
+        @* Password *@
+        <div class="row">
+            <input id="txtlgPassword">
+        </div>
+        @* Submit Button *@
+        <div class="row">
+            <button id="LoginButton">Login</button>
+            <a href="/KendoComponent/Register">Register</a>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script src="~/js/KendoComponentMVC.js" asp-append-version="true"></script>
+}
