@@ -51,6 +51,7 @@ namespace WebApi.Controllers
         [Route("UpdateEmpData")]
         public IActionResult UpdateEmp(EmpModel emp)
         {
+            
             _empAPIInterface.UpdateEmp(emp);
             return Ok("Employee Updated Succcessfully");
         }
