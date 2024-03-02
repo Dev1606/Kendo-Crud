@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using WebApi.Models;
+using WebApi.Models.ApiModel;
 
 namespace WebApi.Repositories.API_Repositories
 {
@@ -13,6 +14,7 @@ namespace WebApi.Repositories.API_Repositories
         // String[] GetDepartment();
         List<EmpModel> UserGetEmpData();
         bool UserAddEmpData(EmpModel employee);
+        bool UserAddEmpData(EmpApiModel employee,string c_empimage);
 
         #endregion 
           
@@ -22,9 +24,6 @@ namespace WebApi.Repositories.API_Repositories
         EmpModel GetEmpDetail(int id);
         bool DeleteEmp(int id);
         bool UpdateEmp(EmpModel emp);
-        #endregion
-
-        #region User Repo Methods
         #endregion 
     }
 }

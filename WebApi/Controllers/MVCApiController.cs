@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using WebApi.Models;
+using WebApi.Models.ApiModel;
 using WebApi.Repositories.API_Repositories;
 
 
@@ -79,7 +80,7 @@ namespace WebApi.Controllers
         // UserAddEmpData
         [HttpPost]
         [Route("UserAddEmpData")]
-        public IActionResult UserAddEmpData([FromForm] EmpModel emp,IFormFile file)
+        public IActionResult UserAddEmpData([FromForm] EmpApiModel emp,IFormFile file)
         {
             //Code For File Upload:
             var folderPath = @"..\MVC\wwwroot\uploadsimg";
@@ -104,13 +105,13 @@ namespace WebApi.Controllers
             }
 
             var imageUrl = Path.Combine("/uploadsimg", fileName);
-            emp.c_empimage = imageUrl;
+            //emp.c_empimage = imageUrl;
 
             // var shift = Request.Form["c_shift"].ToList();
             // emp.c_shift = string.Join(", ", shift);
             // HttpContext.Session.SetInt32("userid", emp.c_userid.GetValueOrDefault());
 
-            _empAPIInterface.UserAddEmpData(emp);
+            _empAPIInterface.UserAddEmpData(emp,imageUrl);
             return Ok("Employee Data Added Successfully!");
         }
 
