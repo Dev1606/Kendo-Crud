@@ -2,7 +2,8 @@ $(document).ready(function () {
     console.log("Welcome Employee");
     GetAll();
     GetAllUser();
-    AddUser();
+    hideAlerts();
+    //AddUser();
     getDropdownValues();
     //for set date time in formate
     function formatDateForInput(dateString) {
@@ -49,6 +50,69 @@ $(document).ready(function () {
         });
     }
 
+    //New Code Fore AddEmp():
+    // document.getElementById('printbtn').addEventListener('submit', function (event) {
+    //     event.preventDefault();
+    //     var form = document.getElementById('printbtn');
+    //     var formData = new FormData(form);
+
+    //     //formData.append("c_userid", username);
+    //     var fileInput = document.getElementById('file');
+    //     if (fileInput.files.length === 0) {
+    //         formData.delete("file");
+    //         formData.append("file", null);
+    //     }
+
+    //     for (var pair of formData.entries()) {
+    //         console.log(pair[0] + ': ' + pair[1]);
+    //     }
+    //     var empid = formData.get("c_empid");
+    //     if (empid && empid > 0) {
+    //         fetch('https://localhost:7068/api/MVCApi/UpdateEmpData?id='+ empid, {
+    //             method: 'PUT',
+    //             body: formData,
+                
+    //         })
+    //             .then(response => {
+    //                 if (!response.ok) {
+    //                     throw new Error('Failed to updated employee.');
+    //                 }
+    //                 return response.text();
+    //             })
+    //             .then(data => {
+    //                 console.log(data);
+    //                 alert("Employee updated successfully!");
+    //                 //window.location.href = '/MvcEmployee/Index';
+    //             })
+    //             .catch(error => {
+    //                 console.error('Error updated employee:', error.message);
+    //                 alert("Failed to Update employee.");
+    //             });
+    //     }
+    //     else {
+    //         formData.append("c_empid" , 1111);
+    //         fetch('https://localhost:7068/api/MVCApi/UserAddEmpData', {
+    //             method: 'POST',
+    //             body: formData
+    //         })
+    //             .then(response => {
+    //                 if (!response.ok) {
+    //                     throw new Error('Failed to Add employee.');
+    //                 }
+    //                 return response.text();
+    //             })
+    //             .then(data => {
+    //                 console.log(data);
+    //                 alert("Employee Add successfully!");
+    //                 //window.location.href = '/MvcEmployee/Index';
+    //             })
+    //             .catch(error => {
+    //                 console.error('Error Add employee:', error.message);
+    //                 alert("Failed to Add employee.");
+    //             });
+    //     }
+    // });
+
     //Get All User Details:
     function GetAllUser() {
         var table = $('#TableContent11');
@@ -80,35 +144,7 @@ $(document).ready(function () {
         });
     }
      
-    //Add User Data:
-    $('#printbtn').on('click',function(){
-        AddUser();
-        GetAllUser();
-    });
-    function AddUser(){
-     var formData = new FormData();
-     formData.append('c_empname',$('#EmpName').val());
-     formData.append('c_empgender', $('input[name="rdbtn"]:checked').val());
-     formData.append('c_dob',$('#EmpDob').val().split('T')[0]);
-     $('input[name="chkbox"]:checked').each(function(){
-        formData.append('c_shift[]', $(this).val());
-    });
-    formData.append('c_department',$('#EditEmpDepartment').val()); 
-    formData.append('Image',$('#EmpImage')[0].files[0]);
 
-     $.ajax({
-     url : 'https://localhost:7068/api/MVCApi/UserAddEmpData',
-     type : 'POST',
-     dataType: 'json',
-     contentType:'application/json',
-     data: JSON.stringify(formData),
-     success:function (data){
-        GetAllUser();
-        successMsg(data.message);
-     }
-
-     });
-    }
     //Get All Admin Details:
     function GetAll() {
         var table = $('#TableContent');
