@@ -185,10 +185,10 @@ namespace WebApi.Repositories
                         cmd.Parameters.AddWithValue("@c_empname", emp.c_empname);
                         cmd.Parameters.AddWithValue("@c_empgender", emp.c_empgender);
                         cmd.Parameters.AddWithValue("@c_dob",emp.c_dob);
-                        cmd.Parameters.AddWithValue("@c_shift", emp.c_shift);
+                        cmd.Parameters.AddWithValue("@c_shift",emp.c_shift);
                         cmd.Parameters.AddWithValue("@c_department", emp.c_department);
                         cmd.Parameters.AddWithValue("@c_empimage", emp.c_empimage);
-                        Console.WriteLine("Emp details @ repo"+ emp.c_empid+emp.c_empname+ emp.c_empgender+emp.c_dob+emp.c_shift+ emp.c_department+emp.c_empimage);
+                        Console.WriteLine("Emp details @ emprepo"+ emp.c_empid+emp.c_empname+ emp.c_empgender+emp.c_dob+emp.c_shift+ emp.c_department+emp.c_empimage);
                         con.Open();
                         cmd.ExecuteNonQuery();
                     }

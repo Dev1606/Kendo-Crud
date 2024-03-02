@@ -47,6 +47,7 @@ $(document).ready(function(){
         {
             field: "c_dob",
             title: "DOB",
+            componentType: "modern",
             editor: function (container, options) {
                 $(container).kendoCalendar({
                     format: "yyyy/MM/dd",
@@ -65,7 +66,26 @@ $(document).ready(function(){
                 return dob;
             }
         },       
-        {field: "c_shift", title: "Shift"},
+        {field: "c_shift", title: "Shift",editor:function(container,options){
+            
+            $(container).kendoCheckBoxGroup({
+                items:["Morning","Afternoon","Night"],
+                layout:"horizontal",
+                change: function () {
+                    var selectedValues = $(container).kendoCheckBoxGroup("value")
+                    console.log(selectedValues);
+                    var arrayExpression = `${selectedValues.join(",")}`;
+                    options.model.set("c_shift", arrayExpression);
+                    console.log("c_shift", arrayExpression);
+                }
+            });
+        },
+        template: function (options) {
+            var initialValues = options.c_shift;
+            console.log(initialValues);
+            return initialValues;
+        }
+    },
         {field: "c_department", title: "Department",editor: function (container, options) {
             $('<input name="' + options.field + '" id="stateDropdown" checked="checked" optionLabel="Select" style="width: 100%;" />').appendTo(container).kendoDropDownList({
                 dataSource: {
@@ -84,26 +104,8 @@ $(document).ready(function(){
         pageable: true,
         sortable: true,
         filterable: true,
-        edit: function (e) {
-            var container = e.container;
-            // Add checkboxes for facility
-            container.find("input[name='c_shift']").replaceWith(
-                '<input type="checkbox" name="c_shift" value="Morning" /> Morning' +
-                '<input type="checkbox" name="c_shift" value="Afternoon" /> Afternoon' +
-                '<input type="checkbox" name="c_shift" value="Night" /> Night'
-            );
-        }
     });
-    $("#grid").data("kendoGrid").bind("save", function (e) {
-        if (e.model.isNew()) {
-            var facilityCheckboxes = $("input[name='c_shift']:checked");
-            var facilityValues = [];
-            facilityCheckboxes.each(function () {
-                facilityValues.push($(this).val());
-            });
-            e.model.c_shift = facilityValues.join(', '); 
-        }
-    });
+   
  
 function imageupload(container, options) {
     $('<input name="Image" type="file" id="photo" data-role="upload" data-async=\'{ "saveUrl": "/kendogrid/uploadphoto", "autoUpload": true }\' class="k-input k-textbox">').appendTo(container);
