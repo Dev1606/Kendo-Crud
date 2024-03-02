@@ -47,7 +47,6 @@ $(document).ready(function(){
         {
             field: "c_dob",
             title: "DOB",
-            componentType: "modern",
             editor: function (container, options) {
                 $(container).kendoCalendar({
                     format: "yyyy/MM/dd",
@@ -58,8 +57,7 @@ $(document).ready(function(){
                     navigate: function () {
                         console.log("Navigate");
                     }
-                });
-
+                }).data("kendoCalendar");
             },
             template: function (dataItem) {
                 var dob = kendo.toString(kendo.parseDate(dataItem.c_dob), "yyyy-MM-dd");
@@ -67,7 +65,7 @@ $(document).ready(function(){
             }
         },       
         {field: "c_shift", title: "Shift",editor:function(container,options){
-            
+            var shiftValues = options.model.c_shift.split(","); 
             $(container).kendoCheckBoxGroup({
                 items:["Morning","Afternoon","Night"],
                 layout:"horizontal",
@@ -79,13 +77,9 @@ $(document).ready(function(){
                     console.log("c_shift", arrayExpression);
                 }
             });
-        },
-        template: function (options) {
-            var initialValues = options.c_shift;
-            console.log(initialValues);
-            return initialValues;
+            $(container).kendoCheckBoxGroup("value", shiftValues);
         }
-    },
+        },
         {field: "c_department", title: "Department",editor: function (container, options) {
             $('<input name="' + options.field + '" id="stateDropdown" checked="checked" optionLabel="Select" style="width: 100%;" />').appendTo(container).kendoDropDownList({
                 dataSource: {
@@ -103,11 +97,11 @@ $(document).ready(function(){
         editable: "popup",
         pageable: true,
         sortable: true,
-        filterable: true,
+        filterable: true,  
     });
    
  
-function imageupload(container, options) {
+function imageupload(container) {
     $('<input name="Image" type="file" id="photo" data-role="upload" data-async=\'{ "saveUrl": "/kendogrid/uploadphoto", "autoUpload": true }\' class="k-input k-textbox">').appendTo(container);
     }
 
