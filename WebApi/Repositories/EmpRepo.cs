@@ -33,7 +33,7 @@ namespace WebApi.Repositories
             {
                 try
                 {
-                    var qry = "SELECT c_empid, c_empname, c_empgender, c_dob, c_shift, c_department, c_empimage FROM mvc_master_project.t_emp;";
+                    var qry = "SELECT c_empid, c_empname, c_empgender, c_dob, c_shift, c_department, c_empimage FROM mvc_master_project.t_emp ORDER BY c_empid;";
                     using (NpgsqlCommand cmd = new NpgsqlCommand(qry, con))
                     {
                         con.Open();
@@ -108,7 +108,7 @@ namespace WebApi.Repositories
             {
                 try
                 {
-                    var qry = "SELECT c_empid, c_empname, c_empgender, c_dob, c_shift, c_department, c_empimage FROM mvc_master_project.t_emp WHERE c_empid = @id";
+                    var qry = "SELECT c_empid, c_empname, c_empgender, c_dob, c_shift, c_department, c_empimage FROM mvc_master_project.t_emp WHERE c_empid = @id ";
                     using (NpgsqlCommand cmd = new NpgsqlCommand(qry, con))
                     {
                         cmd.Parameters.AddWithValue("@id", id);

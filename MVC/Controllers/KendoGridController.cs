@@ -105,13 +105,14 @@ namespace MVC.Controllers
             _empRepo.DeleteEmp(id);
             return Json(new{success=true,message="Employee updated"});
         }
+        //  static string file="";
         [HttpPost]
        public IActionResult UploadPhoto(EmpModel emp)
         {
             if (emp.Image!= null)
             {
-                string filename = emp.Image.FileName;
-                string filepath = Path.Combine(_hostingEnvironment.WebRootPath, "uploadsimg", filename);
+                string uniqueFileName = Guid.NewGuid().ToString() + "_" + emp.Image.FileName;
+                string filepath = Path.Combine(_hostingEnvironment.WebRootPath, "uploadsimg",uniqueFileName);
 
                 using (var stream = new FileStream(filepath, FileMode.Create))
                 {
@@ -119,8 +120,7 @@ namespace MVC.Controllers
                     emp.Image.CopyTo(stream);
                 }
 
-                // file = filename;
-
+                // file = uniqueFileName;
             }
 
             return Json("Image Uploaded");

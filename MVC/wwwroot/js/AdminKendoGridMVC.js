@@ -46,9 +46,12 @@ $(document).ready(function(){
         }},
         {
             field: "c_dob",
-            title: "DOB",
+            title: "DOB",      
             editor: function (container, options) {
+                // var dob = options.model.c_dob;
+                // console.log("DOB",dob);
                 $(container).kendoCalendar({
+                    componentType: "modern",
                     format: "yyyy/MM/dd",
                     change: function () {
                         console.log("Change :: " + kendo.toString(this.value(), 'yyyy/MM/dd'));
@@ -57,7 +60,8 @@ $(document).ready(function(){
                     navigate: function () {
                         console.log("Navigate");
                     }
-                }).data("kendoCalendar");
+                });
+                // $(container).kendoCalendar("value", dob);
             },
             template: function (dataItem) {
                 var dob = kendo.toString(kendo.parseDate(dataItem.c_dob), "yyyy-MM-dd");
@@ -94,10 +98,21 @@ $(document).ready(function(){
         {field: "c_empimage", title: "Image",editor:imageupload, template:"<img src='#: c_empimage #' alt='Employee Photo' style='width: 50px; height:50px;'/>"},
         {command: ["edit","destroy"], title: "Action", width: "200px"}
         ],
-        editable: "popup",
+        editable: {
+            mode: "popup",
+            window: {
+                width: "500px",
+                height:"700px"
+            }
+        },
         pageable: true,
         sortable: true,
-        filterable: true,  
+        filterable: true,
+        edit: function(e) {
+            var dataItem = e.model;
+            var dob = kendo.parseDate(dataItem.c_dob);
+            e.container.find(".k-calendar").data("kendoCalendar").value(dob);
+        } 
     });
    
  
