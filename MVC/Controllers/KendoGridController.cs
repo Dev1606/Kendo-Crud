@@ -67,9 +67,10 @@ namespace MVC.Controllers
         [HttpPost]
         public IActionResult AdminUpdateEmpData(EmpModel emp)
         {
-
             Console.WriteLine(emp);
             Console.WriteLine("DOB"+emp.c_dob);
+            Console.WriteLine("Image"+emp.c_empimage+"IF"+emp.Image);
+
             //Code For File Upload:
             if (emp.Image != null && emp.Image.Length > 0)
             {
@@ -82,11 +83,10 @@ namespace MVC.Controllers
                 {
                     emp.Image.CopyTo(stream);
                 }
-
                 // Save The File Path To Our DB Table In c_image Field:
                 emp.c_empimage = uniqueFileName;
             }
-            
+            emp.c_empimage = file;
             _empRepo.UpdateEmp(emp);
             return Json(new{success=true,message="Employee updated"});
         }
@@ -105,7 +105,7 @@ namespace MVC.Controllers
             _empRepo.DeleteEmp(id);
             return Json(new{success=true,message="Employee updated"});
         }
-        //  static string file="";
+         static string file="";
         [HttpPost]
        public IActionResult UploadPhoto(EmpModel emp)
         {
@@ -120,9 +120,11 @@ namespace MVC.Controllers
                     emp.Image.CopyTo(stream);
                 }
 
-                // file = uniqueFileName;
+                file = uniqueFileName;
+                // emp.c_empimage=file;
+                // _empRepo.UpdateEmp(emp);
             }
-
+             
             return Json("Image Uploaded");
         }
 

@@ -92,7 +92,6 @@ $(document).ready(function(){
                         datatype: "json",
                     }
                 },
-
             });
     }},
         {field: "c_empimage", title: "Image",editor:imageupload, template:"<img src='#: c_empimage #' alt='Employee Photo' style='width: 50px; height:50px;'/>"},
@@ -117,7 +116,7 @@ $(document).ready(function(){
    
  
 function imageupload(container) {
-    $('<input name="Image" type="file" id="photo" data-role="upload" data-async=\'{ "saveUrl": "/kendogrid/uploadphoto", "autoUpload": true }\' class="k-input k-textbox">').appendTo(container);
+    $('<input name="Image" type="file" id="photo" data-role="upload" data-async=\'{ "saveUrl": "/kendogrid/UploadPhoto", "autoUpload": true }\' class="k-input k-textbox">').appendTo(container);
     }
 
     dataSource.bind("requestEnd", function(e){
