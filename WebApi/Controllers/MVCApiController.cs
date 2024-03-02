@@ -80,8 +80,9 @@ namespace WebApi.Controllers
         // UserAddEmpData
         [HttpPost]
         [Route("UserAddEmpData")]
-        public IActionResult UserAddEmpData([FromForm] EmpApiModel emp,IFormFile file)
+        public IActionResult UserAddEmpData([FromForm]EmpApiModel emp,IFormFile file)
         {
+            Console.WriteLine(file);
             //Code For File Upload:
             var folderPath = @"..\MVC\wwwroot\uploadsimg";
 

@@ -3,7 +3,7 @@ $(document).ready(function () {
     GetAll();
     GetAllUser();
     hideAlerts();
-    AddUser();
+    //AddUser();
     getDropdownValues();
     //for set date time in formate
     function formatDateForInput(dateString) {
@@ -53,6 +53,7 @@ $(document).ready(function () {
     //Add User Data:
     $('#printbtn').on('click',function(){
         AddUser();
+        console.log("clicked");
         GetAllUser();
     });
     function AddUser(){
@@ -64,14 +65,17 @@ $(document).ready(function () {
         formData.append('c_shift[]', $(this).val());
     });
     formData.append('c_department',$('#EditEmpDepartment').val()); 
-    formData.append('Image',$('#EmpImage')[0].files[0]);
+    //formData.append('Image',$('#EmpImage')[0].files[0]);
 
+    //save kri ne run karavje
+
+    var img = $('#EmpImage')[0].files[0];
      $.ajax({
      url : 'https://localhost:7068/api/MVCApi/UserAddEmpData',
      type : 'POST',
      dataType: 'json',
      contentType:'application/json',
-     data: JSON.stringify(formData),
+     data: {emp:JSON.stringify(formData),file:img},
      success:function (data){
         GetAllUser();
         successMsg(data.message);
