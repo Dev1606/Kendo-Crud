@@ -62,7 +62,7 @@
 
         @* Submit *@
         <div class="row">
-            <button id="SubmitBtn">Submit</button>
+            <button id="SubmitButton">Submit</button>
         </div>
     </div>
 </div>
@@ -102,17 +102,30 @@
             });
 
         @* Shift *@
-            $('#ShiftCheckbox').kendoCheckBoxGroup({
-                items: ["Morning", "Afternoon", "Night"],
-                layout: "horizontal",
-                change: function (e) {
-                    kendoConsole.log("Change event fired: " + $(e.target[0]).val() + " checkbox has been " + ($(e.target[0]).is(":checked") == true ? "checked" : "unchecked"));
-                },
-                focus: function (e) {
-                    kendoConsole.log("Focus event fired:: target: " + $(e.target[0]).val());
-                },
-                select: function (e) {
-                    kendoConsole.log("Select event fired: " + $(e.target[0]).val() + " checkbox has been " + ($(e.target[0]).is(":checked") == true ? "checked" : "unchecked"));
+            $('#ShiftCheckbox').kendoMultiSelect({
+                dataSource: ["Morning", "Afternoon", "Night"],
+                dataBound: function () {
+                    // Customize the items to display as checkboxes
+                    var dropdownlist = this;
+                    var items = dropdownlist.ul.find("li");
+                    items.each(function (index) {
+                        var item = $(this);
+                        var itemValue = item.text();
+                        var checkbox = $("<input>").attr({
+                            type: "checkbox",
+                            value: itemValue,
+                            id: "checkbox_" + index
+                        });
+                        var label = $("<label>").text(itemValue).attr("for", "checkbox_" + index);
+                        item.empty().append(checkbox).append(label);
+                    });
+
+                    // Attach change event handler to checkboxes
+                    items.find("input[type='checkbox']").on("change", function () {
+                        var selectedValues = dropdownlist.value();
+                        console.log("Change event fired: Selected values - " + selectedValues);
+                        // Here you can perform any actions based on the selected values
+                    });
                 }
             });
 
@@ -124,12 +137,12 @@
                 },
                 select: function imageNameChange(e) {
                     $.each(e.files, function (index, value) {
-                        var fileNameWithPath = "/images/" + value.name;
-                        $("#c_city_photo").val(fileNameWithPath).change();
+                        var fileNameWithPath = "/uploadsimg/" + value.name;
+                        $("#c_empimage").val(fileNameWithPath).change();
                         var formData = new FormData();
                         formData.append("file", value.rawFile);
                         $.ajax({
-                            url: "",
+                            url: " ",
                             type: "POST",
                             data: formData,
                             processData: false,
@@ -154,8 +167,34 @@
                 }
             });
         @* Submit Button *@
-            $("#SubmitBtn").kendoButton({
-                themeColor: "primary"
+            $("#SubmitButton").kendoButton({
+                themeColor: "primary",
+                click: function () {
+                    var user = {
+                        // Define user data here, for example:
+                        empname: $("#EmpName").val(),
+                        empgender: $("#GenderRadioButton").val(),
+                        dob: $("#dob").val(),
+                        shift: $("#ShiftCheckbox").val(),
+                        empimage: $("#ImageUpload").val(),
+                        department: $("#DepartmentDorpDown").val()
+                        // Add more fields as needed
+                    };
+
+                    $.ajax({
+                        url: "https://localhost:7074/kendocomponent/UserAddEmpData",
+                        type: "POST",
+                        data: user,
+                        success: function (data) {
+                            if (data.success == true) {
+                                window.location.href = "/KendoComponent/UserKendoMVC";
+                            } else {
+                                window.location.href = "/KendoComponent/UserKendoMVC";
+                            }
+                        }
+                    });
+                }
             });
+        @* }); *@
     </script>
 }
