@@ -2,6 +2,7 @@ $(document).ready(function () {
     console.log("Welcome Employee");
     GetAll();
     getDropdownValues();
+    GetToken();
     //for set date time in formate
     function formatDateForInput(dateString) {
         const dateObj = new Date(dateString);
@@ -53,6 +54,10 @@ $(document).ready(function () {
         $.ajax({
             type: "GET",
             url: "https://localhost:7068/api/MVCApi/GetEmpData",
+            headers: {
+                // "Authorization": localStorage.getItem('token')
+                Authorization: 'Bearer '+localStorage.getItem('token')
+            },
             success: function (emp) {
                 emp.forEach(function (emp) {
                     var row = '<tr>';
@@ -75,6 +80,7 @@ $(document).ready(function () {
                 });
             }
         });
+        // console.log(localStorage.getItem('token'));
     }
     $('#reset').on('click', Reset);
     function Reset() {
@@ -151,4 +157,10 @@ $(document).ready(function () {
             });
         }
     });
+
+    function GetToken()
+    {
+        var token = localStorage.getItem('token');
+        console.log(token);
+    }
 });

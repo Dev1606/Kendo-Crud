@@ -1,7 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WebApi.Models;
 using WebApi.Repositories.API_Repositories;
@@ -22,10 +25,32 @@ namespace WebApi.Controllers
             _environment = environment;
         }
 
+        [HttpGet]
+        [Route("GetTokenData")]
+        public IActionResult GetTokenData(string usertoken)
+        {
+            // string token = Request.Headers["Authorization"].Substring("Bearer ".Length);
+            string token = usertoken;
+
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var jwtSecurityToken = tokenHandler.ReadJwtToken(token);
+
+            var claims = jwtSecurityToken.Claims;
+
+            string userId = claims.Single(c => c.Type == "Userid").Value;
+            string userName = claims.Single(c => c.Type == "UserName").Value;
+            // string userName = claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+            string email = claims.Single(c => c.Type == "Email").Value;
+
+            // Use the retrieved claims in your controller logic
+            return Ok(new { userId, userName, email });
+        }
+
         #region Admin API Calls
 
         [HttpGet]
         [Route("GetEmpData")]
+        [Authorize]
         public IActionResult GetEmpData()
         {
             var emplist = _empAPIInterface.GetEmpData();
