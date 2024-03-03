@@ -100,23 +100,39 @@ $(document).ready(function () {
     //edit
     $(document).on('click', '#edit', function () {
         var eid = $(this).data('id');
-        console.log(eid);
-        $.get("https://localhost:7068/api/MVCApi/GetEmpDetail", { id: eid }, function (employee) {
-            console.log(employee);
-            $('#Empid').attr('data-id', eid);
-            $('#EditEmpName').val(employee.c_empname);
-            // Setting radio button for gender
-            if (employee.c_empgender === 'Male') {
-                $("input[name='EditEmpGender'][value='Male']").prop("checked", true);
-            } else if (employee.c_empgender === 'Female') {
-                $("input[name='EditEmpGender'][value='Female']").prop("checked", true);
-            } else if (employee.c_empgender === 'Other') {
-                $("input[name='EditEmpGender'][value='Other']").prop("checked", true);
+        // console.log(eid);
+    
+        // Make the GET request with the Authorization header
+        $.ajax({
+            url: "https://localhost:7068/api/MVCApi/GetEmpDetail",
+            type: "GET",
+            data: { id: eid },
+            headers: {
+                Authorization: 'Bearer ' + localStorage.getItem('token')
+            },
+            success: function (employee) {
+                console.log(employee);
+                $('#Empid').attr('data-id', eid);
+                $('#EditEmpName').val(employee.c_empname);
+                
+                // Setting radio button for gender
+                if (employee.c_empgender === 'Male') {
+                    $("input[name='EditEmpGender'][value='Male']").prop("checked", true);
+                } else if (employee.c_empgender === 'Female') {
+                    $("input[name='EditEmpGender'][value='Female']").prop("checked", true);
+                } else if (employee.c_empgender === 'Other') {
+                    $("input[name='EditEmpGender'][value='Other']").prop("checked", true);
+                }
+                
+                $('#EditEmpDob').val(formatDateForInput(employee.c_dob));
+                $("#EditEmpDepartment").val(employee.c_department);
+                $('input[name="EditEmpShift"]').val(employee.c_shift);
+                $('#EditModel').modal('show');
+            },
+            error: function (xhr, status, error) {
+                // Handle errors here
+                console.error('Error fetching employee details:', error);
             }
-            $('#EditEmpDob').val(formatDateForInput(employee.c_dob));
-            $("#EditEmpDepartment").val(employee.c_department).map;
-            $('input[name="EditEmpShift"]').val(employee.c_shift);
-            $('#EditModel').modal('show');
         });
     });
     // Event handler for the Update button
