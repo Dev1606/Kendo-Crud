@@ -125,7 +125,7 @@ $(document).ready(function () {
     $("#FinalEditBtn").click(function () {
         var formData = {
             c_empid: $("#EditEmpId").val(),
-            c_empname: $("#EditName").val(),
+            c_empname: $("#EditEmpName").val(),
             c_empgender: $('#EditEmpGender').data("kendoRadioGroup").value(),
             c_dob: $("#EditEmpDob").val(),
             c_shift: $("#EditEmpShift").data("kendoCheckBoxGroup").value(),
@@ -139,12 +139,11 @@ $(document).ready(function () {
             contentType: "application/json",
             data: JSON.stringify(formData),
             success: function (response) {
-                // Handle success
+                console.log(formData);
                 $("#messageSuccess").text(response.message).show();
                 $("#messageFail").hide();
             },
             error: function (xhr, status, error) {
-                // Handle error
                 $("#messageFail").text(xhr.responseText).show();
                 $("#messageSuccess").hide();
             }
@@ -157,7 +156,7 @@ $(document).ready(function () {
         console.log(Id);
         if (confirm("Are you sure you want to delete this data?")) {
             $.ajax({
-                url: '/KrndoComponent/AdminDeleteEmpConfirm',
+                url: '/KendoComponent/AdminDeleteEmpConfirm',
                 type: 'POST',
                 data: {id : Id},
                 dataType: 'json',
