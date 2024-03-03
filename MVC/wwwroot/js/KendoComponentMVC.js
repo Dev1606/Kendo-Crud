@@ -82,6 +82,7 @@ $(document).ready(function(){
         },
         change: function(){
             user.c_email = kendo.toString(this.value());
+            login.c_uemail = kendo.toString(this.value());
         }
     });
 
@@ -93,6 +94,7 @@ $(document).ready(function(){
         },
         change: function(){
             user.c_password = kendo.toString(this.value());
+            login.c_password = kendo.toString(this.value());
         }
     });
 
@@ -101,16 +103,19 @@ $(document).ready(function(){
         click: function(){
             // console.log(login);
             $.ajax({
-                url: "",
+                url: "/User/Login",
                 type: "POST",
                 // contentType: "application/json",
                 // data: JSON.stringify(login),
-                data: user,
+                data: login,
                 success: function (data) {
+                    console.log(login)
+                    
                     if(data.success == true){
-                        window.location.href="/User/Index";
+                        console.log(login);
+                        window.location.href="/KendoComponent/AdminIndex";
                     }else{
-                        window.location.href="/User/Login";
+                        // window.location.href="/KendoComponent/Login";
                     }
                 }
             });

@@ -32,7 +32,7 @@ namespace MVC.Controllers
 
         public IActionResult AdminIndex()
         {
-            return RedirectToAction("Register");
+            return View();
         }
         public IActionResult Register(){
             return View();
