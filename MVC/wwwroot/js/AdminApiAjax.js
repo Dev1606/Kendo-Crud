@@ -1,11 +1,27 @@
+// if (localStorage.getItem('token') == null) {
+//     window.location = '/UserApi/Login';
+// }
 $(document).ready(function () {
-    console.log("Welcome Employee");
-    GetAll();
-    GetAllUser();
-    hideAlerts();
-    //AddUser();
-    getDropdownValues();
-    GetToken();
+
+    var token = localStorage.getItem('token');
+    if (token == null) {
+        // Redirect to the login page if the token is not present
+        window.location = '/UserApi/Login';
+    } else {
+        // Fetch user data using the token
+        fetchUserData(token);
+
+        // Other initialization functions
+        GetAll();
+        hideAlerts();
+        getDropdownValues();
+    }
+
+    // console.log("Welcome Admin Api");
+    // GetAll();
+    // hideAlerts();
+    // getDropdownValues();
+    // GetToken();
     //for set date time in formate
     function formatDateForInput(dateString) {
         const dateObj = new Date(dateString);
@@ -42,7 +58,12 @@ $(document).ready(function () {
         $.ajax({
             url: 'https://localhost:7068/api/MVCApi/GetDropDepartment',
             type: 'GET',
+            headers: {
+                contentType: "application/json",
+                Authorization: 'Bearer ' + localStorage.getItem('token')
+            },
             success: function (data) {
+                console.log(data);
                 data.forEach((Designation) => {
                     var row = '<option class="dropdown-item" value="' + Designation + '">' + Designation + '</option>';
                     dropdown.append(row);
@@ -50,72 +71,6 @@ $(document).ready(function () {
             }
         });
     }
-
-    //Add User Data:
-    $('#printbtn').on('click',function(){
-        AddUser();
-        console.log("clicked");
-        GetAllUser();
-    });
-    function AddUser(){
-     var formData = new FormData();
-     formData.append('c_empname',$('#EmpName').val());
-     formData.append('c_empgender', $('input[name="rdbtn"]:checked').val());
-     formData.append('c_dob',$('#EmpDob').val().split('T')[0]);
-     $('input[name="chkbox"]:checked').each(function(){
-        formData.append('c_shift[]', $(this).val());
-    });
-    formData.append('c_department',$('#EditEmpDepartment').val()); 
-    //formData.append('Image',$('#EmpImage')[0].files[0]);
-
-    //save kri ne run karavje
-
-    var img = $('#EmpImage')[0].files[0];
-     $.ajax({
-     url : 'https://localhost:7068/api/MVCApi/UserAddEmpData',
-     type : 'POST',
-     dataType: 'json',
-     contentType:'application/json',
-     data: {emp:JSON.stringify(formData),file:img},
-     success:function (data){
-        GetAllUser();
-        successMsg(data.message);
-     }
-
-     });
-    }
-    
-    //Get All User Details:
-    function GetAllUser() {
-        var table = $('#TableContent11');
-        table.empty();
-        $.ajax({
-            type: "GET",
-            url: "https://localhost:7068/api/MVCApi/GetEmpData",
-            success: function (emp) {
-                emp.forEach(function (emp) {
-                    var row = '<tr>';
-                    row += '<td>' + emp.c_empid + '</td>';
-                    row += '<td>' + emp.c_empname + '</td>';
-                    row += '<td>' + emp.c_empgender + '</td>';
-                    row += '<td>' + emp.c_dob + '</td>';
-                    row += '<td>' + emp.c_shift + '</td>';
-                    row += '<td>' + emp.c_department + '</td>';
-                    row += '<td>' + emp.c_empimage + '</td>';
-                    row += '<td>';
-                    // row += '<div class="d-flex justify-content-between">';
-                    // row += '<button type="button" id="edit" class="btn btn-outline-success edit" data-id="' + emp.c_empid + '">Edit</button>';
-                    // row += '<button type="button" id="del" class="btn btn-outline-danger delete" data-id="' + emp.c_empid + '">Delete</button>';
-
-                    row += '</div>';
-                    row += '</td>';
-                    row += '</tr>';
-                    table.append(row);
-                });
-            }
-        });
-    }
-     
 
     //Get All Admin Details:
     function GetAll() {
@@ -126,7 +81,7 @@ $(document).ready(function () {
             url: "https://localhost:7068/api/MVCApi/GetEmpData",
             headers: {
                 // "Authorization": localStorage.getItem('token')
-                Authorization: 'Bearer '+localStorage.getItem('token')
+                Authorization: 'Bearer ' + localStorage.getItem('token')
             },
             success: function (emp) {
                 emp.forEach(function (emp) {
@@ -137,7 +92,7 @@ $(document).ready(function () {
                     row += '<td>' + emp.c_dob + '</td>';
                     row += '<td>' + emp.c_shift + '</td>';
                     row += '<td>' + emp.c_department + '</td>';
-                    row += '<td> <img src="'+ emp.c_empimage +'" alt="Image Not Found" style="height: 15%;width:15%;"></td>';
+                    row += '<td> <img src="' + emp.c_empimage + '" alt="Image Not Found" style="height: 15%;width:15%;"></td>';
                     row += '<td>';
                     row += '<div class="d-flex justify-content-between">';
                     row += '<button type="button" id="edit" class="btn btn-outline-success edit" data-id="' + emp.c_empid + '">Edit</button>';
@@ -163,25 +118,39 @@ $(document).ready(function () {
     //edit
     $(document).on('click', '#edit', function () {
         var eid = $(this).data('id');
-        console.log(eid);
-        $.get("https://localhost:7068/api/MVCApi/GetEmpDetail", { id: eid }, function (employee) {
-            console.log(employee);
-            $('#Empid').attr('data-id', eid);
-            $('#EditEmpName').val(employee.c_empname);
-            // Setting radio button for gender
-            if (employee.c_empgender === 'Male') {
-                $("input[name='EditEmpGender'][value='Male']").prop("checked", true);
-            } else if (employee.c_empgender === 'Female') {
-                $("input[name='EditEmpGender'][value='Female']").prop("checked", true);
-            } else if (employee.c_empgender === 'Other') {
-                $("input[name='EditEmpGender'][value='Other']").prop("checked", true);
+        // console.log(eid);
+
+        // Make the GET request with the Authorization header
+        $.ajax({
+            url: "https://localhost:7068/api/MVCApi/GetEmpDetail",
+            type: "GET",
+            data: { id: eid },
+            headers: {
+                Authorization: 'Bearer ' + localStorage.getItem('token')
+            },
+            success: function (employee) {
+                console.log(employee);
+                $('#Empid').attr('data-id', eid);
+                $('#EditEmpName').val(employee.c_empname);
+
+                // Setting radio button for gender
+                if (employee.c_empgender === 'Male') {
+                    $("input[name='EditEmpGender'][value='Male']").prop("checked", true);
+                } else if (employee.c_empgender === 'Female') {
+                    $("input[name='EditEmpGender'][value='Female']").prop("checked", true);
+                } else if (employee.c_empgender === 'Other') {
+                    $("input[name='EditEmpGender'][value='Other']").prop("checked", true);
+                }
+
+                $('#EditEmpDob').val(formatDateForInput(employee.c_dob));
+                $("#EditEmpDepartment").val(employee.c_department);
+                $('input[name="EditEmpShift"]').val(employee.c_shift);
+                $('#EditModel').modal('show');
+            },
+            error: function (xhr, status, error) {
+                // Handle errors here
+                console.error('Error fetching employee details:', error);
             }
-            $('#EditEmpDob').val(formatDateForInput(employee.c_dob));
-            $("#EditEmpDepartment").val(employee.c_department).map;
-            $('input[name="EditEmpShift"]').val(employee.c_shift);
-            $('#EditEmpImage').val(employee.c_empimage);
-            //$('#EditEmpImage').val(employee.Image);
-            $('#EditModel').modal('show');
         });
     });
     // Event handler for the Update button
@@ -203,8 +172,11 @@ $(document).ready(function () {
             dataType: 'json',
             contentType: "application/json",
             data: JSON.stringify(employee),
+            headers: {
+                Authorization: 'Bearer ' + localStorage.getItem('token')
+            },
             success: function (data) {
-               debugger
+                debugger
                 console.log(data);
                 GetAll();
                 $('#EditModel').modal('hide');
@@ -219,10 +191,13 @@ $(document).ready(function () {
         console.log(Id);
         if (confirm("Are you sure you want to delete this data?")) {
             $.ajax({
-                url: 'https://localhost:7068/api/MVCApi/DeleteEmpData?id='+Id,
+                url: 'https://localhost:7068/api/MVCApi/DeleteEmpData?id=' + Id,
                 type: 'DELETE',
-                dataType:"json",
+                dataType: "json",
                 contentType: "application/json",
+                headers: {
+                    Authorization: 'Bearer ' + localStorage.getItem('token')
+                },
                 success: function (data) {
                     console.log(data);
                     GetAll();
@@ -232,8 +207,36 @@ $(document).ready(function () {
         }
     });
 
-    function GetToken()
-    {
+    function fetchUserData(token) {
+        var username = "";
+        $.ajax({
+            url: 'https://localhost:7068/api/MVCApi/GetTokenData',
+            type: 'GET',
+            data: { usertoken: token },
+            success: function (userData) {
+                console.log('User Data:', userData);
+                username = userData.userName;
+                $.ajax({
+                    url: "/User/SetUserData",
+                    method: "POST",
+                    data: { username: username }, 
+                    async:false,
+                    success: function (response) {
+                        if (response.success) {
+                            // Handle successful response, e.g., display a success message
+                            console.log("Username set successfully!");
+                        } else {
+                            // Handle unsuccessful response, e.g., display an error message
+                            console.error("Failed to set username.");
+                        }
+                    }
+                });
+            }
+        });
+        
+    }
+
+    function GetToken() {
         var token = localStorage.getItem('token');
         console.log(token);
     }

@@ -4,16 +4,10 @@
 
 
 <div class="table-responsive">
-    @* Add Button *@
-    <button type="button" class="btn btn-primary mb-3" id="AddEmployeeModalBtn" data-bs-toggle="modal"
-        data-bs-target="#AddEmployeeModal">
-        Add Button
-    </button>
-
     <center>
         @* Message *@
-        <div class="alert alert-success text-center" role="alert" id="messageSuccess"></div>
-        <div class="alert alert-danger text-center" role="alert" id="messageFail"></div>
+        @* <div class="alert alert-success text-center" role="alert" id="messageSuccess"></div>
+        <div class="alert alert-danger text-center" role="alert" id="messageFail"></div> *@
     </center>
 
     @* Table HTML *@
@@ -107,6 +101,13 @@
                                 Night
                             </label>
                         </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="EditEmpShift" value="Night"
+                                id="Night">
+                            <label class="form-check-label" for="Night">
+                                Night
+                            </label>
+                        </div>
                         <span class="text-danger" id="EditEmpShiftHelp"></span>
                     </div>
                     @* Course *@
@@ -123,7 +124,6 @@
                     @* Image *@
                     <div class="mb-3">
                         <label for="EditEmpImage" class="form-label">Choose An Image</label>
-                         //Changed to image during AdminApi Branch Merge
                         <input class="form-control" type="file" id="EditEmpImage">
                     </div>
                 </div>
@@ -141,5 +141,5 @@
 }
 
 @section Scripts{
-    <script src="~/js/ApiAjaxIndex.js" asp-append-version="true"></script>
+    <script src="~/js/AdminApiAjax.js" asp-append-version="true"></script>
 }

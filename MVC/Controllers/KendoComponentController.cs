@@ -17,28 +17,81 @@ namespace MVC.Controllers
          private readonly IEmpInterface _empRepo;
           private readonly IWebHostEnvironment _hostingEnvironment;
           private readonly IHttpContextAccessor _httpContextAccessor;
+          private readonly IUserInterface _userrepo;
 
-        public KendoComponentController(ILogger<KendoComponentController> logger,IEmpInterface empRepo, IWebHostEnvironment environment, IHttpContextAccessor httpContextAccessor)
+        public KendoComponentController(ILogger<KendoComponentController> logger,IEmpInterface empRepo, IWebHostEnvironment environment, IHttpContextAccessor httpContextAccessor,IUserInterface userrepo)
         {
             _logger = logger;
             _empRepo = empRepo;
             _hostingEnvironment = environment;
+             _userrepo = userrepo;
             _httpContextAccessor = httpContextAccessor;
         }
 
         public IActionResult Index(){
             return View("Register");
+            //return View();
         }
 
         public IActionResult AdminIndex()
         {
             return View();
         }
+        [HttpGet]
         public IActionResult Register(){
             return View();
         }
+        [HttpPost]
+        public IActionResult Register(UserModel user)
+        {
+              Console.WriteLine("Details @ kendocomponentcontroller"+user.c_uemail+user.c_password+user.c_uname);
+            var status = _userrepo.RegistrationDetail(user);
+            Console.WriteLine(status);
+            if(status){
+              return Json(new {success = true, message = "Registration Successful"});
+            }else{
+                return Json(new {success = false, message = "Registration Fail"});
+            }
+        }
+        [HttpGet]
         public IActionResult Login(){
             return View();
+        }
+
+        [HttpPost]
+        public IActionResult Login(LoginModel user)
+        {
+            Console.WriteLine("Details @ kendocomponentcontroller"+user.c_uemail+user.c_password);
+            var session = _httpContextAccessor.HttpContext.Session;
+            if (session.GetInt32("userid") == null)
+            {
+                if (_userrepo.Login(user))
+                {
+                    if (session.GetInt32("isRole") == 0)
+                    {
+                        // User
+                        return Json(new {success = true, message = "Login Successful",controller="KendoGrid", action= "UserKendoMVC" });
+                    }
+                    else if (session.GetInt32("isRole") == 1)
+                    {
+                        // Admin
+                        return Json(new {success = true, message = "Login Successful",controller="KendoGrid", action= "AdminKendoMVC" });
+                    }
+                    else
+                    {
+                        // login.ErrorMessage = "Invalid email or password";
+                        return View();
+                    }
+                }
+                else
+                {
+                    return RedirectToAction("Login", "User");
+                }
+            }
+            else
+            {
+                return RedirectToAction("Login", "User");
+            }
         }
         public IActionResult KendoAPI()
         {

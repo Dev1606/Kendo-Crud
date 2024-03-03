@@ -1,13 +1,9 @@
 $(document).ready(function(){
-
     var user = {
-        c_uid: 0,
         c_uname: $('#txtName').val(),
         c_uemail: $('#txtEmail').val(),
-        c_password: $('#txtPassword').val(),
-        c_confirmpassword: $('#txtConfirmPassword').val()
+        c_password: $('#txtPassword').val()
     };  
-
     // Name
     $('#txtName').kendoTextBox({
         label: {
@@ -15,10 +11,10 @@ $(document).ready(function(){
             floating: true
         },
         change: function(){
-            user.c_ename = kendo.toString(this.value());
+            user.c_uname = kendo.toString(this.value());
+            console.log(user.c_uname);
         }
     });
-
     // Email
     $('#txtEmail').kendoTextBox({
         label: {
@@ -26,7 +22,8 @@ $(document).ready(function(){
             floating: true
         },
         change: function(){
-            user.c_email = kendo.toString(this.value());
+            user.c_uemail = kendo.toString(this.value());
+            console.log(user.c_uemail);
         }
     });
     // Password
@@ -37,6 +34,7 @@ $(document).ready(function(){
         },
         change: function(){
             user.c_password = kendo.toString(this.value());
+            console.log(user.c_password);
         }
     });
 
@@ -47,33 +45,33 @@ $(document).ready(function(){
             floating: true
         },
     });
-
     $("#SubmitButton").kendoButton({
         themeColor: "primary",
         click: function(){
-            // console.log(user);
+            console.log(user);
             $.ajax({
-                url: "",
+                url: "/KendoComponent/Register",
                 type: "POST",
-                // contentType: "application/json",
-                // data: JSON.stringify(user),
-                data: user,
-                success: function (data) {
+                data:user,
+                success: function (data){
+                    console.log(JSON.stringify(user));
+                    console.log(data);
+                    console.log(data.success);
                     if(data.success == true){
-                        window.location.href="/User/Login";
+                        alert("Register successfully");
+                        window.location.href="/KendoComponent/Login";
                     }else{
-                        window.location.href="/User/Register";
+                        alert("Fail to register");
+                        window.location.href="/KendoComponent/Register";
                     }
                 }
             });
         }
     });
-
     var login = {
         c_uemail: $('#txtlgEmail').val(),
         c_password: $('#txtlgPassword').val()
-    };
-
+    }; 
     // Email
     $('#txtlgEmail').kendoTextBox({
         label: {
@@ -81,11 +79,11 @@ $(document).ready(function(){
             floating: true
         },
         change: function(){
-            user.c_email = kendo.toString(this.value());
             login.c_uemail = kendo.toString(this.value());
+            console.log(login.c_uemail);
         }
     });
-
+    
     // Password
     $('#txtlgPassword').kendoTextBox({
         label: {
@@ -93,30 +91,33 @@ $(document).ready(function(){
             floating: true
         },
         change: function(){
-            user.c_password = kendo.toString(this.value());
             login.c_password = kendo.toString(this.value());
+            console.log(login.c_password);
         }
     });
-
     $("#LoginButton").kendoButton({
         themeColor: "primary",
         click: function(){
-            // console.log(login);
+            console.log(login);
             $.ajax({
-                url: "/User/Login",
+                url: "/KendoComponent/Login",
                 type: "POST",
-                // contentType: "application/json",
-                // data: JSON.stringify(login),
-                data: login,
-                success: function (data) {
-                    console.log(login)
-                    
-                    if(data.success == true){
-                        console.log(login);
-                        window.location.href="/KendoComponent/AdminIndex";
-                    }else{
-                        // window.location.href="/KendoComponent/Login";
-                    }
+               data:login,
+            }).done(function (data) {
+                // debugger
+                // if(data.success == true){
+                //     alert("Login Successfully...");
+                //     window.location.href="/KendoComponent/AdminIndex";
+                // }else{
+                //     alert("Invalid...");
+                //     window.location.href="/KendoComponent/AdminIndex";
+                // }
+                if(data.success==true){
+                    var urlstr="/"+data.controller+"/"+data.action;
+                    window.location.href=urlstr;
+                }
+                else{
+                    alert("Invalid Credentials");
                 }
             });
         }

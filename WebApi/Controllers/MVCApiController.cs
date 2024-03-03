@@ -52,6 +52,7 @@ namespace WebApi.Controllers
         [HttpGet]
         [Route("GetEmpData")]
         [Authorize]
+        // [Authorize]
         public IActionResult GetEmpData()
         {
             var emplist = _empAPIInterface.GetEmpData();
@@ -60,6 +61,8 @@ namespace WebApi.Controllers
 
         [HttpGet]
         [Route("GetDropDepartment")]
+        [Authorize]
+        // [Authorize]
         public string[] GetDepartment()
         {
             return _empAPIInterface.GetDepartment();
@@ -67,6 +70,7 @@ namespace WebApi.Controllers
 
         [HttpGet]
         [Route("GetEmpDetail")]
+        [Authorize]
         public IActionResult GetEmpDetail(int id)
         {
             var emp = _empAPIInterface.GetEmpDetail(id);
@@ -75,6 +79,7 @@ namespace WebApi.Controllers
 
         [HttpPut]
         [Route("UpdateEmpData")]
+        [Authorize]
         public IActionResult UpdateEmp(EmpModel emp)
         {
             
@@ -84,6 +89,7 @@ namespace WebApi.Controllers
 
         [HttpDelete]
         [Route("DeleteEmpData")]
+        [Authorize]
         public IActionResult DeleteEmp(int id)
         {
             _empAPIInterface.DeleteEmp(id);
@@ -97,6 +103,7 @@ namespace WebApi.Controllers
         // UserGetEmpData
         [HttpGet]
         [Route("UserGetEmpData")]
+        [Authorize]
         public IActionResult UserGetEmpData()
         {
             var emplist = _empAPIInterface.UserGetEmpData();
@@ -106,6 +113,7 @@ namespace WebApi.Controllers
         // UserAddEmpData
         [HttpPost]
         [Route("UserAddEmpData")]
+        [Authorize]
         public IActionResult UserAddEmpData([FromForm]EmpApiModel emp,IFormFile file)
         {
             Console.WriteLine(file);
