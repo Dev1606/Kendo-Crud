@@ -15,9 +15,9 @@ namespace WebApi.Repositories.API_Repositories
         List<EmpModel> UserGetEmpData();
         bool UserAddEmpData(EmpModel employee);
         bool UserAddEmpData(EmpApiModel employee,string c_empimage);
-
         #endregion 
           
+
         #region Admin Repo Methods
         List<EmpModel> GetEmpData();
         string[] GetDepartment();
@@ -25,5 +25,6 @@ namespace WebApi.Repositories.API_Repositories
         bool DeleteEmp(int id);
         bool UpdateEmp(EmpModel emp);
         #endregion 
+
     }
 }
