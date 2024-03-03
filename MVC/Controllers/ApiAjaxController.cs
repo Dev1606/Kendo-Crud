@@ -14,17 +14,21 @@ namespace MVC.Controllers
     public class ApiAjaxController : Controller
     {
         private readonly ILogger<ApiAjaxController> _logger;
-
         private readonly IEmpInterface _empAPIInterface;
 
-        public ApiAjaxController(IEmpInterface empAPIInterface,ILogger<ApiAjaxController> logger)
+        public ApiAjaxController(ILogger<ApiAjaxController> logger,IEmpInterface empAPIInterface)
         {
             _empAPIInterface = empAPIInterface;
             _logger = logger;
+            empAPIInterface = _empAPIInterface;
         }
 
         public IActionResult Index()
         {
+            return View();
+        }
+
+        public IActionResult UserIndex(){
             return View();
         }
 

@@ -1,12 +1,11 @@
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace WebApi.Models
+namespace WebApi.Models.ApiModel
 {
-    public class EmpModel
+    public class EmpApiModel
     {
         public int c_empid {get; set;} = 0;
         public string c_empname {get; set;} = string.Empty;
@@ -14,7 +13,5 @@ namespace WebApi.Models
         public DateTime c_dob {get; set;} 
         public string[] c_shift {get; set;} = new string[0];
         public string c_department {get; set;} = string.Empty;
-        public string c_empimage {get; set;} = string.Empty;
-        public IFormFile Image {get;set;} //IFormFile For File Upload
     }
 }

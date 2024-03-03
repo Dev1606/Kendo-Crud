@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WebApi.Models;
+using WebApi.Models.ApiModel;
 using WebApi.Repositories.API_Repositories;
 
 
@@ -104,6 +105,41 @@ namespace WebApi.Controllers
         // UserAddEmpData
         [HttpPost]
         [Route("UserAddEmpData")]
+
+        public IActionResult UserAddEmpData([FromForm]EmpApiModel emp,IFormFile file)
+        {
+            Console.WriteLine(file);
+            //Code For File Upload:
+            var folderPath = @"..\MVC\wwwroot\uploadsimg";
+
+            if (!Directory.Exists(folderPath))
+            {
+                Directory.CreateDirectory(folderPath);
+            }
+
+            var filePath = Path.Combine(folderPath, file.FileName);
+            var fileName = Path.GetFileName(file.FileName);
+
+            if (System.IO.File.Exists(filePath))
+            {
+                fileName = Guid.NewGuid().ToString() + "_" + fileName;
+                filePath = Path.Combine(folderPath, fileName);
+            }
+
+            using (var stream = new FileStream(filePath, FileMode.Create))
+            {
+                file.CopyTo(stream);
+            }
+
+            var imageUrl = Path.Combine("/uploadsimg", fileName);
+            //emp.c_empimage = imageUrl;
+
+            // var shift = Request.Form["c_shift"].ToList();
+            // emp.c_shift = string.Join(", ", shift);
+            // HttpContext.Session.SetInt32("userid", emp.c_userid.GetValueOrDefault());
+
+            _empAPIInterface.UserAddEmpData(emp,imageUrl);
+
         public IActionResult UserAddEmpData([FromForm] EmpModel emp)
         {
             //Code For File Upload:
