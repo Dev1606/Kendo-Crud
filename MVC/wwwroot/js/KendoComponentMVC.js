@@ -1,71 +1,141 @@
-$(document).ready(function(){
+$(document).ready(function () {
+    var ImageFileName = "";
+    console.log("Welcome Employee");
+    UserGetEmpData();
+    getDropdownValues();
+    hideAlerts();
+    initializeGenderRadioButtons();
+    initializeShiftCheckboxes();
+    initializeDatePicker();
+    submitbtn();
 
-    var user = {
-        c_uid: 0,
-        c_uname: $('#txtName').val(),
-        c_uemail: $('#txtEmail').val(),
-        c_password: $('#txtPassword').val(),
-        c_confirmpassword: $('#txtConfirmPassword').val()
-    };  
+    function formatDateForInput(dateString) {
+        const dateObj = new Date(dateString);
+        const formattedDate = dateObj.toISOString().slice(0, 10);
+        return formattedDate;
+    }
 
-    // Name
-    $('#txtName').kendoTextBox({
-        label: {
-            content: "User Name",
-            floating: true
-        },
-        change: function(){
-            user.c_ename = kendo.toString(this.value());
-        }
-    });
+    function hideAlerts() {
+        $('#messageSuccess').hide();
+        $('#messageFail').hide();
+    }
 
-    // Email
-    $('#txtEmail').kendoTextBox({
-        label: {
-            content: "Email",
-            floating: true
-        },
-        change: function(){
-            user.c_email = kendo.toString(this.value());
-        }
-    });
-    // Password
-    $('#txtPassword').kendoTextBox({
-        label: {
-            content: "Password",
-            floating: true
-        },
-        change: function(){
-            user.c_password = kendo.toString(this.value());
-        }
-    });
+    function successMsg(str) {
+        $("#messageSuccess").text('');
+        $("#messageSuccess").append(str);
+        $("#messageSuccess").show().delay(3000).fadeOut();
+    }
 
-    // ConfirmPassword
-    $('#txtConfirmPassword').kendoTextBox({
-        label: {
-            content: "ConfirmPassword",
-            floating: true
-        },
-    });
+    function alertMsg(str) {
+        $("#messageFail").text('');
+        $("#messageFail").append(str);
+        $("#messageFail").show().delay(3000).fadeOut();
+    }
 
-    $("#SubmitButton").kendoButton({
-        themeColor: "primary",
-        click: function(){
-            // console.log(user);
-            $.ajax({
-                url: "",
-                type: "POST",
-                // contentType: "application/json",
-                // data: JSON.stringify(user),
-                data: user,
-                success: function (data) {
-                    if(data.success == true){
-                        window.location.href="/User/Login";
-                    }else{
-                        window.location.href="/User/Register";
+    // for getting dropdown
+    function getDropdownValues() {
+        var dropdown = $("#DepartmentDorpDown");
+        dropdown.empty();
+        $.ajax({
+            url: '/KendoComponent/GetDepartment',
+            type: 'GET',
+            success: function (data) {
+                dropdown.kendoDropDownList({
+                    dataSource: data,
+                    optionLabel: "Select Department"
+                });
+            }
+        });
+    }
+
+    //get UserGetEmpData
+    function UserGetEmpData() {
+        var table = $('#TableContent');
+        table.empty();
+        $.ajax({
+            type: "GET",
+            url: "/KendoComponent/UserGetEmpData",
+            dataType: 'json',
+            success: function (emp) {
+                emp.forEach(function (emp) {
+                    var row = '<tr>';
+                    row += '<td>' + emp.c_empid + '</td>';
+                    row += '<td>' + emp.c_empname + '</td>';
+                    row += '<td>' + emp.c_empgender + '</td>';
+                    row += '<td>' + emp.c_dob + '</td>';
+                    row += '<td>' + emp.c_shift + '</td>';
+                    row += '<td>' + emp.c_department + '</td>';
+                    row += '<td><img src="../wwwroot/uploadsimg/' + emp.c_empimage + '"></td>';
+                    row += '<td>';
+                    row += '</td>';
+                    row += '</tr>';
+                    table.append(row);
+                });
+            }
+        });
+    }
+
+    function initializeGenderRadioButtons() {
+        $("#GenderRadioButton").kendoRadioGroup({
+            layout: "horizontal",
+            items: [
+                { label: "Male", value: "Male" },
+                { label: "Female", value: "Female" },
+                { label: "Other", value: "Other" }
+            ]
+        });
+    }
+
+    function initializeShiftCheckboxes() {
+        $("#ShiftCheckbox").kendoCheckBoxGroup({
+            items: [
+                { label: "Morning", value: "Morning" },
+                { label: "Afternoon", value: "Afternoon" },
+                { label: "Night", value: "Night" }
+            ],
+            layout: "horizontal"
+        });
+    }
+
+    function initializeDatePicker() {
+        $("#dob").kendoDatePicker({
+            format: "yyyy-MM-dd"
+        });
+    }
+
+    // Submit Button
+    function submitbtn() {
+        $("#SubmitButton").kendoButton({
+            themeColor: "primary",
+            click: function () {
+                var formData = {
+                    empname: $("#EmpName").val(),
+                    empgender: $("input[name='GenderRadioButton']:checked").val(),
+                    dob: $("#dob").val(),
+                    shift: $("#ShiftCheckbox").val(),
+                    empimage: ImageFileName,
+                    department: $("#DepartmentDorpDown").data("kendoDropDownList").value()
+                };
+
+                $.ajax({
+                    url: "/KendoComponent/UserAddEmpData",
+                    type: "POST",
+                    contentType: "application/json",
+                    data: JSON.stringify(formData),
+                    success: function (data) {
+                        if (data.success == true) {
+                            successMsg("Employee data added successfully.");
+                            UserGetEmpData(); // Refresh employee data table
+                        } else {
+                            alertMsg("Failed to add employee data.");
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        alertMsg(xhr.responseText);
                     }
-                }
-            });
-        }
-    });
+                });
+            }
+        });
+    }
+
 });

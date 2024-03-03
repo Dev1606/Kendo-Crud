@@ -2,10 +2,35 @@
     ViewData["Title"] = "Kendo Component MVC";
 }
 
-<div id="grid"></div>
-@* @section Scripts{
-<script src="~/js/UserKendoComponentMVC.js" asp-append-version="true"></script>
-} *@
+@* <div id="grid"></div>
+
+<center>
+    <h1>Employee Data</h1> *@
+@* </center> *@
+<div class="table-responsive">
+
+    <center>
+        @* Message *@
+        <div class="alert alert-success text-center" role="alert" id="messageSuccess"></div>
+        <div class="alert alert-danger text-center" role="alert" id="messageFail"></div>
+    </center>
+
+    @* Table HTML *@
+    <table class="table table-dark table-striped">
+        <thead>
+            <th scope="col">Employee Id</th>
+            <th scope="col">Employee Name</th>
+            <th scope="col">Gender</th>
+            <th scope="col">DOB</th>
+            <th scope="col">Shift</th>
+            <th scope="col">Department</th>
+            <th scope="col">Image</th>
+        </thead>
+        <tbody id="TableContent">
+
+        </tbody>
+    </table>
+</div>
 
 <center>
     <h1>Employee Data</h1>
@@ -13,188 +38,46 @@
 <div class="container">
     <div class="row col-6 offset-3">
 
-        @* Emp Name *@
         <div class="row">
-            <label for="">Employee Name :-</label>
-            <hr>
-            <input id="EmpName" />
+            <label for="EmpName">Employee Name:</label>
+            <input id="EmpName" class="form-control" />
         </div>
 
-        @* Gender *@
-        <div class="row">
-            <label for="">Gender :-</label>
-            <hr>
-            <ul id="GenderRadioButton"></ul>
-            <hr>
+        <div class="row mt-3">
+            <label for="GenderRadioButton">Gender:</label>
+            <div id="GenderRadioButton" class="form-check">
+                <!-- Gender radio buttons will be rendered here -->
+            </div>
         </div>
 
-        @* DOB *@
-        <div class="row">
-            <label for="">Select DOB:-</label>
-            <hr>
-            <div id="dob"></div>
-            <hr>
+        <div class="row mt-3">
+            <label for="dob">Date of Birth:</label>
+            <input id="dob" class="form-control" />
         </div>
 
-        @* Shift *@
-        <div class="row">
-            <label for="">Select Shift:-</label>
-            <hr>
-            <ul id="ShiftCheckbox"></ul>
-            <hr>
+        <div class="row mt-3">
+            <label for="ShiftCheckbox">Shift:</label>
+            <div id="ShiftCheckbox" class="form-check">
+                <!-- Shift checkboxes will be rendered here -->
+            </div>
         </div>
 
-        @* Image *@
-        <div class="row">
-            <label for="">Image:-</label>
-            <hr>
-            <input type="file" id="ImageUpload">
-            <hr>
+        <div class="row mt-3">
+            <label for="ImageUpload">Image:</label>
+            <input type="file" id="ImageUpload" class="form-control-file" />
         </div>
 
-        @* Department *@
-        <div class="row">
-            <label for="">Select Department:-</label>
-            <hr>
-            <input id="DepartmentDorpDown">
-            <hr>
+        <div class="row mt-3">
+            <label for="DepartmentDorpDown">Department:</label>
+            <input id="DepartmentDorpDown" class="form-control" />
         </div>
 
-        @* Submit *@
-        <div class="row">
-            <button id="SubmitButton">Submit</button>
+        <div class="row mt-3">
+            <button id="SubmitButton" class="btn btn-primary">Submit</button>
         </div>
     </div>
 </div>
 
-
 @section Scripts {
-    <script src="~/js/UserKendoComponentMVC.js" asp-append-version="true"></script>
-    <script>
-
-
-        @* EmpName TextBox *@
-            $("#EmpName").kendoTextBox({
-                placeholder: "Enter Employee Name...",
-                change: function (e) {
-                    console.log("Value changed:", this.value());
-                },
-                focus: function (e) {
-                    console.log("TextBox focused");
-                }
-            });
-
-        @* Gender *@
-            $('#GenderRadioButton').kendoRadioGroup({
-                items: ["Male", "Female", "Other"],
-                layout: "horizontal",
-                value: "Male"
-            });
-
-        @* DOB *@
-            $("#dob").kendoCalendar({
-                change: function () {
-                    console.log("Change :: " + kendo.toString(this.value(), 'd'));
-                },
-                navigate: function () {
-                    console.log("Navigate");
-                }
-            });
-
-        @* Shift *@
-            $('#ShiftCheckbox').kendoMultiSelect({
-                dataSource: ["Morning", "Afternoon", "Night"],
-                dataBound: function () {
-                    // Customize the items to display as checkboxes
-                    var dropdownlist = this;
-                    var items = dropdownlist.ul.find("li");
-                    items.each(function (index) {
-                        var item = $(this);
-                        var itemValue = item.text();
-                        var checkbox = $("<input>").attr({
-                            type: "checkbox",
-                            value: itemValue,
-                            id: "checkbox_" + index
-                        });
-                        var label = $("<label>").text(itemValue).attr("for", "checkbox_" + index);
-                        item.empty().append(checkbox).append(label);
-                    });
-
-                    // Attach change event handler to checkboxes
-                    items.find("input[type='checkbox']").on("change", function () {
-                        var selectedValues = dropdownlist.value();
-                        console.log("Change event fired: Selected values - " + selectedValues);
-                        // Here you can perform any actions based on the selected values
-                    });
-                }
-            });
-
-        @* Image *@
-            $('#ImageUpload').kendoUpload({
-                multiple: false,
-                validation: {
-                    allowedExtensions: [".jpg", ".png", ".jpeg"]
-                },
-                select: function imageNameChange(e) {
-                    $.each(e.files, function (index, value) {
-                        var fileNameWithPath = "/uploadsimg/" + value.name;
-                        $("#c_empimage").val(fileNameWithPath).change();
-                        var formData = new FormData();
-                        formData.append("file", value.rawFile);
-                        $.ajax({
-                            url: " ",
-                            type: "POST",
-                            data: formData,
-                            processData: false,
-                            contentType: false,
-
-                        });
-                    });
-                }
-            });
-
-        @* Department *@
-            $('#DepartmentDorpDown').kendoDropDownList({
-                filter: "contains",
-                optionLabel: 'Please select Department...',
-                dataSource: {
-                    transport: {
-                        read: {
-                            url: "/KendoComponent/GetDepartment", 
-                            datatype: "json",
-                        }
-                    }
-                }
-            });
-        @* Submit Button *@
-            $("#SubmitButton").kendoButton({
-                themeColor: "primary",
-                click: function () {
-                    var user = {
-                        // Define user data here, for example:
-                        empname: $("#EmpName").val(),
-                        empgender: $("#GenderRadioButton").val(),
-                        dob: $("#dob").val(),
-                        shift: $("#ShiftCheckbox").val(),
-                        empimage: $("#ImageUpload").val(),
-                        department: $("#DepartmentDorpDown").val()
-                        // Add more fields as needed
-                    };
-
-                    $.ajax({
-                        url: "https://localhost:7074/kendocomponent/UserAddEmpData",
-                        type: "POST",
-                        data: user,
-                        success: function (data) {
-                            if (data.success == true) {
-                                window.location.href = "/KendoComponent/UserKendoMVC";
-                            } else {
-                                window.location.href = "/KendoComponent/UserKendoMVC";
-                            }
-                        }
-                    });
-                }
-            });
-        @* }); *@
-    </script>
+    <script src="~/js/KendoComponentMVC.js" asp-append-version="true"></script>
 }

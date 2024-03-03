@@ -57,7 +57,7 @@ namespace MVC.Controllers
 
         public IActionResult UserAddEmpData(EmpModel emp)
         {
-            emp.c_empimage = file;
+            // emp.c_empimage = file;
             var empData = _empRepo.UserAddEmpData(emp);
             return Json(empData);
         }
@@ -68,12 +68,13 @@ namespace MVC.Controllers
         }
         static string file = "";
 
+        [HttpPost]
         public IActionResult UploadPhoto(EmpModel emp)
         {
-            if (emp.Image!= null)
+            if (emp.Image != null)
             {
-                string filename = emp.Image.FileName;
-                string filepath = Path.Combine(_environment.WebRootPath, "uploadsimg", filename);
+                string uniqueFileName = Guid.NewGuid().ToString() + "_" + emp.Image.FileName;
+                string filepath = Path.Combine(_environment.WebRootPath, "uploadsimg", uniqueFileName);
 
                 using (var stream = new FileStream(filepath, FileMode.Create))
                 {
@@ -81,12 +82,12 @@ namespace MVC.Controllers
                     emp.Image.CopyTo(stream);
                 }
 
-              file = filename;
-
+                // file = uniqueFileName;
             }
 
             return Json("Image Uploaded");
         }
+
         #endregion
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
