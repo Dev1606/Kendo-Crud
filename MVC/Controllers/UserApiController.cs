@@ -23,7 +23,7 @@ namespace MVC.Controllers
         [Route("Index")]
         public IActionResult Index()
         {
-            return View();
+            return View("Register");
         }
 
         [Route("Login")]
