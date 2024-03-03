@@ -177,7 +177,8 @@ namespace WebApi.Repositories
             {
                 try
                 {
-                    var qry = "UPDATE mvc_master_project.t_emp SET c_empname=@c_empname,c_empgender=@c_empgender,c_dob=@c_dob,c_shift=@c_shift,c_department=@c_department,c_empimage=@c_empimage WHERE c_empid=@c_empid;";
+
+                    var qry = "UPDATE mvc_master_project.t_emp SET c_empname=@c_empname,c_empgender=@c_empgender, c_dob=@c_dob, c_shift=@c_shift, c_department=@c_department,c_empimage=@c_empimage WHERE c_empid=@c_empid;";
                     using (NpgsqlCommand cmd = new NpgsqlCommand(qry, con))
                     {
                         cmd.Parameters.AddWithValue("@c_empid", emp.c_empid);

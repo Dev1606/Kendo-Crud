@@ -1,0 +1,106 @@
+@{
+    ViewData["Title"] = "Kendo Component MVC";
+}
+
+<center>
+    <h2>@ViewData["Title"]</h2>
+</center>
+<div class="table-responsive">
+
+    <center>
+        @* Message *@
+        <div class="alert alert-success text-center" role="alert" id="messageSuccess"></div>
+        <div class="alert alert-danger text-center" role="alert" id="messageFail"></div>
+    </center>
+
+    @* Table HTML *@
+    <table class="table table-dark table-striped">
+        <thead>
+            <th scope="col">Employee Id</th>
+            <th scope="col">Employee Name</th>
+            <th scope="col">Gender</th>
+            <th scope="col">DOB</th>
+            <th scope="col">Shift</th>
+            <th scope="col">Department</th>
+            <th scope="col">Image</th>
+            <th scope="col">Action</th>
+        </thead>
+        <tbody id="TableContent">
+
+        </tbody>
+    </table>
+</div>
+
+@{
+    #region Edit Modal
+}
+<!-- Edit Modal -->
+<div class="modal fade" id="EditEmpModal" tabindex="-1" aria-labelledby="EditEmpModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="EditEmpModalLabel">Edit Student</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form method="post">
+                <div class="modal-body">
+                    @* ID *@
+                    <div class="row">
+                        <input id="EditEmpId" hidden>
+                    </div>
+                    @* Employee Name *@
+                    <div class="mb-3">
+                        <label>Student Name: </label>
+                        <div class="row">
+                            <input id="EditEmpName">
+                        </div>
+                    </div>
+                    @* Gender *@
+                    <div class="mb-3">
+                        <label>Gender: </label>
+                        <ul id="EditEmpGender"></ul>
+                        <span class="text-danger" id="EditEmpGenderHelp"></span>
+                    </div>
+                    @* DOB *@
+                    <div class="mb-3">
+                        <label> DOB: </label>
+                        <div class="row">
+                            <input id="EditEmpDob">
+                        </div>
+                    </div>
+                    @* Shift *@
+                    <div class="mb-3">
+                        <label>Shift: </label>
+                        <ul id="EditEmpShift"></ul>
+                        <span class="text-danger" id="EditEmpShiftHelp"></span>
+                    </div>
+                    @* Department *@
+                    <div class="mb-3">
+                        <div class="row">
+                        <input id="EditEmpDepartment" >
+                        </div>
+                        <span class="text-danger" id="EditEmpDepartmentHelp"></span>
+                    </div>
+                    @* Image *@
+                    <div class="mb-3">
+                        <label for="EditEmpImage" class="form-label">Choose An Image</label>
+                        <input class="form-control" type="file" id="EditEmpImage">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="FinalEditBtn"
+                        data-bs-dismiss="modal">Edit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+@{
+    #endregion
+}
+
+
+@section Scripts {
+    <script src="~/js/AdminKendoComponentMVC.js" asp-append-version="true"></script>
+}
