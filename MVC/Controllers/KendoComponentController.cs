@@ -26,6 +26,10 @@ namespace MVC.Controllers
             _httpContextAccessor = httpContextAccessor;
         }
 
+        public IActionResult Index(){
+            return View("Register");
+        }
+
         public IActionResult AdminIndex()
         {
             return RedirectToAction("Register");
