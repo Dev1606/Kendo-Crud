@@ -18,13 +18,15 @@ namespace MVC.Controllers
         private readonly IEmpInterface _empRepo;
         private readonly IWebHostEnvironment _environment;
         private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly IUserInterface _userrepo;
 
-        public KendoComponentController(ILogger<KendoComponentController> logger,IEmpInterface empRepo, IWebHostEnvironment environment, IHttpContextAccessor httpContextAccessor)
+        public KendoComponentController(ILogger<KendoComponentController> logger,IEmpInterface empRepo, IWebHostEnvironment environment, IHttpContextAccessor httpContextAccessor,IUserInterface userrepo)
         {
             _logger = logger;
             _empRepo = empRepo;
             _environment = environment;
             _httpContextAccessor = httpContextAccessor;
+            _userrepo = userrepo;
         }
 
         public IActionResult Index(){
@@ -178,7 +180,7 @@ namespace MVC.Controllers
             if (emp.Image!= null)
             {
                 string uniqueFileName = Guid.NewGuid().ToString() + "_" + emp.Image.FileName;
-                string filepath = Path.Combine(_hostingEnvironment.WebRootPath, "uploadsimg",uniqueFileName);
+                string filepath = Path.Combine(_environment.WebRootPath, "uploadsimg",uniqueFileName);
 
                 using (var stream = new FileStream(filepath, FileMode.Create))
                 {
@@ -213,32 +215,32 @@ namespace MVC.Controllers
             var empData = _empRepo.UserAddEmpData(emp);
             return Json(empData);
         }
-        [HttpGet]
-        public string[] GetDepartment()
-        {
-            return _empRepo.GetDepartment();
-        }
-        static string file = "";
+        // [HttpGet]
+        // public string[] GetDepartment()
+        // {
+        //     return _empRepo.GetDepartment();
+        // }
+        // static string file = "";
 
-        [HttpPost]
-        public IActionResult UploadPhoto(EmpModel emp)
-        {
-            if (emp.Image != null)
-            {
-                string uniqueFileName = Guid.NewGuid().ToString() + "_" + emp.Image.FileName;
-                string filepath = Path.Combine(_environment.WebRootPath, "uploadsimg", uniqueFileName);
+        // [HttpPost]
+        // public IActionResult UploadPhoto(EmpModel emp)
+        // {
+        //     if (emp.Image != null)
+        //     {
+        //         string uniqueFileName = Guid.NewGuid().ToString() + "_" + emp.Image.FileName;
+        //         string filepath = Path.Combine(_environment.WebRootPath, "uploadsimg", uniqueFileName);
 
-                using (var stream = new FileStream(filepath, FileMode.Create))
-                {
+        //         using (var stream = new FileStream(filepath, FileMode.Create))
+        //         {
 
-                    emp.Image.CopyTo(stream);
-                }
+        //             emp.Image.CopyTo(stream);
+        //         }
 
-                // file = uniqueFileName;
-            }
+        //         // file = uniqueFileName;
+        //     }
 
-            return Json("Image Uploaded");
-        }
+        //     return Json("Image Uploaded");
+        // }
 
         #endregion
 
