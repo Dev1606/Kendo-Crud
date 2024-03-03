@@ -55,7 +55,8 @@ namespace WebApi.Controllers
                     expires: DateTime.UtcNow.AddDays(1),
                     signingCredentials: signIn
                 );
-                return Ok(new JwtSecurityTokenHandler().WriteToken(token));
+                // return Ok(new JwtSecurityTokenHandler().WriteToken(token));
+                return Ok(new {success = true, tokenStr = new JwtSecurityTokenHandler().WriteToken(token), role = user.c_role});
             }
             else
             {
@@ -65,7 +66,6 @@ namespace WebApi.Controllers
 
         [HttpPost]
         [Route("Register")]
-        // [Authorize]
         public IActionResult Register([FromBody] UserModel User)
         {
             bool reg = _userAPIInterface.RegistrationDetail(User);
