@@ -73,8 +73,8 @@ namespace MVC.Controllers
         public IActionResult AdminUpdateEmpData(EmpModel emp)
         {
 
-            Console.WriteLine(emp);
-            Console.WriteLine("DOB"+emp.c_dob);
+            Console.WriteLine("@Kendocomponentcontroller"+emp);
+            Console.WriteLine("Emp details @ controller"+ emp.c_empid+emp.c_empname+ emp.c_empgender+emp.c_dob+emp.c_shift+ emp.c_department+emp.c_empimage);
             //Code For File Upload:
             if (emp.Image != null && emp.Image.Length > 0)
             {
@@ -87,7 +87,6 @@ namespace MVC.Controllers
                 {
                     emp.Image.CopyTo(stream);
                 }
-
                 // Save The File Path To Our DB Table In c_image Field:
                 emp.c_empimage = uniqueFileName;
             }
@@ -110,7 +109,7 @@ namespace MVC.Controllers
             _empRepo.DeleteEmp(id);
             return Json(new{success=true,message="Employee updated"});
         }
-        //  static string file="";
+         static string file="";
         [HttpPost]
        public IActionResult UploadPhoto(EmpModel emp)
         {
@@ -125,7 +124,7 @@ namespace MVC.Controllers
                     emp.Image.CopyTo(stream);
                 }
 
-                // file = uniqueFileName;
+                file = uniqueFileName;
             }
 
             return Json("Image Uploaded");

@@ -111,6 +111,7 @@ $(document).ready(function () {
             ImageFileName = employee.c_empimage;
             console.log(employee);
             $('#Empid').attr('data-id', eid);
+            $('#EditEmpId').val(employee.c_empid);
             $('#EditEmpName').val(employee.c_empname);
             $('#EditEmpGender').data("kendoRadioGroup").value(employee.c_empgender);
             $('#EditEmpDob').val(formatDateForInput(employee.c_dob));
@@ -124,7 +125,7 @@ $(document).ready(function () {
 
     $("#FinalEditBtn").click(function () {
         var formData = {
-            c_empid: $("#EditEmpId").val(),
+            c_empid: $('#EditEmpId').val(),
             c_empname: $("#EditEmpName").val(),
             c_empgender: $('#EditEmpGender').data("kendoRadioGroup").value(),
             c_dob: $("#EditEmpDob").val(),
@@ -132,12 +133,13 @@ $(document).ready(function () {
             c_department: $("#EditEmpDepartment").data("kendoDropDownList").value(),
             c_empimage: ImageFileName,
         };
+        console.log("FormData",formData);
 
         $.ajax({
             url: "/KendoComponent/AdminUpdateEmpData",
             type: "POST",
-            contentType: "application/json",
-            data: JSON.stringify(formData),
+            // contentType: "application/json",
+            data:formData,
             success: function (response) {
                 console.log(formData);
                 $("#messageSuccess").text(response.message).show();
