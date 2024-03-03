@@ -42,11 +42,11 @@ $(document).ready(function () {
         $.ajax({
             url: 'https://localhost:7068/api/MVCApi/GetDropDepartment',
             type: 'GET',
-            // header : {
-            //     Authorization: 'Bearer '+localStorage.getItem('token')
-            // },
+            headers : {
+                Authorization: 'Bearer '+localStorage.getItem('token')
+            },
             success: function (data) {
-                console.log(data);
+                // console.log(data);
                 data.forEach((Designation) => {
                     var row = '<option class="dropdown-item" value="' + Designation + '">' + Designation + '</option>';
                     dropdown.append(row);
@@ -96,9 +96,9 @@ $(document).ready(function () {
         $.ajax({
             type: "GET",
             url: "https://localhost:7068/api/MVCApi/GetEmpData",
-            // header : {
-            //     Authorization: 'Bearer '+localStorage.getItem('token')
-            // },
+            headers : {
+                Authorization: 'Bearer '+localStorage.getItem('token')
+            },
             success: function (emp) {
                 emp.forEach(function (emp) {
                     var row = '<tr>';

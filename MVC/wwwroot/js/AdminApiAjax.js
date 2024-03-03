@@ -40,8 +40,13 @@ $(document).ready(function () {
         $.ajax({
             url: 'https://localhost:7068/api/MVCApi/GetDropDepartment',
             type: 'GET',
+            headers : {
+                contentType: "application/json",
+                Authorization: 'Bearer '+localStorage.getItem('token')
+            },
             success: function (data) {
-                data.forEach((Designation) => {
+                console.log(data);
+                    data.forEach((Designation) => {
                     var row = '<option class="dropdown-item" value="' + Designation + '">' + Designation + '</option>';
                     dropdown.append(row);
                 });
@@ -133,6 +138,9 @@ $(document).ready(function () {
             dataType: 'json',
             contentType: "application/json",
             data: JSON.stringify(employee),
+            headers : {
+                Authorization: 'Bearer '+localStorage.getItem('token')
+            },
             success: function (data) {
                debugger
                 console.log(data);
@@ -153,6 +161,9 @@ $(document).ready(function () {
                 type: 'DELETE',
                 dataType:"json",
                 contentType: "application/json",
+                headers : {
+                    Authorization: 'Bearer '+localStorage.getItem('token')
+                },
                 success: function (data) {
                     console.log(data);
                     GetAll();
