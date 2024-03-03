@@ -14,12 +14,12 @@ namespace MVC.Controllers
     public class KendoGridController : Controller
     {
         private readonly ILogger<KendoGridController> _logger;
-         private readonly IEmpInterface _empRepo;
-          private readonly IWebHostEnvironment _hostingEnvironment;
-          private readonly IWebHostEnvironment _environment;
-          private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly IEmpInterface _empRepo;
+        private readonly IWebHostEnvironment _hostingEnvironment;
+        private readonly IWebHostEnvironment _environment;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public KendoGridController(ILogger<KendoGridController> logger,IEmpInterface empRepo, IWebHostEnvironment environment, IHttpContextAccessor httpContextAccessor)
+        public KendoGridController(ILogger<KendoGridController> logger, IEmpInterface empRepo, IWebHostEnvironment environment, IHttpContextAccessor httpContextAccessor)
         {
             _logger = logger;
             _empRepo = empRepo;
@@ -31,8 +31,7 @@ namespace MVC.Controllers
         {
             return View();
         }
-        #region Admin
-        
+
         [Produces("application/json")]
         [HttpGet]
         public IActionResult UserGetEmpData()
@@ -54,39 +53,15 @@ namespace MVC.Controllers
         }
         static string file = "";
 
-        public IActionResult UploadPhoto(EmpModel emp)
-        {
-            if (emp.Image!= null)
-            {
-                string filename = emp.Image.FileName;
-                string filepath = Path.Combine(_environment.WebRootPath, "uploadsimg", filename);
-
-                using (var stream = new FileStream(filepath, FileMode.Create))
-                {
-
-                    emp.Image.CopyTo(stream);
-                }
-
-              file = filename;
-
-            }
-
-            return Json("Image Uploaded");
-        }
-        #region Admin
         
+        #region Admin
+
         [Produces("application/json")]
         [HttpGet]
         public IActionResult AdminGetEmpData()
         {
             var empData = _empRepo.GetEmpData();
             return Json(empData);
-        }
-
-        [HttpGet]
-        public string[] GetDepartment()
-        {
-            return _empRepo.GetDepartment();
         }
 
         [HttpGet]
@@ -108,8 +83,8 @@ namespace MVC.Controllers
         public IActionResult AdminUpdateEmpData(EmpModel emp)
         {
             Console.WriteLine(emp);
-            Console.WriteLine("DOB"+emp.c_dob);
-            Console.WriteLine("Image"+emp.c_empimage+"IF"+emp.Image);
+            Console.WriteLine("DOB" + emp.c_dob);
+            Console.WriteLine("Image" + emp.c_empimage + "IF" + emp.Image);
 
             //Code For File Upload:
             if (emp.Image != null && emp.Image.Length > 0)
@@ -128,7 +103,7 @@ namespace MVC.Controllers
             }
             emp.c_empimage = file;
             _empRepo.UpdateEmp(emp);
-            return Json(new{success=true,message="Employee updated"});
+            return Json(new { success = true, message = "Employee updated" });
         }
 
         [HttpGet]
@@ -141,18 +116,18 @@ namespace MVC.Controllers
         [HttpPost]
         public IActionResult AdminDeleteEmpConfirm(int id)
         {
-            Console.WriteLine("Delete called"+id);
+            Console.WriteLine("Delete called" + id);
             _empRepo.DeleteEmp(id);
-            return Json(new{success=true,message="Employee updated"});
+            return Json(new { success = true, message = "Employee updated" });
         }
-         static string file="";
+
         [HttpPost]
-       public IActionResult UploadPhoto(EmpModel emp)
+        public IActionResult UploadPhoto(EmpModel emp)
         {
-            if (emp.Image!= null)
+            if (emp.Image != null)
             {
                 string uniqueFileName = Guid.NewGuid().ToString() + "_" + emp.Image.FileName;
-                string filepath = Path.Combine(_hostingEnvironment.WebRootPath, "uploadsimg",uniqueFileName);
+                string filepath = Path.Combine(_hostingEnvironment.WebRootPath, "uploadsimg", uniqueFileName);
 
                 using (var stream = new FileStream(filepath, FileMode.Create))
                 {
@@ -164,7 +139,7 @@ namespace MVC.Controllers
                 // emp.c_empimage=file;
                 // _empRepo.UpdateEmp(emp);
             }
-             
+
             return Json("Image Uploaded");
         }
 

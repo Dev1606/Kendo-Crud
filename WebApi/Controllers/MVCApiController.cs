@@ -106,7 +106,6 @@ namespace WebApi.Controllers
         // UserAddEmpData
         [HttpPost]
         [Route("UserAddEmpData")]
-
         public IActionResult UserAddEmpData([FromForm]EmpApiModel emp,IFormFile file)
         {
             Console.WriteLine(file);
@@ -140,27 +139,7 @@ namespace WebApi.Controllers
             // HttpContext.Session.SetInt32("userid", emp.c_userid.GetValueOrDefault());
 
             _empAPIInterface.UserAddEmpData(emp,imageUrl);
-
-        public IActionResult UserAddEmpData([FromForm] EmpModel emp)
-        {
-            //Code For File Upload:
-            if (emp.Image != null && emp.Image.Length > 0)
-            {
-                var uploadsFolder = Path.Combine("../MVC/wwwroot", "uploadsimg");
-                var uniqueFileName = Guid.NewGuid().ToString() + "_" + emp.Image.FileName;
-                //var uniqueFileName =  item.Image.FileName; //To Get Only File Name
-                var filePath = Path.Combine(uploadsFolder, uniqueFileName);
-
-                using (var stream = new FileStream(filePath, FileMode.Create))
-                {
-                    emp.Image.CopyTo(stream);
-                }
-
-                // Save The File Path To Our DB Table In c_image Field:
-                emp.c_empimage = uniqueFileName;
-            }
-            _empAPIInterface.UserAddEmpData(emp);
-            return Ok("Employee Data Added Successfully!");
+            return Ok(new {success = true, message = "Employee Added !!!!!"});
         }
 
         #endregion
