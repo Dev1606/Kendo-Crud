@@ -1,7 +1,9 @@
 $(document).ready(function () {
+    var ImageFileName = "";
     console.log("Welcome Employee");
     GetAll();
     getDropdownValues();
+    hideAlerts();
     //for set date time in formate
     function formatDateForInput(dateString) {
         const dateObj = new Date(dateString);
@@ -33,10 +35,10 @@ $(document).ready(function () {
     }
     // for getting dropdown
     function getDropdownValues() {
-        var dropdown = $("#EditEmpDepartment");
+        var dropdown = $("#EmpDepartment, #EditEmpDepartment");
         dropdown.empty();
         $.ajax({
-            url: 'https://localhost:7068/api/MVCApi/GetDropDepartment',
+            url: '/MVCAjax/GetDepartment',
             type: 'GET',
             success: function (data) {
                 data.forEach((Designation) => {
@@ -52,7 +54,8 @@ $(document).ready(function () {
         table.empty();
         $.ajax({
             type: "GET",
-            url: "https://localhost:7068/api/MVCApi/GetEmpData",
+            url: "/MVCAjax/AdminGetEmpData",
+            dataType: 'json',
             success: function (emp) {
                 emp.forEach(function (emp) {
                     var row = '<tr>';
@@ -62,11 +65,12 @@ $(document).ready(function () {
                     row += '<td>' + emp.c_dob + '</td>';
                     row += '<td>' + emp.c_shift + '</td>';
                     row += '<td>' + emp.c_department + '</td>';
-                    row += '<td> <img src="'+ emp.c_empimage +'" alt="Image Not Found" style="height: 15%;width:15%;"></td>';
+                    row += '<td><img src="../wwwroot/uploadsimg/'+emp.c_empimage+'"></td>';
                     row += '<td>';
                     row += '<div class="d-flex justify-content-between">';
-                    row += '<button type="button" id="edit" class="btn btn-outline-success edit" data-id="' + emp.c_empid + '">Edit</button>';
+                    row += '<button type="button" id="edit" class="btn btn-outline-success edit" data-id="' + emp.c_empid + '" data-bs-toggle="modal" data-bs-target="#EditEmpModal">Edit</button>';
                     row += '<button type="button" id="del" class="btn btn-outline-danger delete" data-id="' + emp.c_empid + '">Delete</button>';
+
                     row += '</div>';
                     row += '</td>';
                     row += '</tr>';
@@ -88,9 +92,11 @@ $(document).ready(function () {
     $(document).on('click', '#edit', function () {
         var eid = $(this).data('id');
         console.log(eid);
-        $.get("https://localhost:7068/api/MVCApi/GetEmpDetail", { id: eid }, function (employee) {
+        $.get("/MVCAjax/GetEmpDetail", { id: eid }, function (employee) {
             console.log(employee);
-            $('#Empid').attr('data-id', eid);
+            var ImagePath = "~/uploadsimg/" + employee.c_empimage;
+            ImageFileName = employee.c_empimage;
+            $('#EditEmpId').attr('data-id', eid);
             $('#EditEmpName').val(employee.c_empname);
             // Setting radio button for gender
             if (employee.c_empgender === 'Male') {
@@ -98,34 +104,33 @@ $(document).ready(function () {
             } else if (employee.c_empgender === 'Female') {
                 $("input[name='EditEmpGender'][value='Female']").prop("checked", true);
             } else if (employee.c_empgender === 'Other') {
-                $("input[name='EditEmpGender'][value='Other']").prop("checked", true);
+                $("input[name='EditEmpGender'][value='Others']").prop("checked", true);
             }
             $('#EditEmpDob').val(formatDateForInput(employee.c_dob));
             $("#EditEmpDepartment").val(employee.c_department).map;
             $('input[name="EditEmpShift"]').val(employee.c_shift);
-            $('#EditEmpImage').val(employee.c_empimage);
-            //$('#EditEmpImage').val(employee.Image);
+            $('#EditImage').attr('src', ImagePath);
+            $('#EditImage').attr('data-value', employee.c_empimage);
             $('#EditModel').modal('show');
         });
     });
     // Event handler for the Update button
     $('#FinalEditBtn').on('click', function () {
         var employee = {
-            c_empid: parseInt($('#Empid').attr('data-id')),
+            c_empid: parseInt($('#EditEmpId').attr('data-id')),
             c_empname: $('#EditEmpName').val(),
             c_empgender: $("input[name='EditEmpGender']:checked").val(),
             c_dob: $('#EditEmpDob').val().split('T')[0], // Extracting date part
             c_department: $("#EditEmpDepartment").val(),
             c_shift: $('input[name="EditEmpShift"]:checked').map(function () { return this.value; }).get(),
-            c_empimage: parseInt($('#EditEmpImage').val()),
+            c_empimage: ImageFileName,
         };
         console.log(employee);
         $.ajax({
-            url: 'https://localhost:7068/api/MVCApi/UpdateEmpData',
-            type: 'PUT',
+            url: '/MVCAjax/AdminUpdateEmpData',
+            type: 'POST',
             dataType: 'json',
-            contentType: "application/json",
-            data: JSON.stringify(employee),
+            data: employee,
             success: function (data) {
                 console.log(data);
                 GetAll();
@@ -141,12 +146,11 @@ $(document).ready(function () {
         console.log(Id);
         if (confirm("Are you sure you want to delete this data?")) {
             $.ajax({
-                url: 'https://localhost:7068/api/MVCApi/DeleteEmpData?id='+Id,
-                type: 'DELETE',
-                dataType:"json",
-                contentType: "application/json",
+                url: '/MVCAjax/AdminDeleteEmpConfirm',
+                type: 'POST',
+                data: {id : Id},
+                dataType: 'json',
                 success: function (data) {
-                    console.log(data);
                     GetAll();
                     alert(data.message);
                 }

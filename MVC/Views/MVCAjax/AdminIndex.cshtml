@@ -1,14 +1,9 @@
 @{
-    ViewData["Title"] = "MVC Ajax";
+    ViewData["Title"] = "MVC Ajax Admin";
 }
 
-
+<center><h2>@ViewData["Title"]</h2></center>
 <div class="table-responsive">
-    @* Add Button *@
-    <button type="button" class="btn btn-primary mb-3" id="AddEmployeeModalBtn" data-bs-toggle="modal"
-        data-bs-target="#AddEmployeeModal">
-        Add Button
-    </button>
 
     <center>
         @* Message *@
@@ -38,19 +33,20 @@
     #region Edit Modal
 }
 <!-- Edit Modal -->
-<div class="modal fade" id="EditModel" tabindex="-1" aria-labelledby="EditStudentModelLabel" aria-hidden="true">
+<div class="modal fade" id="EditEmpModal" tabindex="-1" aria-labelledby="EditEmpModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h1 class="modal-title fs-5" id="EditStudentModelLabel">Edit Student</h1>
+                <h1 class="modal-title fs-5" id="EditEmpModalLabel">Edit Student</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <form method="post">
                 <div class="modal-body">
+                    @* ID *@
+                    <input type="hidden" data-id="" id="EditEmpId">
                     @* Employee Name *@
                     <div class="mb-3">
-                        <input id="Empid" hidden> 
-                        <label>Employee Name: </label>
+                        <label>Student Name: </label>
                         <input type="text" id="EditEmpName">
                         <span class="text-danger" id="EditEmpNameHelp"></span>
                     </div>
@@ -70,7 +66,7 @@
                             </label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="EditEmpGender" id="Others" value="Other">
+                            <input class="form-check-input" type="radio" name="EditEmpGender" id="Others" value="Others">
                             <label class="form-check-label" for="Others">
                                 Others
                             </label>
@@ -112,7 +108,7 @@
                     @* Course *@
                     <div class="mb-3">
                         <div class="dropdown">
-                            <label>Department Name: </label>
+                            <label>Course Name: </label>
                             <select class="btn btn-secondary dropdown-toggle" id="EditEmpDepartment"
                                 name="EmpDepartmentDropdown" id="EmpDepartmentDropdown">
 
@@ -122,9 +118,7 @@
                     </div>
                     @* Image *@
                     <div class="mb-3">
-                        <label for="EditEmpImage" class="form-label">Choose An Image</label>
-                         //Changed to image during AdminApi Branch Merge
-                        <input class="form-control" type="file" id="EditEmpImage">
+                        <img src="" style="width: 15%; height: 15%;" id="EditImage">
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -141,5 +135,5 @@
 }
 
 @section Scripts{
-    <script src="~/js/ApiAjaxIndex.js" asp-append-version="true"></script>
+    <script src="~/js/MVCAdminAjaxIndex.js" asp-append-version="true"></script>
 }

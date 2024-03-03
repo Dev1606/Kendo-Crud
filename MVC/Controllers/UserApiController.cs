@@ -5,25 +5,33 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using WebApi.Models;
-using WebApi.Repositories;
 
 namespace MVC.Controllers
 {
-    // [Route("[controller]")]
-    public class ApiAjaxController : Controller
+    [Route("[controller]")]
+    public class UserApiController : Controller
     {
-        private readonly ILogger<ApiAjaxController> _logger;
+        private readonly ILogger<UserApiController> _logger;
 
-        private readonly IEmpInterface _empAPIInterface;
-
-        public ApiAjaxController(IEmpInterface empAPIInterface,ILogger<ApiAjaxController> logger)
+        public UserApiController(ILogger<UserApiController> logger)
         {
-            _empAPIInterface = empAPIInterface;
             _logger = logger;
         }
 
+        [Route("Index")]
         public IActionResult Index()
+        {
+            return View();
+        }
+
+        [Route("Login")]
+        public IActionResult Login()
+        {
+            return View();
+        }
+
+        [Route("Register")]
+        public IActionResult Register()
         {
             return View();
         }
