@@ -25,6 +25,11 @@ namespace MVC.Controllers
         }
 
         [HttpGet]
+        public IActionResult Index()
+        {
+            return RedirectToAction("Register");
+        }
+        [HttpGet]
         public IActionResult Register()
         {
             return View();

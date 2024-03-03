@@ -8,7 +8,7 @@ using Microsoft.Extensions.Logging;
 
 namespace MVC.Controllers
 {
-    [Route("[controller]")]
+    // [Route("[controller]")]
     public class UserApiController : Controller
     {
         private readonly ILogger<UserApiController> _logger;
@@ -18,19 +18,19 @@ namespace MVC.Controllers
             _logger = logger;
         }
 
-        [Route("Index")]
+        // [Route("Index")]
         public IActionResult Index()
         {
-            return View();
+            return View("Register");
         }
 
-        [Route("Login")]
+        // [Route("Login")]
         public IActionResult Login()
         {
             return View();
         }
 
-        [Route("Register")]
+        // [Route("Register")]
         public IActionResult Register()
         {
             return View();

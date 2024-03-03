@@ -20,6 +20,12 @@ namespace MVC.Controllers
 
         public IActionResult Index()
         {
+            return RedirectToAction("Register");
+        }
+        public IActionResult Register(){
+            return View();
+        }
+        public IActionResult Login(){
             return View();
         }
         public IActionResult KendoAPI()
