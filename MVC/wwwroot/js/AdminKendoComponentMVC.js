@@ -124,26 +124,26 @@ $(document).ready(function () {
     });
 
     $("#FinalEditBtn").click(function () {
-        var formData = {
-            c_empid: $('#EditEmpId').val(),
-            c_empname: $("#EditEmpName").val(),
-            c_empgender: $('#EditEmpGender').data("kendoRadioGroup").value(),
-            c_dob: $("#EditEmpDob").val(),
-            c_shift: $("#EditEmpShift").data("kendoCheckBoxGroup").value(),
-            c_department: $("#EditEmpDepartment").data("kendoDropDownList").value(),
-            c_empimage: ImageFileName,
-        };
-        console.log("FormData",formData);
-
+        var formData = new FormData();
+        formData.append("c_empid", $('#EditEmpId').val());
+        formData.append("c_empname", $("#EditEmpName").val());
+        formData.append("c_empgender", $('#EditEmpGender').data("kendoRadioGroup").value());
+        formData.append("c_dob", $("#EditEmpDob").val());
+        formData.append("c_shift", $("#EditEmpShift").data("kendoCheckBoxGroup").value());
+        formData.append("c_department", $("#EditEmpDepartment").data("kendoDropDownList").value());
+        formData.append("Image", $('#EditEmpImage')[0].files[0]); 
+    
         $.ajax({
             url: "/KendoComponent/AdminUpdateEmpData",
             type: "POST",
-            // contentType: "application/json",
-            data:formData,
+            processData: false,
+            contentType: false, 
+            data: formData,
             success: function (response) {
-                console.log(formData);
+                console.log(response);
                 $("#messageSuccess").text(response.message).show();
                 $("#messageFail").hide();
+                GetAll();
             },
             error: function (xhr, status, error) {
                 $("#messageFail").text(xhr.responseText).show();
@@ -151,6 +151,7 @@ $(document).ready(function () {
             }
         });
     });
+    
 
     //Delete employee
     $(document).on('click', '#del', function () {
