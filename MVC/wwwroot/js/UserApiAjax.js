@@ -1,14 +1,25 @@
-if (localStorage.getItem('token') == null) {
-    window.location = '/UserApi/Login';
-}
 $(document).ready(function () {
-    console.log("Welcome Api User");
-    GetAllUser();
 
-    hideAlerts();
+    var token = localStorage.getItem('token');
+    if (token == null) {
+        // Redirect to the login page if the token is not present
+        window.location = '/UserApi/Login';
+    } else {
+        // Fetch user data using the token
+        fetchUserData(token);
+
+        // Other initialization functions
+        GetAll();
+        hideAlerts();
+        getDropdownValues();
+    }
+    // console.log("Welcome Api User");
+    // GetAllUser();
+
+    // hideAlerts();
     //AddUser();
-    getDropdownValues();
-    GetToken();
+    // getDropdownValues();
+    // GetToken();
     //for set date time in formate
     function formatDateForInput(dateString) {
         const dateObj = new Date(dateString);
@@ -133,11 +144,34 @@ $(document).ready(function () {
         $('#date').val("");
         $('#salary').val("");
     }
-
-
-
-
-
+    
+    function fetchUserData(token) {
+        var username = "";
+        $.ajax({
+            url: 'https://localhost:7068/api/MVCApi/GetTokenData',
+            type: 'GET',
+            data: { usertoken: token },
+            success: function (userData) {
+                console.log('User Data:', userData);
+                username = userData.userName;
+                $.ajax({
+                    url: "/User/SetUserData",
+                    method: "POST",
+                    data: { username: username }, 
+                    async:false,
+                    success: function (response) {
+                        if (response.success) {
+                            // Handle successful response, e.g., display a success message
+                            console.log("Username set successfully!");
+                        } else {
+                            // Handle unsuccessful response, e.g., display an error message
+                            console.error("Failed to set username.");
+                        }
+                    }
+                });
+            }
+        });
+    }
 
     function GetToken() {
         var token = localStorage.getItem('token');
