@@ -10,7 +10,7 @@ $(document).ready(function () {
     } else {
         // Fetch user data using the token
         fetchUserData(token);
-        
+
         // Other initialization functions
         GetAll();
         hideAlerts();
@@ -58,20 +58,20 @@ $(document).ready(function () {
         $.ajax({
             url: 'https://localhost:7068/api/MVCApi/GetDropDepartment',
             type: 'GET',
-            headers : {
+            headers: {
                 contentType: "application/json",
-                Authorization: 'Bearer '+localStorage.getItem('token')
+                Authorization: 'Bearer ' + localStorage.getItem('token')
             },
             success: function (data) {
                 console.log(data);
-                    data.forEach((Designation) => {
+                data.forEach((Designation) => {
                     var row = '<option class="dropdown-item" value="' + Designation + '">' + Designation + '</option>';
                     dropdown.append(row);
                 });
             }
         });
     }
-   
+
     //Get All Admin Details:
     function GetAll() {
         var table = $('#TableContent');
@@ -81,7 +81,7 @@ $(document).ready(function () {
             url: "https://localhost:7068/api/MVCApi/GetEmpData",
             headers: {
                 // "Authorization": localStorage.getItem('token')
-                Authorization: 'Bearer '+localStorage.getItem('token')
+                Authorization: 'Bearer ' + localStorage.getItem('token')
             },
             success: function (emp) {
                 emp.forEach(function (emp) {
@@ -92,7 +92,7 @@ $(document).ready(function () {
                     row += '<td>' + emp.c_dob + '</td>';
                     row += '<td>' + emp.c_shift + '</td>';
                     row += '<td>' + emp.c_department + '</td>';
-                    row += '<td> <img src="'+ emp.c_empimage +'" alt="Image Not Found" style="height: 15%;width:15%;"></td>';
+                    row += '<td> <img src="' + emp.c_empimage + '" alt="Image Not Found" style="height: 15%;width:15%;"></td>';
                     row += '<td>';
                     row += '<div class="d-flex justify-content-between">';
                     row += '<button type="button" id="edit" class="btn btn-outline-success edit" data-id="' + emp.c_empid + '">Edit</button>';
@@ -119,7 +119,7 @@ $(document).ready(function () {
     $(document).on('click', '#edit', function () {
         var eid = $(this).data('id');
         // console.log(eid);
-    
+
         // Make the GET request with the Authorization header
         $.ajax({
             url: "https://localhost:7068/api/MVCApi/GetEmpDetail",
@@ -132,7 +132,7 @@ $(document).ready(function () {
                 console.log(employee);
                 $('#Empid').attr('data-id', eid);
                 $('#EditEmpName').val(employee.c_empname);
-                
+
                 // Setting radio button for gender
                 if (employee.c_empgender === 'Male') {
                     $("input[name='EditEmpGender'][value='Male']").prop("checked", true);
@@ -141,7 +141,7 @@ $(document).ready(function () {
                 } else if (employee.c_empgender === 'Other') {
                     $("input[name='EditEmpGender'][value='Other']").prop("checked", true);
                 }
-                
+
                 $('#EditEmpDob').val(formatDateForInput(employee.c_dob));
                 $("#EditEmpDepartment").val(employee.c_department);
                 $('input[name="EditEmpShift"]').val(employee.c_shift);
@@ -172,11 +172,11 @@ $(document).ready(function () {
             dataType: 'json',
             contentType: "application/json",
             data: JSON.stringify(employee),
-            headers : {
-                Authorization: 'Bearer '+localStorage.getItem('token')
+            headers: {
+                Authorization: 'Bearer ' + localStorage.getItem('token')
             },
             success: function (data) {
-               debugger
+                debugger
                 console.log(data);
                 GetAll();
                 $('#EditModel').modal('hide');
@@ -191,12 +191,12 @@ $(document).ready(function () {
         console.log(Id);
         if (confirm("Are you sure you want to delete this data?")) {
             $.ajax({
-                url: 'https://localhost:7068/api/MVCApi/DeleteEmpData?id='+Id,
+                url: 'https://localhost:7068/api/MVCApi/DeleteEmpData?id=' + Id,
                 type: 'DELETE',
-                dataType:"json",
+                dataType: "json",
                 contentType: "application/json",
-                headers : {
-                    Authorization: 'Bearer '+localStorage.getItem('token')
+                headers: {
+                    Authorization: 'Bearer ' + localStorage.getItem('token')
                 },
                 success: function (data) {
                     console.log(data);
@@ -208,23 +208,35 @@ $(document).ready(function () {
     });
 
     function fetchUserData(token) {
+        var username = "";
         $.ajax({
             url: 'https://localhost:7068/api/MVCApi/GetTokenData',
             type: 'GET',
             data: { usertoken: token },
             success: function (userData) {
                 console.log('User Data:', userData);
-                // Handle user data, e.g., display user information on the page
-            },
-            error: function (xhr, status, error) {
-                console.error('Error fetching user data:', error);
-                // Handle errors, e.g., redirect to login page or show an error message
+                username = userData.userName;
+                $.ajax({
+                    url: "/User/SetUserData",
+                    method: "POST",
+                    data: { username: username }, 
+                    async:false,
+                    success: function (response) {
+                        if (response.success) {
+                            // Handle successful response, e.g., display a success message
+                            console.log("Username set successfully!");
+                        } else {
+                            // Handle unsuccessful response, e.g., display an error message
+                            console.error("Failed to set username.");
+                        }
+                    }
+                });
             }
         });
+        
     }
 
-    function GetToken()
-    {
+    function GetToken() {
         var token = localStorage.getItem('token');
         console.log(token);
     }
