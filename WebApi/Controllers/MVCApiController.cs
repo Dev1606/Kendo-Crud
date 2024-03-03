@@ -51,7 +51,7 @@ namespace WebApi.Controllers
 
         [HttpGet]
         [Route("GetEmpData")]
-        [Authorize]
+        // [Authorize]
         public IActionResult GetEmpData()
         {
             var emplist = _empAPIInterface.GetEmpData();
@@ -60,6 +60,7 @@ namespace WebApi.Controllers
 
         [HttpGet]
         [Route("GetDropDepartment")]
+        // [Authorize]
         public string[] GetDepartment()
         {
             return _empAPIInterface.GetDepartment();
@@ -97,6 +98,7 @@ namespace WebApi.Controllers
         // UserGetEmpData
         [HttpGet]
         [Route("UserGetEmpData")]
+        [Authorize]
         public IActionResult UserGetEmpData()
         {
             var emplist = _empAPIInterface.UserGetEmpData();
