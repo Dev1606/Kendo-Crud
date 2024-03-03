@@ -107,7 +107,7 @@ namespace MVC.Controllers
         {
             Console.WriteLine("Delete called"+id);
             _empRepo.DeleteEmp(id);
-            return Json(new{success=true,message="Employee updated"});
+            return Json(new{success=true,message="Employee deleted"});
         }
          static string file="";
         [HttpPost]
