@@ -1,0 +1,156 @@
+@model List<WebApi.Models.EmpModel>
+@{
+    ViewData["Title"] = "Index Of MVC API";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<link rel="stylesheet" href="https://kendo.cdn.telerik.com/2021.2.616/styles/kendo.common.min.css" />
+<link rel="stylesheet" href="https://kendo.cdn.telerik.com/2021.2.616/styles/kendo.default.min.css" />
+
+<div id="grid"></div>
+
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://kendo.cdn.telerik.com/2021.2.616/js/kendo.all.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            var dataSource = new kendo.data.DataSource({
+                transport: {
+                    read: {
+                        url: "https://localhost:7068/api/MVCApi/GetEmpData",
+                        //type:"GET",
+                        dataType: "json"
+                    },
+                    update: {
+                        url: function (data) {
+                            return "https://localhost:7068/api/MVCApi/UpdateEmpData";
+                        },
+                        type: "PUT",
+                        @* contentType: "application/json" *@
+                        contentType:false,
+                        processData:false
+                    },
+                    destroy: {
+                        url: function (data) {
+                            return "https://localhost:7068/api/MVCApi/DeleteEmpData?id=" + data.c_empid;
+                        },
+                        type: "DELETE",
+                        contentType: "application/json"
+                    },
+                    parameterMap: function (options, operation) {
+                        if (operation !== "read") {
+                            console.log(options);
+                            return JSON.stringify(options);
+                        }
+                    }
+                },
+                pageSize: 10,
+                schema: {
+                    model: {
+                        id: "c_empid",
+                        fields: {
+                            c_empid: { type: "number", editable: false, nullable: false },
+                            c_empname: { type: "string", validation: { required: true } },
+                            c_empgender: { type: "string", validation: { required: true } },
+                            c_dob: { type: "date", validation: { required: true } },
+                            c_shift: { type: "string", validation: { required: true } },
+                            c_department: { type: "string", validation: { required: true } },
+                            c_empimage: { type: "string", validation: { required: true } },
+                        }
+                    }
+                }
+            });
+            $("#grid").kendoGrid({
+                dataSource: dataSource,
+                columns: [
+                    { field: "c_empid", title: "Emp ID" },
+                    { field: "c_empname", title: "Emp Name" },
+                    {
+                        field: "c_empgender", title: "Gender", editor: function (container, options) {
+                            $('<input id="male" type="radio" name="' + options.field + '" value="Male" selectable="true" />').appendTo(container);
+                            $('<label for="male">Male</label>').appendTo(container);
+                            $('<input id="Female" type="radio" name="' + options.field + '" value="Female"/>').appendTo(container);
+                            $('<label for="Female">Female</label>').appendTo(container);
+                        }
+                    },
+                    {
+                        field: "c_dob",
+                        title: "DOB",
+                        editor: function (container, options) {
+                            // var dob = options.model.c_dob;
+                            // console.log("DOB",dob);
+                            $(container).kendoCalendar({
+                                componentType: "modern",
+                                format: "yyyy/MM/dd",
+                                change: function () {
+                                    console.log("Change :: " + kendo.toString(this.value(), 'yyyy/MM/dd'));
+                                    options.model.set("c_dob", kendo.toString(this.value(), 'yyyy/MM/dd'));
+                                },
+                                navigate: function () {
+                                    console.log("Navigate");
+                                }
+                            });
+                            // $(container).kendoCalendar("value", dob);
+                        },
+                        template: function (dataItem) {
+                            var dob = kendo.toString(kendo.parseDate(dataItem.c_dob), "yyyy-MM-dd");
+                            return dob;
+                        }
+                    },
+                    {
+                        field: "c_shift", title: "Shift", editor: function (container, options) {
+                            var shiftValues = options.model.c_shift.split(",");
+                            $(container).kendoCheckBoxGroup({
+                                items: ["Morning", "Afternoon", "Night"],
+                                layout: "horizontal",
+                                change: function () {
+                                    var selectedValues = $(container).kendoCheckBoxGroup("value")
+                                    console.log(selectedValues);
+                                    var arrayExpression = `${selectedValues.join(",")}`;
+                                    options.model.set("c_shift", arrayExpression);
+                                    console.log("c_shift", arrayExpression);
+                                }
+                            });
+                            $(container).kendoCheckBoxGroup("value", shiftValues);
+                        }
+                    },
+                    {
+                        field: "c_department", title: "Department", editor: function (container, options) {
+                            $('<input name="' + options.field + '" id="stateDropdown" checked="checked" optionLabel="Select" style="width: 100%;" />').appendTo(container).kendoDropDownList({
+                                dataSource: {
+                                    transport: {
+                                        read: "https://localhost:7068/api/MVCApi/GetDropDepartment",
+                                        datatype: "json",
+                                    }
+                                },
+                            });
+                        }
+                    },
+                    { field: "c_empimage", title: "Image", editor: imageupload, template: "<img src='#: c_empimage #' alt='Employee Photo' style='width: 50px; height:50px;'/>" },
+                    { command: ["edit", "destroy"], title: "&nbsp;", width: "200px" }],
+                editable: "popup",
+                toolbar: ["create"],
+                pageable: true,
+                sortable: true,
+                filterable: true,
+                edit: function (e) {
+                    var dataItem = e.model;
+                    var dob = kendo.parseDate(dataItem.c_dob);
+                    e.container.find(".k-calendar").data("kendoCalendar").value(dob);
+                }
+            });
+            function imageupload(container) {
+                $('<input name="Image" type="file" id="photo" data-role="upload" data-async=\'{ "saveUrl": "/kendogrid/UploadPhoto", "autoUpload": true }\' class="k-input k-textbox">').appendTo(container);
+            }
+            dataSource.bind("requestEnd", function (e) {
+                if (e.type === "create" || e.type === "update" || e.type === "destroy") {
+                    dataSource.read();
+                }
+            });
+            $("#grid").on("click", ".k-grid-cancel-changes", function () {
+                dataSource.cancelChanges();
+            });
+        });
+    </script>
+}

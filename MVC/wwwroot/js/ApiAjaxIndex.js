@@ -193,8 +193,9 @@ $(document).ready(function () {
             c_dob: $('#EditEmpDob').val().split('T')[0], // Extracting date part
             c_department: $("#EditEmpDepartment").val(),
             c_shift: $('input[name="EditEmpShift"]:checked').map(function () { return this.value; }).get(),
-            c_empimage: parseInt($('#EditEmpImage').val()),
+            c_empimage: $('#EditEmpImage').val()
         };
+        debugger
         console.log(employee);
         $.ajax({
             url: 'https://localhost:7068/api/MVCApi/UpdateEmpData',
@@ -203,6 +204,7 @@ $(document).ready(function () {
             contentType: "application/json",
             data: JSON.stringify(employee),
             success: function (data) {
+               debugger
                 console.log(data);
                 GetAll();
                 $('#EditModel').modal('hide');

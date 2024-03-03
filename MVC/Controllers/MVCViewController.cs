@@ -19,7 +19,7 @@ namespace MVC.Controllers
 
         private readonly IWebHostEnvironment _environment;
 
-        public MVCViewController(ILogger<MVCViewController> logger, IEmpInterface empRepo, IWebHostEnvironment environment, IHttpContextAccessor httpContextAccessor)
+        public MVCViewController(ILogger<MVCViewController> logger,IEmpInterface empRepo, IWebHostEnvironment environment, IHttpContextAccessor httpContextAccessor)
         {
             _logger = logger;
             _empRepo = empRepo;
