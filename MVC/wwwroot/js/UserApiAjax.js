@@ -9,9 +9,10 @@ $(document).ready(function () {
         fetchUserData(token);
 
         // Other initialization functions
-        GetAll();
+        GetAllUser();
         hideAlerts();
         getDropdownValues();
+        GetToken();
     }
     // console.log("Welcome Api User");
     // GetAllUser();
