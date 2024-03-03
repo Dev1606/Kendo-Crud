@@ -1,0 +1,161 @@
+@{
+    ViewData["Title"] = "Kendo Component MVC";
+}
+
+<div id="grid"></div>
+@* @section Scripts{
+<script src="~/js/UserKendoComponentMVC.js" asp-append-version="true"></script>
+} *@
+
+<center>
+    <h1>Employee Data</h1>
+</center>
+<div class="container">
+    <div class="row col-6 offset-3">
+
+        @* Emp Name *@
+        <div class="row">
+            <label for="">Employee Name :-</label>
+            <hr>
+            <input id="EmpName" />
+        </div>
+
+        @* Gender *@
+        <div class="row">
+            <label for="">Gender :-</label>
+            <hr>
+            <ul id="GenderRadioButton"></ul>
+            <hr>
+        </div>
+
+        @* DOB *@
+        <div class="row">
+            <label for="">Select DOB:-</label>
+            <hr>
+            <div id="dob"></div>
+            <hr>
+        </div>
+
+        @* Shift *@
+        <div class="row">
+            <label for="">Select Shift:-</label>
+            <hr>
+            <ul id="ShiftCheckbox"></ul>
+            <hr>
+        </div>
+
+        @* Image *@
+        <div class="row">
+            <label for="">Image:-</label>
+            <hr>
+            <input type="file" id="ImageUpload">
+            <hr>
+        </div>
+
+        @* Department *@
+        <div class="row">
+            <label for="">Select Department:-</label>
+            <hr>
+            <input id="DepartmentDorpDown">
+            <hr>
+        </div>
+
+        @* Submit *@
+        <div class="row">
+            <button id="SubmitBtn">Submit</button>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    <script src="~/js/UserKendoComponentMVC.js" asp-append-version="true"></script>
+    <script>
+
+
+        @* EmpName TextBox *@
+            $("#EmpName").kendoTextBox({
+                placeholder: "Enter Employee Name...",
+                change: function (e) {
+                    console.log("Value changed:", this.value());
+                },
+                focus: function (e) {
+                    console.log("TextBox focused");
+                }
+            });
+
+        @* Gender *@
+            $('#GenderRadioButton').kendoRadioGroup({
+                items: ["Male", "Female", "Other"],
+                layout: "horizontal",
+                value: "Male"
+            });
+
+        @* DOB *@
+            $("#dob").kendoCalendar({
+                change: function () {
+                    console.log("Change :: " + kendo.toString(this.value(), 'd'));
+                },
+                navigate: function () {
+                    console.log("Navigate");
+                }
+            });
+
+        @* Shift *@
+            $('#ShiftCheckbox').kendoCheckBoxGroup({
+                items: ["Morning", "Afternoon", "Night"],
+                layout: "horizontal",
+                change: function (e) {
+                    kendoConsole.log("Change event fired: " + $(e.target[0]).val() + " checkbox has been " + ($(e.target[0]).is(":checked") == true ? "checked" : "unchecked"));
+                },
+                focus: function (e) {
+                    kendoConsole.log("Focus event fired:: target: " + $(e.target[0]).val());
+                },
+                select: function (e) {
+                    kendoConsole.log("Select event fired: " + $(e.target[0]).val() + " checkbox has been " + ($(e.target[0]).is(":checked") == true ? "checked" : "unchecked"));
+                }
+            });
+
+        @* Image *@
+            $('#ImageUpload').kendoUpload({
+                multiple: false,
+                validation: {
+                    allowedExtensions: [".jpg", ".png", ".jpeg"]
+                },
+                select: function imageNameChange(e) {
+                    $.each(e.files, function (index, value) {
+                        var fileNameWithPath = "/images/" + value.name;
+                        $("#c_city_photo").val(fileNameWithPath).change();
+                        var formData = new FormData();
+                        formData.append("file", value.rawFile);
+                        $.ajax({
+                            url: "",
+                            type: "POST",
+                            data: formData,
+                            processData: false,
+                            contentType: false,
+
+                        });
+                    });
+                }
+            });
+
+        @* Department *@
+            $('#DepartmentDorpDown').kendoDropDownList({
+                filter: "contains",
+                optionLabel: 'Please select Department...',
+                dataSource: {
+                    transport: {
+                        read: {
+                            url: "/KendoComponent/GetDepartment", 
+                            datatype: "json",
+                        }
+                    }
+                }
+            });
+        @* Submit Button *@
+            $("#SubmitBtn").kendoButton({
+                themeColor: "primary"
+            });
+    </script>
+}
