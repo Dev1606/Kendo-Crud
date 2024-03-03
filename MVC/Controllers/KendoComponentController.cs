@@ -35,7 +35,6 @@ namespace MVC.Controllers
 
         public IActionResult AdminIndex()
         {
-            //return RedirectToAction("Register");
             return View();
         }
         [HttpGet]
