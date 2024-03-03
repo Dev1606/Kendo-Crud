@@ -101,17 +101,21 @@ $(document).ready(function(){
         click: function(){
             // console.log(login);
             $.ajax({
-                url: "",
+                url: "/KendoComponent/Login",
                 type: "POST",
-                // contentType: "application/json",
+                //contentType: "application/json",
                 // data: JSON.stringify(login),
                 data: user,
-                success: function (data) {
-                    if(data.success == true){
-                        window.location.href="/User/Index";
-                    }else{
-                        window.location.href="/User/Login";
-                    }
+                
+            }).done(function (data) {
+                if(data.success == true){
+                    console.log(data);
+                    alert("Login Successfully...");
+                    window.location.href="/KendoComponent/AdminIndex";
+                }else{
+                    alert("Invalid...");
+                    console.log(data);
+                    //window.location.href="/KendoComponent/AdminIndex";
                 }
             });
         }

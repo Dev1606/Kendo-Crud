@@ -17,28 +17,69 @@ namespace MVC.Controllers
          private readonly IEmpInterface _empRepo;
           private readonly IWebHostEnvironment _hostingEnvironment;
           private readonly IHttpContextAccessor _httpContextAccessor;
+          private readonly IUserInterface _userrepo;
 
-        public KendoComponentController(ILogger<KendoComponentController> logger,IEmpInterface empRepo, IWebHostEnvironment environment, IHttpContextAccessor httpContextAccessor)
+        public KendoComponentController(ILogger<KendoComponentController> logger,IEmpInterface empRepo, IWebHostEnvironment environment, IHttpContextAccessor httpContextAccessor,IUserInterface userrepo)
         {
             _logger = logger;
             _empRepo = empRepo;
             _hostingEnvironment = environment;
+             _userrepo = userrepo;
             _httpContextAccessor = httpContextAccessor;
         }
 
         public IActionResult Index(){
             return View("Register");
+            //return View();
         }
 
         public IActionResult AdminIndex()
         {
-            return RedirectToAction("Register");
+            //return RedirectToAction("Register");
+            return View();
         }
         public IActionResult Register(){
             return View();
         }
+
+        [HttpGet]
         public IActionResult Login(){
             return View();
+        }
+
+        [HttpPost]
+        public IActionResult Login(LoginModel user)
+        {
+            var session = _httpContextAccessor.HttpContext.Session;
+            if (session.GetInt32("userid") == null)
+            {
+                if (_userrepo.Login(user))
+                {
+                    if (session.GetInt32("isRole") == 0)
+                    {
+                        // User
+                        return RedirectToAction("UserKendoMVC", "KendoGrid", new {success=true});
+                    }
+                    else if (session.GetInt32("isRole") == 1)
+                    {
+                        // Admin
+                        return RedirectToAction("AdminKendoMVC", "KendoGrid", new {success=true});
+                    }
+                    else
+                    {
+                        // login.ErrorMessage = "Invalid email or password";
+                        return View();
+                    }
+                }
+                else
+                {
+                    return RedirectToAction("Login", "User");
+                }
+            }
+            else
+            {
+                return RedirectToAction("KendoLogin", "User");
+            }
         }
         public IActionResult KendoAPI()
         {
