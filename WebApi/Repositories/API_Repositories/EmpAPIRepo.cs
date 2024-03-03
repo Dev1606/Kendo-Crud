@@ -14,6 +14,7 @@ namespace WebApi.Repositories.API_Repositories
         {
             _ConnectionString = configuration.GetConnectionString("ConStr");
         }
+
         
        #region User Repo Methods
 
@@ -138,6 +139,7 @@ namespace WebApi.Repositories.API_Repositories
         }
         #endregion 
         
+
         #region Admin Repo Methods
 
         //Get Employee Data
