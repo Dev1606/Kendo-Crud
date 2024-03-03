@@ -1,11 +1,26 @@
 $(document).ready(function () {
-    console.log("Welcome Api User");
-    GetAllUser();
 
-    hideAlerts();
+    var token = localStorage.getItem('token');
+    if (token == null) {
+        // Redirect to the login page if the token is not present
+        window.location = '/UserApi/Login';
+    } else {
+        // Fetch user data using the token
+        fetchUserData(token);
+
+        // Other initialization functions
+        GetAllUser();
+        hideAlerts();
+        getDropdownValues();
+        GetToken();
+    }
+    // console.log("Welcome Api User");
+    // GetAllUser();
+
+    // hideAlerts();
     //AddUser();
-    getDropdownValues();
-    GetToken();
+    // getDropdownValues();
+    // GetToken();
     //for set date time in formate
     function formatDateForInput(dateString) {
         const dateObj = new Date(dateString);
@@ -42,11 +57,11 @@ $(document).ready(function () {
         $.ajax({
             url: 'https://localhost:7068/api/MVCApi/GetDropDepartment',
             type: 'GET',
-            // header : {
-            //     Authorization: 'Bearer '+localStorage.getItem('token')
-            // },
+            headers: {
+                Authorization: 'Bearer ' + localStorage.getItem('token')
+            },
             success: function (data) {
-                console.log(data);
+                // console.log(data);
                 data.forEach((Designation) => {
                     var row = '<option class="dropdown-item" value="' + Designation + '">' + Designation + '</option>';
                     dropdown.append(row);
@@ -56,39 +71,38 @@ $(document).ready(function () {
     }
 
     //Add User Data:
-    $('#printbtn').on('click',function(){
+    $('#printbtn').on('click', function () {
         AddUser();
         console.log("clicked");
         GetAllUser();
     });
-    function AddUser(){
-     var formData = new FormData();
-     formData.append('c_empname',$('#EmpName').val());
-     formData.append('c_empgender', $('input[name="rdbtn"]:checked').val());
-     formData.append('c_dob',$('#EmpDob').val().split('T')[0]);
-     $('input[name="chkbox"]:checked').each(function(){
-        formData.append('c_shift[]', $(this).val());
-    });
-    formData.append('c_department',$('#EditEmpDepartment').val()); 
-    //formData.append('Image',$('#EmpImage')[0].files[0]);
+    function AddUser() {
+        var formData = new FormData();
+        formData.append('c_empname', $('#EmpName').val());
+        formData.append('c_empgender', $('input[name="rdbtn"]:checked').val());
+        formData.append('c_dob', $('#EmpDob').val().split('T')[0]);
+        $('input[name="chkbox"]:checked').each(function () {
+            formData.append('c_shift[]', $(this).val());
+        });
+        formData.append('c_department', $('#EditEmpDepartment').val());
+        //formData.append('Image',$('#EmpImage')[0].files[0]);
 
-    //save kri ne run karavje
+        //save kri ne run karavje
 
-    var img = $('#EmpImage')[0].files[0];
-     $.ajax({
-     url : 'https://localhost:7068/api/MVCApi/UserAddEmpData',
-     type : 'POST',
-     dataType: 'json',
-     contentType:'application/json',
-     data: {emp:JSON.stringify(formData),file:img},
-     success:function (data){
-        GetAllUser();
-        successMsg(data.message);
-     }
-
-     });
+        var img = $('#EmpImage')[0].files[0];
+        $.ajax({
+            url: 'https://localhost:7068/api/MVCApi/UserAddEmpData',
+            type: 'POST',
+            dataType: 'json',
+            contentType: 'application/json',
+            data: { emp: JSON.stringify(formData), file: img },
+            success: function (data) {
+                GetAllUser();
+                successMsg(data.message);
+            }
+        });
     }
-    
+
     //Get All User Details:
     function GetAllUser() {
         var table = $('#TableContent11');
@@ -96,9 +110,9 @@ $(document).ready(function () {
         $.ajax({
             type: "GET",
             url: "https://localhost:7068/api/MVCApi/GetEmpData",
-            // header : {
-            //     Authorization: 'Bearer '+localStorage.getItem('token')
-            // },
+            headers: {
+                Authorization: 'Bearer ' + localStorage.getItem('token')
+            },
             success: function (emp) {
                 emp.forEach(function (emp) {
                     var row = '<tr>';
@@ -122,7 +136,7 @@ $(document).ready(function () {
             }
         });
     }
-     
+
     $('#reset').on('click', Reset);
     function Reset() {
         $('#name').val("");
@@ -131,14 +145,36 @@ $(document).ready(function () {
         $('#date').val("");
         $('#salary').val("");
     }
+    
+    function fetchUserData(token) {
+        var username = "";
+        $.ajax({
+            url: 'https://localhost:7068/api/MVCApi/GetTokenData',
+            type: 'GET',
+            data: { usertoken: token },
+            success: function (userData) {
+                console.log('User Data:', userData);
+                username = userData.userName;
+                $.ajax({
+                    url: "/User/SetUserData",
+                    method: "POST",
+                    data: { username: username }, 
+                    async:false,
+                    success: function (response) {
+                        if (response.success) {
+                            // Handle successful response, e.g., display a success message
+                            console.log("Username set successfully!");
+                        } else {
+                            // Handle unsuccessful response, e.g., display an error message
+                            console.error("Failed to set username.");
+                        }
+                    }
+                });
+            }
+        });
+    }
 
-
-
-
-
-
-    function GetToken()
-    {
+    function GetToken() {
         var token = localStorage.getItem('token');
         console.log(token);
     }

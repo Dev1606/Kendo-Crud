@@ -34,7 +34,7 @@ namespace WebApi.Controllers
                 .Build();
 
             UserModel user = _userAPIInterface.Login(User);
-            if (user != null)
+            if (user.c_uid != 0)
             {
                 var claims = new[]
                 {
