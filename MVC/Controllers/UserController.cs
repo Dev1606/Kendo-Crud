@@ -25,6 +25,11 @@ namespace MVC.Controllers
         }
 
         [HttpGet]
+        public IActionResult Index()
+        {
+            return RedirectToAction("Register");
+        }
+        [HttpGet]
         public IActionResult Register()
         {
             return View();
@@ -82,6 +87,17 @@ namespace MVC.Controllers
             }
         }
 
+        [HttpPost]
+        public IActionResult SetUserData(string username){
+            var session = _httpContextAccessor.HttpContext.Session;
+            if(username != null){
+                session.SetString("username", username);
+                return Json(new {success = true});
+            }else{
+                return Json(new {success = false});
+            }
+            
+        }
         public IActionResult Logout()
         {
             var session = _httpContextAccessor.HttpContext.Session;

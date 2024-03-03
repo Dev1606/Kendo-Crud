@@ -19,7 +19,7 @@ namespace MVC.Controllers
 
         private readonly IWebHostEnvironment _environment;
 
-        public MVCViewController(ILogger<MVCViewController> logger, IEmpInterface empRepo, IWebHostEnvironment environment, IHttpContextAccessor httpContextAccessor)
+        public MVCViewController(ILogger<MVCViewController> logger,IEmpInterface empRepo, IWebHostEnvironment environment, IHttpContextAccessor httpContextAccessor)
         {
             _logger = logger;
             _empRepo = empRepo;
@@ -34,13 +34,24 @@ namespace MVC.Controllers
         */
         public IActionResult Index()
         {
+            var session = _httpContextAccessor.HttpContext.Session;
             //Validate using Session
-            string username = HttpContext.Session.GetString("username");
-            if(username == null)
+            string username = session.GetString("username");
+            if (username == null)
             {
-                return RedirectToAction("Login","User");
+                return RedirectToAction("Login", "User");
             }
-            return View();
+            else
+            {
+                if (session.GetInt32("isRole") == 0)
+                {
+                    return RedirectToAction("UserGetEmpData", "MVCView");
+                }
+                else
+                {
+                    return RedirectToAction("AdminGetEmpData", "MVCView");
+                }
+            }
         }
 
         #region Admin Methods
@@ -48,8 +59,26 @@ namespace MVC.Controllers
         [HttpGet]
         public IActionResult AdminGetEmpData()
         {
-            var empData = _empRepo.GetEmpData();
-            return View(empData);
+            var session = _httpContextAccessor.HttpContext.Session;
+            //Validate using Session
+            string username = session.GetString("username");
+            if (username == null)
+            {
+                return RedirectToAction("Login", "User");
+            }
+            else
+            {
+                if (session.GetInt32("isRole") == 1)
+                {
+                    var empData = _empRepo.GetEmpData();
+                    return View(empData);
+                }
+                else
+                {
+                    return RedirectToAction("UserGetEmpData");
+                }
+            }
+
         }
 
         [HttpGet]
@@ -68,9 +97,26 @@ namespace MVC.Controllers
         [HttpGet]
         public IActionResult AdminUpdateEmpData(int id)
         {
-            ViewBag.Departments = _empRepo.GetDepartment();
-            var empUpdate = _empRepo.GetEmpDetail(id);
-            return View(empUpdate);
+            var session = _httpContextAccessor.HttpContext.Session;
+            //Validate using Session
+            string username = session.GetString("username");
+            if (username == null)
+            {
+                return RedirectToAction("Login", "User");
+            }
+            else
+            {
+                if (session.GetInt32("isRole") == 1)
+                {
+                    ViewBag.Departments = _empRepo.GetDepartment();
+                    var empUpdate = _empRepo.GetEmpDetail(id);
+                    return View(empUpdate);
+                }
+                else
+                {
+                    return RedirectToAction("UserGetEmpData");
+                }
+            }
         }
 
         [HttpPost]
@@ -93,7 +139,7 @@ namespace MVC.Controllers
                 // Save The File Path To Our DB Table In c_image Field:
                 emp.c_empimage = uniqueFileName;
             }
-            
+
             _empRepo.UpdateEmp(emp);
             return RedirectToAction("AdminGetEmpData");
         }
@@ -101,8 +147,25 @@ namespace MVC.Controllers
         [HttpGet]
         public IActionResult AdminDeleteEmp(int id)
         {
-            var empDelete = _empRepo.GetEmpDetail(id);
-            return View(empDelete);
+            var session = _httpContextAccessor.HttpContext.Session;
+            //Validate using Session
+            string username = session.GetString("username");
+            if (username == null)
+            {
+                return RedirectToAction("Login", "User");
+            }
+            else
+            {
+                if (session.GetInt32("isRole") == 1)
+                {
+                    var empDelete = _empRepo.GetEmpDetail(id);
+                    return View(empDelete);
+                }
+                else
+                {
+                    return RedirectToAction("UserGetEmpData");
+                }
+            }
         }
 
         [HttpPost]
@@ -116,11 +179,31 @@ namespace MVC.Controllers
 
         #region User Methods
         // Get
+
+
         [HttpGet]
         public IActionResult UserGetEmpData()
         {
-            var Employees = _empRepo.UserGetEmpData();
-            return View(Employees);
+            var session = _httpContextAccessor.HttpContext.Session;
+            //Validate using Session
+            string username = session.GetString("username");
+            if (username == null)
+            {
+                return RedirectToAction("Login", "User");
+            }
+            else
+            {
+                if (session.GetInt32("isRole") == 0)
+                {
+                    var Employees = _empRepo.UserGetEmpData();
+                    return View(Employees);
+                }
+                else
+                {
+                    return RedirectToAction("AdminGetEmpData");
+                }
+            }
+
         }
 
         //department dropdown
@@ -134,9 +217,28 @@ namespace MVC.Controllers
         [HttpGet]
         public IActionResult UserAddEmpData()
         {
-            ViewBag.Departments = _empRepo.GetDepartment();
-            return View();
+            var session = _httpContextAccessor.HttpContext.Session;
+            //Validate using Session
+            string username = session.GetString("username");
+            if (username == null)
+            {
+                return RedirectToAction("Login", "User");
+            }
+            else
+            {
+                if (session.GetInt32("isRole") == 0)
+                {
+                    ViewBag.Departments = _empRepo.GetDepartment();
+                    return View();
+                }
+                else
+                {
+                    return RedirectToAction("AdminGetEmpData");
+                }
+            }
+
         }
+
         [HttpPost]
         public IActionResult UserAddEmpData(EmpModel employee)
         {

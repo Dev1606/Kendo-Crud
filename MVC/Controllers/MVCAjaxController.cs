@@ -26,13 +26,71 @@ namespace MVC.Controllers
             _httpContextAccessor = httpContextAccessor;
         }
 
+        public IActionResult Index(){
+            var session = _httpContextAccessor.HttpContext.Session;
+            //Validate using Session
+            string username = session.GetString("username");
+            if (username == null)
+            {
+                return RedirectToAction("Login", "User");
+            }
+            else
+            {
+                if (session.GetInt32("isRole") == 0)
+                {
+                    return RedirectToAction("UserIndex", "MVCAjax");
+                }
+                else
+                {
+                    return RedirectToAction("AdminIndex", "MVCAjax");
+                }
+            }
+        }
+
         public IActionResult AdminIndex()
         {
-            return View();
+            var session = _httpContextAccessor.HttpContext.Session;
+            //Validate using Session
+            string username = session.GetString("username");
+            if (username == null)
+            {
+                return RedirectToAction("Login", "User");
+            }
+            else
+            {
+                if (session.GetInt32("isRole") == 0)
+                {
+                    return RedirectToAction("UserIndex", "MVCAjax");
+                }
+                else
+                {
+                    return View();
+                }
+            }
         }
+        
         public IActionResult UserIndex()
         {
-            return View();
+            var session = _httpContextAccessor.HttpContext.Session;
+            //Validate using Session
+            string username = session.GetString("username");
+            if (username == null)
+            {
+                return RedirectToAction("Login", "User");
+            }
+            else
+            {
+                if (session.GetInt32("isRole") == 0)
+                {
+                    return View();
+                }
+                else
+                {
+                    return RedirectToAction("AdminIndex", "MVCAjax");
+                }
+            }
+            
+            
         }
 
         #region Admin Methods

@@ -33,7 +33,7 @@ namespace WebApi.Repositories
             {
                 try
                 {
-                    var qry = "SELECT c_empid, c_empname, c_empgender, c_dob, c_shift, c_department, c_empimage FROM mvc_master_project.t_emp;";
+                    var qry = "SELECT c_empid, c_empname, c_empgender, c_dob, c_shift, c_department, c_empimage FROM mvc_master_project.t_emp ORDER BY c_empid;";
                     using (NpgsqlCommand cmd = new NpgsqlCommand(qry, con))
                     {
                         con.Open();
@@ -108,7 +108,7 @@ namespace WebApi.Repositories
             {
                 try
                 {
-                    var qry = "SELECT c_empid, c_empname, c_empgender, c_dob, c_shift, c_department, c_empimage FROM mvc_master_project.t_emp WHERE c_empid = @id";
+                    var qry = "SELECT c_empid, c_empname, c_empgender, c_dob, c_shift, c_department, c_empimage FROM mvc_master_project.t_emp WHERE c_empid = @id ";
                     using (NpgsqlCommand cmd = new NpgsqlCommand(qry, con))
                     {
                         cmd.Parameters.AddWithValue("@id", id);
@@ -144,7 +144,6 @@ namespace WebApi.Repositories
             }
             return emp;
         }
-
         public bool DeleteEmp(int id)
         {
             using (NpgsqlConnection con = new NpgsqlConnection(_ConnectionString))
@@ -178,24 +177,21 @@ namespace WebApi.Repositories
             {
                 try
                 {
-                    var qry = "UPDATE mvc_master_project.t_emp SET c_empname=@c_empname, c_empgender=@c_empgender, c_dob=@c_dob, c_shift=@c_shift, c_department=@c_department, c_empimage=@c_empimage WHERE c_empid=@c_empid;";
+
+                    var qry = "UPDATE mvc_master_project.t_emp SET c_empname=@c_empname,c_empgender=@c_empgender, c_dob=@c_dob, c_shift=@c_shift, c_department=@c_department,c_empimage=@c_empimage WHERE c_empid=@c_empid;";
                     using (NpgsqlCommand cmd = new NpgsqlCommand(qry, con))
                     {
                         cmd.Parameters.AddWithValue("@c_empid", emp.c_empid);
                         cmd.Parameters.AddWithValue("@c_empname", emp.c_empname);
                         cmd.Parameters.AddWithValue("@c_empgender", emp.c_empgender);
-                        cmd.Parameters.AddWithValue("@c_dob", emp.c_dob);
-                        cmd.Parameters.AddWithValue("@c_shift", emp.c_shift);
+                        cmd.Parameters.AddWithValue("@c_dob",emp.c_dob);
+                        cmd.Parameters.AddWithValue("@c_shift",emp.c_shift);
                         cmd.Parameters.AddWithValue("@c_department", emp.c_department);
                         cmd.Parameters.AddWithValue("@c_empimage", emp.c_empimage);
-                        Console.WriteLine("Emp details @ repo"+ emp.c_empid+emp.c_empname+ emp.c_empgender+emp.c_dob+emp.c_shift+ emp.c_department+emp.c_empimage);
-
-                        // string c_shift = string.Join(",", emp.c_shift);
-                        // cmd.Parameters.AddWithValue("@c_shift", emp.c_shift);
+                        Console.WriteLine("Emp details @ emprepo"+ emp.c_empid+emp.c_empname+ emp.c_empgender+emp.c_dob+emp.c_shift+ emp.c_department+emp.c_empimage);
                         con.Open();
                         cmd.ExecuteNonQuery();
                     }
-
                 }
                 catch (Exception e)
                 {
@@ -258,10 +254,8 @@ namespace WebApi.Repositories
                     {
                         con.Open();
                         var reader = cmd.ExecuteReader();
-
                         while (reader.Read())
                         {
-
                             var Employee = new EmpModel
                             {
                                 c_empid = (int)reader["c_empid"],

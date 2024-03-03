@@ -39,16 +39,16 @@
             </div>
 
         <div class="mb-3">
-                       <label asp-for="c_department">Select Course:</label>
+                       <label asp-for="c_department">Select Department:</label>
             <select asp-for="c_department" class="form-control" required>
-                <option value="">-- Select Course --</option>
+                <option value="">-- Select Department --</option>
                 @foreach (var course in  ViewBag.Departments)
                 {
                     <option value="@course">@course</option>
                 }
             </select>
             <div class="invalid-feedback">
-                Please select a course.
+                Please select a department.
             </div>
         </div>
 
@@ -61,6 +61,10 @@
                         <div class="form-check">
                             <input class="form-check-input" type="checkbox" id="Singing" value="Afternoon" name="c_shift[]">
                             <label class="form-check-label" for="Afternoon">Afternoon</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="Singing" value="Night" name="c_shift[]">
+                            <label class="form-check-label" for="Night">Night</label>
                         </div>
            </div>
 

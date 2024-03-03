@@ -10,14 +10,17 @@
         <form method="POST">
             <div class="mb-3">
                 <label for="inputEmail" class="form-label">Email address</label>
-                <input type="email" class="form-control" id="inputEmail" placeholder="Email"/>
+                <input type="email" class="form-control" id="inputEmail" placeholder="Email" />
             </div>
             <div class="mb-3">
                 <label for="inputPassword" class="form-label">Password</label>
-                <input type="password" class="form-control" id="inputPassword" placeholder="Password"/>
+                <input type="password" class="form-control" id="inputPassword" placeholder="Password" />
             </div>
 
             <button type="button" class="btn btn-primary" onclick="Login()" id="loginBtn">Login</button>
+
+            <a class="btn btn-primary" href="/UserApi/Register">Register</a>
+
         </form>
     </div>
 </div>
@@ -25,36 +28,39 @@
 @section Scripts {
 
     <script>
-        
-        function Login () {
+
+        function Login() {
             var user = {
                 c_uemail: $('#inputEmail').val(),
                 c_password: $('#inputPassword').val()
             }
-            settings = {
-                "url": "https://localhost:7068/api/UserApi/Login",
-                "method": "POST",
-                "timeout": 0,
-                "headers": {
-                    "Content-Type": "application/json"
-                },
-                "data": JSON.stringify(user)
-            }
 
-
-            console.log(user);
-            $.ajax(settings).done(function (response)
-            {
-                alert('Successfully Logged In!');
-                localStorage.setItem('token', response);
-                window.location = "/UserApi/Index";
-            }).fail(function (response)
-            {
-                console.log(response);
-                alert(response.responseText);
-                window.location = "/UserApi/Login";
+            $.ajax({
+                url: 'https://localhost:7068/api/UserApi/Login',
+                method: 'POST',
+                timeout: 0,
+                contentType: 'application/json',
+                data: JSON.stringify(user),
+                success: function (data) {
+                    if (data.success == true) {
+                        alert('Successfully Logged In!');
+                        localStorage.setItem('token', data.tokenStr);
+                        if (data.role == 1) {
+                            console.log(data);
+                            window.location = "/ApiAjax/Index";
+                        } else {
+                            console.log(data);
+                            window.location = "/ApiAjax/UserIndex";
+                        }
+                    }
+                }
             });
         }
-    
+
+
+
+
+        
+
     </script>
 }

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Npgsql;
 using WebApi.Models;
@@ -24,7 +25,7 @@ namespace WebApi.Repositories.API_Repositories
             try
             {
                 _conn.Open();
-                using (var cmd = new NpgsqlCommand("Select * from mvc_master_project.t_user Where c_uemail=@email and c_password=@password",_conn))
+                using (var cmd = new NpgsqlCommand("Select c_uid, c_uname, c_uemail, c_password, c_role from mvc_master_project.t_user Where c_uemail=@email and c_password=@password",_conn))
                 {
                     cmd.Parameters.AddWithValue("@email", user.c_uemail);
                     cmd.Parameters.AddWithValue("@password", user.c_password);
@@ -36,6 +37,7 @@ namespace WebApi.Repositories.API_Repositories
                             userDetails.c_uname = (string)reader["c_uname"];
                             userDetails.c_uemail = (string)reader["c_uemail"];
                             userDetails.c_password = (string)reader["c_password"];
+                            userDetails.c_role = (int)reader["c_role"];
                         }
                     }
                 }
