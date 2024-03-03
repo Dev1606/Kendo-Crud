@@ -1,3 +1,6 @@
+if (localStorage.getItem('token') == null) {
+    window.location = '/UserApi/Login';
+}
 $(document).ready(function () {
     console.log("Welcome Admin Api");
     GetAll();
