@@ -46,8 +46,10 @@
                         alert('Successfully Logged In!');
                         localStorage.setItem('token', data.tokenStr);
                         if (data.role == 1) {
+                            console.log(data);
                             window.location = "/ApiAjax/Index";
                         } else {
+                            console.log(data);
                             window.location = "/ApiAjax/UserIndex";
                         }
                     }
