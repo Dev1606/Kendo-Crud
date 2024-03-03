@@ -31,6 +31,10 @@ namespace MVC.Controllers
         {
             return View();
         }
+         public IActionResult AdminKendoMVC()
+        {
+            return View();
+        }
 
         [Produces("application/json")]
         [HttpGet]

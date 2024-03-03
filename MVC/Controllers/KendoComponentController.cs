@@ -38,10 +38,22 @@ namespace MVC.Controllers
             //return RedirectToAction("Register");
             return View();
         }
+        [HttpGet]
         public IActionResult Register(){
             return View();
         }
-
+        [HttpPost]
+        public IActionResult Register(UserModel user)
+        {
+              Console.WriteLine("Details @ kendocomponentcontroller"+user.c_uemail+user.c_password+user.c_uname);
+            var status = _userrepo.RegistrationDetail(user);
+            Console.WriteLine(status);
+            if(status){
+              return Json(new {success = true, message = "Registration Successful"});
+            }else{
+                return Json(new {success = false, message = "Registration Fail"});
+            }
+        }
         [HttpGet]
         public IActionResult Login(){
             return View();
@@ -50,6 +62,7 @@ namespace MVC.Controllers
         [HttpPost]
         public IActionResult Login(LoginModel user)
         {
+            Console.WriteLine("Details @ kendocomponentcontroller"+user.c_uemail+user.c_password);
             var session = _httpContextAccessor.HttpContext.Session;
             if (session.GetInt32("userid") == null)
             {
@@ -58,12 +71,12 @@ namespace MVC.Controllers
                     if (session.GetInt32("isRole") == 0)
                     {
                         // User
-                        return RedirectToAction("UserKendoMVC", "KendoGrid", new {success=true});
+                        return Json(new {success = true, message = "Login Successful",controller="KendoGrid", action= "UserKendoMVC" });
                     }
                     else if (session.GetInt32("isRole") == 1)
                     {
                         // Admin
-                        return RedirectToAction("AdminKendoMVC", "KendoGrid", new {success=true});
+                        return Json(new {success = true, message = "Login Successful",controller="KendoGrid", action= "AdminKendoMVC" });
                     }
                     else
                     {
@@ -78,7 +91,7 @@ namespace MVC.Controllers
             }
             else
             {
-                return RedirectToAction("KendoLogin", "User");
+                return RedirectToAction("Login", "User");
             }
         }
         public IActionResult KendoAPI()
