@@ -8,34 +8,18 @@ using Microsoft.Extensions.Logging;
 
 namespace MVC.Controllers
 {
-
-    [Route("[controller]")]
-    public class UserApiController : Controller
+    //[Route("[controller]")]
+    public class KendoMVCApiController : Controller
     {
-        private readonly ILogger<UserApiController> _logger;
+        private readonly ILogger<KendoMVCApiController> _logger;
 
-        public UserApiController(ILogger<UserApiController> logger)
+        public KendoMVCApiController(ILogger<KendoMVCApiController> logger)
         {
             _logger = logger;
         }
 
-
-        [Route("Index")]
+        //[Route("Index")]
         public IActionResult Index()
-        {
-            return View();
-        }
-
-        [Route("Login")]
-
-        public IActionResult Login()
-        {
-            return View();
-        }
-
-
-        [Route("Register")]
-        public IActionResult Register()
         {
             return View();
         }

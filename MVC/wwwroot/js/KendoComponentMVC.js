@@ -68,4 +68,52 @@ $(document).ready(function(){
             });
         }
     });
+
+    var login = {
+        c_uemail: $('#txtlgEmail').val(),
+        c_password: $('#txtlgPassword').val()
+    };
+
+    // Email
+    $('#txtlgEmail').kendoTextBox({
+        label: {
+            content: "Email",
+            floating: true
+        },
+        change: function(){
+            user.c_email = kendo.toString(this.value());
+        }
+    });
+
+    // Password
+    $('#txtlgPassword').kendoTextBox({
+        label: {
+            content: "Password",
+            floating: true
+        },
+        change: function(){
+            user.c_password = kendo.toString(this.value());
+        }
+    });
+
+    $("#LoginButton").kendoButton({
+        themeColor: "primary",
+        click: function(){
+            // console.log(login);
+            $.ajax({
+                url: "",
+                type: "POST",
+                // contentType: "application/json",
+                // data: JSON.stringify(login),
+                data: user,
+                success: function (data) {
+                    if(data.success == true){
+                        window.location.href="/User/Index";
+                    }else{
+                        window.location.href="/User/Login";
+                    }
+                }
+            });
+        }
+    });
 });
