@@ -94,7 +94,7 @@ $(document).ready(function(){
                 },
             });
     }},
-        {field: "c_empimage", title: "Image",editor:imageupload, template:"<img src='#: c_empimage #' alt='Employee Photo' style='width: 50px; height:50px;'/>"},
+        {field: "c_empimage", title: "Image",editor:imageupload, template:"<img src='~/uploadsimg/#: c_empimage #' alt='Employee Photo' style='width: 50px; height:50px;'/>"},
         {command: ["edit","destroy"], title: "Action", width: "200px"}
         ],
         editable: {
