@@ -1,12 +1,27 @@
-if (localStorage.getItem('token') == null) {
-    window.location = '/UserApi/Login';
-}
+// if (localStorage.getItem('token') == null) {
+//     window.location = '/UserApi/Login';
+// }
 $(document).ready(function () {
-    console.log("Welcome Admin Api");
-    GetAll();
-    hideAlerts();
-    getDropdownValues();
-    GetToken();
+
+    var token = localStorage.getItem('token');
+    if (token == null) {
+        // Redirect to the login page if the token is not present
+        window.location = '/UserApi/Login';
+    } else {
+        // Fetch user data using the token
+        fetchUserData(token);
+        
+        // Other initialization functions
+        GetAll();
+        hideAlerts();
+        getDropdownValues();
+    }
+
+    // console.log("Welcome Admin Api");
+    // GetAll();
+    // hideAlerts();
+    // getDropdownValues();
+    // GetToken();
     //for set date time in formate
     function formatDateForInput(dateString) {
         const dateObj = new Date(dateString);
@@ -191,6 +206,22 @@ $(document).ready(function () {
             });
         }
     });
+
+    function fetchUserData(token) {
+        $.ajax({
+            url: 'https://localhost:7068/api/MVCApi/GetTokenData',
+            type: 'GET',
+            data: { usertoken: token },
+            success: function (userData) {
+                console.log('User Data:', userData);
+                // Handle user data, e.g., display user information on the page
+            },
+            error: function (xhr, status, error) {
+                console.error('Error fetching user data:', error);
+                // Handle errors, e.g., redirect to login page or show an error message
+            }
+        });
+    }
 
     function GetToken()
     {
