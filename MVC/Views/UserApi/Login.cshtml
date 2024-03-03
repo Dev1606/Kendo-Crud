@@ -18,6 +18,9 @@
             </div>
 
             <button type="button" class="btn btn-primary" onclick="Login()" id="loginBtn">Login</button>
+
+            <a class="btn btn-primary" href="/UserApi/Register">Register</a>
+
         </form>
     </div>
 </div>
@@ -47,7 +50,7 @@
             {
                 alert('Successfully Logged In!');
                 localStorage.setItem('token', response);
-                window.location = "/UserApi/Index";
+                window.location = "/ApiAjax/Index";
             }).fail(function (response)
             {
                 console.log(response);

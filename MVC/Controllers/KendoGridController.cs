@@ -16,6 +16,7 @@ namespace MVC.Controllers
         private readonly ILogger<KendoGridController> _logger;
          private readonly IEmpInterface _empRepo;
           private readonly IWebHostEnvironment _hostingEnvironment;
+          private readonly IWebHostEnvironment _environment;
           private readonly IHttpContextAccessor _httpContextAccessor;
 
         public KendoGridController(ILogger<KendoGridController> logger,IEmpInterface empRepo, IWebHostEnvironment environment, IHttpContextAccessor httpContextAccessor)
@@ -23,15 +24,54 @@ namespace MVC.Controllers
             _logger = logger;
             _empRepo = empRepo;
             _hostingEnvironment = environment;
+            _environment = environment;
             _httpContextAccessor = httpContextAccessor;
         }
-        public IActionResult AdminKendoAPI()
+        public IActionResult UserKendoMVC()
         {
             return View();
         }
-        public IActionResult AdminKendoMVC()
+        #region Admin
+        
+        [Produces("application/json")]
+        [HttpGet]
+        public IActionResult UserGetEmpData()
         {
-            return View();
+            var empData = _empRepo.UserGetEmpData();
+            return Json(empData);
+        }
+
+        public IActionResult UserAddEmpData(EmpModel emp)
+        {
+            emp.c_empimage = file;
+            var empData = _empRepo.UserAddEmpData(emp);
+            return Json(empData);
+        }
+        [HttpGet]
+        public string[] GetDepartment()
+        {
+            return _empRepo.GetDepartment();
+        }
+        static string file = "";
+
+        public IActionResult UploadPhoto(EmpModel emp)
+        {
+            if (emp.Image!= null)
+            {
+                string filename = emp.Image.FileName;
+                string filepath = Path.Combine(_environment.WebRootPath, "uploadsimg", filename);
+
+                using (var stream = new FileStream(filepath, FileMode.Create))
+                {
+
+                    emp.Image.CopyTo(stream);
+                }
+
+              file = filename;
+
+            }
+
+            return Json("Image Uploaded");
         }
         #region Admin
         

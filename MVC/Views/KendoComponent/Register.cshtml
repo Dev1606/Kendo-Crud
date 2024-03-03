@@ -1,0 +1,34 @@
+@{
+    ViewData["Title"] = "KendoComponentMVC Page";
+}
+
+<div class="continer">
+    <div class="row col-6 offset-3">
+        <h1>Register</h1>
+        @* Name *@
+        <div class="row">
+            <input id="txtName">
+        </div>
+        @* Email *@
+        <div class="row">
+            <input id="txtEmail">
+        </div>
+        @* Password *@
+        <div class="row">
+            <input id="txtPassword">
+        </div>
+        @* ConfirmPassword *@
+        <div class="row">
+            <input id="txtConfirmPassword">
+        </div>
+        @* Submit Button *@
+        <div class="row">
+            <button id="SubmitButton">Register</button>
+            <a href="/KendoComponent/Login">Login</a>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script src="~/js/KendoComponentMVC.js" asp-append-version="true"></script>
+}
