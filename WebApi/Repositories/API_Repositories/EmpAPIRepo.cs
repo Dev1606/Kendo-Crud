@@ -311,7 +311,7 @@ namespace WebApi.Repositories.API_Repositories
         }
 
         //Update Employee
-        public bool UpdateEmp(EmpModel emp)
+        public bool UpdateEmp(EmpApiModel emp)
         {
             using (NpgsqlConnection con = new NpgsqlConnection(_ConnectionString))
             {

@@ -57,7 +57,7 @@ namespace WebApi.Controllers
         {
             var emplist = _empAPIInterface.GetEmpData();
             return Ok(emplist);
-        }  
+        }
 
         [HttpGet]
         [Route("GetDropDepartment")]
@@ -80,12 +80,38 @@ namespace WebApi.Controllers
         [HttpPut]
         [Route("UpdateEmpData")]
         [Authorize]
-        public IActionResult UpdateEmp(EmpModel emp)
+        public IActionResult UpdateEmp([FromForm] EmpApiModel emp, IFormFile? Image)
         {
-            
+            if (Image == null)
+            {
+                var data = _empAPIInterface.GetEmpDetail(emp.c_empid);
+                emp.c_empimage = data.c_empimage;
+            }
+            else
+            {
+                if (string.IsNullOrEmpty(Image.FileName))
+                {
+                    return BadRequest("Image file name is null or empty.");
+                }
+                string filename = Guid.NewGuid().ToString() + Path.GetExtension(Image.FileName);
+                var filePath = Path.Combine(@"../MVC/wwwroot/", "uploadsimg", filename);
+                if (string.IsNullOrEmpty(filePath))
+                {
+                    return BadRequest("File path is null or empty.");
+                }
+
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    Image.CopyTo(stream);
+                }
+
+                emp.c_empimage = filename;
+            }
+
             _empAPIInterface.UpdateEmp(emp);
-            return Ok(new{success=true,message="Student updated successfully"});
+            return Ok(new { success = true, message = "Student updated successfully" });
         }
+
 
         [HttpDelete]
         [Route("DeleteEmpData")]
@@ -93,7 +119,7 @@ namespace WebApi.Controllers
         public IActionResult DeleteEmp(int id)
         {
             _empAPIInterface.DeleteEmp(id);
-            return Ok(new{success=true,message="Student deleted successfully"});
+            return Ok(new { success = true, message = "Student deleted successfully" });
         }
 
         #endregion
@@ -113,8 +139,8 @@ namespace WebApi.Controllers
         // UserAddEmpData
         [HttpPost]
         [Route("UserAddEmpData")]
-        [Authorize]
-        public IActionResult UserAddEmpData([FromForm]EmpApiModel emp,IFormFile file)
+        // [Authorize]
+        public IActionResult UserAddEmpData([FromForm] EmpApiModel emp, IFormFile file)
         {
             Console.WriteLine(file);
             //Code For File Upload:
@@ -146,8 +172,8 @@ namespace WebApi.Controllers
             // emp.c_shift = string.Join(", ", shift);
             // HttpContext.Session.SetInt32("userid", emp.c_userid.GetValueOrDefault());
 
-            _empAPIInterface.UserAddEmpData(emp,imageUrl);
-            return Ok(new {success = true, message = "Employee Added !!!!!"});
+            _empAPIInterface.UserAddEmpData(emp, imageUrl);
+            return Ok(new { success = true, message = "Employee Added !!!!!" });
         }
 
         #endregion

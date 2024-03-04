@@ -23,7 +23,7 @@ namespace WebApi.Repositories.API_Repositories
         string[] GetDepartment();
         EmpModel GetEmpDetail(int id);
         bool DeleteEmp(int id);
-        bool UpdateEmp(EmpModel emp);
+        bool UpdateEmp(EmpApiModel emp);
         #endregion 
 
     }
