@@ -14,13 +14,13 @@ $(document).ready(function () {
         getDropdownValues();
         GetToken();
     }
-    // console.log("Welcome Api User");
-    // GetAllUser();
 
-    // hideAlerts();
-    //AddUser();
-    // getDropdownValues();
-    // GetToken();
+    $('#LogoutBtn').on('click', function ()
+    {
+        localStorage.removeItem('token');
+        window.location = '/UserApi/Login';
+    });
+
     //for set date time in formate
     function formatDateForInput(dateString) {
         const dateObj = new Date(dateString);
