@@ -4,7 +4,7 @@ $(document).ready(function () {
     if (token == null) {
         // Redirect to the login page if the token is not present
         window.location = '/UserApi/Login';
-    } else {
+    } else { 
         // Fetch user data using the token
         fetchUserData(token);
         // Other initialization functions

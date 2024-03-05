@@ -79,7 +79,7 @@ namespace WebApi.Controllers
 
         [HttpPut]
         [Route("UpdateEmpData")]
-        [Authorize]
+        // [Authorize]
         public IActionResult UpdateEmp([FromForm] EmpApiModel emp, IFormFile? Image)
         {
             if (Image == null)
@@ -139,8 +139,8 @@ namespace WebApi.Controllers
         // UserAddEmpData
         [HttpPost]
         [Route("UserAddEmpData")]
-        // [Authorize]
-        public IActionResult UserAddEmpData([FromForm] EmpApiModel emp, IFormFile file)
+        [Authorize]
+        public IActionResult UserAddEmpData([FromForm] EmpApiModel emp,IFormFile file)
         {
             Console.WriteLine(file);
             //Code For File Upload:
