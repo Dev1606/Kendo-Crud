@@ -80,7 +80,7 @@ $(document).ready(function () {
                     row += '<td>' + emp.c_dob + '</td>';
                     row += '<td>' + emp.c_shift + '</td>';
                     row += '<td>' + emp.c_department + '</td>';
-                    row += '<td> <img src="'+emp.c_empimage +'" alt="Image Not Found" style="height: 15%;width:15%;"></td>';
+                    row += '<td> <img src="/uploadsimg\\'+emp.c_empimage +'" alt="Image Not Found" style="height: 15%;width:15%;"></td>';
                     row += '<td>';
                     row += '<div class="d-flex justify-content-between">';
                     row += '<button type="button" id="edit" class="btn btn-outline-success edit" data-id="' + emp.c_empid + '">Edit</button>';
