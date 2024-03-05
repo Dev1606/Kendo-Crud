@@ -166,12 +166,6 @@ namespace WebApi.Controllers
             }
 
             var imageUrl = Path.Combine("/uploadsimg", fileName);
-            //emp.c_empimage = imageUrl;
-
-            // var shift = Request.Form["c_shift"].ToList();
-            // emp.c_shift = string.Join(", ", shift);
-            // HttpContext.Session.SetInt32("userid", emp.c_userid.GetValueOrDefault());
-
             _empAPIInterface.UserAddEmpData(emp, imageUrl);
             return Ok(new { success = true, message = "Employee Added !!!!!" });
         }

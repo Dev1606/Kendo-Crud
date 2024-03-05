@@ -14,6 +14,5 @@ namespace WebApi.Models.ApiModel
         public string[] c_shift {get; set;} = new string[0];
         public string c_department {get; set;} = string.Empty;
         public string c_empimage {get; set;} = string.Empty;
-        // public IFormFile Image {get;set;} //IFormFile For File Upload
     }
 }
