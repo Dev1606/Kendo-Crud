@@ -2,11 +2,9 @@
     ViewData["Title"] = "Kendo Component MVC";
 }
 
-@* <div id="grid"></div>
-
 <center>
-    <h1>Employee Data</h1> *@
-@* </center> *@
+    <h2>@ViewData["Title"]</h2>
+</center>
 <div class="table-responsive">
 
     <center>
@@ -14,7 +12,9 @@
         <div class="alert alert-success text-center" role="alert" id="messageSuccess"></div>
         <div class="alert alert-danger text-center" role="alert" id="messageFail"></div>
     </center>
-
+   <button type="button" class="btn btn-primary mb-3" id="EditEmployeeModalBtn"  data-bs-toggle="modal" data-bs-target="#EditEmpModal">
+        Add Employee
+    </button>
     @* Table HTML *@
     <table class="table table-dark table-striped">
         <thead>
@@ -32,52 +32,76 @@
     </table>
 </div>
 
-<center>
-    <h1>Employee Data</h1>
-</center>
-<div class="container">
-    <div class="row col-6 offset-3">
-
-        <div class="row">
-            <label for="EmpName">Employee Name:</label>
-            <input id="EmpName" class="form-control" />
-        </div>
-
-        <div class="row mt-3">
-            <label for="GenderRadioButton">Gender:</label>
-            <div id="GenderRadioButton" class="form-check">
-                <!-- Gender radio buttons will be rendered here -->
+@{
+    #region Edit Modal
+}
+<!-- Add Modal -->
+<div class="modal fade" id="EditEmpModal" tabindex="-1" aria-labelledby="EditEmpModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="EditEmpModalLabel">Add Student</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-        </div>
-
-        <div class="row mt-3">
-            <label for="dob">Date of Birth:</label>
-            <input id="dob" class="form-control" />
-        </div>
-
-        <div class="row mt-3">
-            <label for="ShiftCheckbox">Shift:</label>
-            <div id="ShiftCheckbox" class="form-check">
-                <!-- Shift checkboxes will be rendered here -->
-            </div>
-        </div>
-
-        <div class="row mt-3">
-            <label for="ImageUpload">Image:</label>
-            <input type="file" id="ImageUpload" class="form-control-file" />
-        </div>
-
-        <div class="row mt-3">
-            <label for="DepartmentDorpDown">Department:</label>
-            <input id="DepartmentDorpDown" class="form-control" />
-        </div>
-
-        <div class="row mt-3">
-            <button id="SubmitButton" class="btn btn-primary">Submit</button>
+            <form method="post">
+                <div class="modal-body">
+                    @* ID *@
+                    <div class="row">
+                        <input id="EditEmpId" hidden>
+                    </div>
+                    @* Employee Name *@
+                    <div class="mb-3">
+                        <label>Student Name: </label>
+                        <div class="row">
+                            <input id="EditEmpName">
+                        </div>
+                    </div>
+                    @* Gender *@
+                    <div class="mb-3">
+                        <label>Gender: </label>
+                        <ul id="EditEmpGender"></ul>
+                        <span class="text-danger" id="EditEmpGenderHelp"></span>
+                    </div>
+                    @* DOB *@
+                    <div class="mb-3">
+                        <label> DOB: </label>
+                        <div class="row">
+                            <input id="EditEmpDob">
+                        </div>
+                    </div>
+                    @* Shift *@
+                    <div class="mb-3">
+                        <label>Shift: </label>
+                        <ul id="EditEmpShift"></ul>
+                        <span class="text-danger" id="EditEmpShiftHelp"></span>
+                    </div>
+                    @* Department *@
+                    <div class="mb-3">
+                        <div class="row">
+                        <input id="EditEmpDepartment" >
+                        </div>
+                        <span class="text-danger" id="EditEmpDepartmentHelp"></span>
+                    </div>
+                    @* Image *@
+                    <div class="mb-3">
+                        <label for="EditEmpImage" class="form-label">Choose An Image</label>
+                        <input class="form-control" type="file" id="EditEmpImage">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="FinalEditBtn"
+                        data-bs-dismiss="modal">Edit</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
+@{
+    #endregion
+}
+
 
 @section Scripts {
-    <script src="~/js/KendoComponentMVC.js" asp-append-version="true"></script>
+    <script src="~/js/UserKendoComponentMVC.js" asp-append-version="true"></script>
 }

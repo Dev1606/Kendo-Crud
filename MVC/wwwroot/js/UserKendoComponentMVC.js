@@ -1,113 +1,130 @@
 $(document).ready(function () {
-    var dataSource = new kendo.data.DataSource({
-        transport: {
-            read: {
-                url: "https://localhost:7074/kendoComponent/UserGetEmpData",
-                dataType: "json"
-            },
-            create: {
-                url: "https://localhost:7074/kendoComponent/UserAddEmpData",
-                type: "POST",
-                dataType: "json"
-            },
-        },
-        pageSize: 10,
-        schema: {
-            model: {
-                id: "c_empid",
-                fields: {
-                    c_empid: { type: "number", editable: false, nullable: false },
-                    c_empname: { type: "string", validation: { required: true } },
-                    c_empgender: { type: "string", validation: { required: true } },
-                    c_dob: { type: "string", validation: { required: true } },
-                    c_shift: { type: "string", validation: { required: true } },
-                    c_department: { type: "string", validation: { required: true } },
-                    c_empimage: { type: "string", validation: { required: true } },
-                }
+    var ImageFileName = "";
+    console.log("Welcome Employee");
+    GetAll();
+    getDropdownValues();
+    hideAlerts();
+    initializeGenderRadioButtons();
+    initializeShiftCheckboxes();
+    initializeDatePicker();
+    function formatDateForInput(dateString) {
+        const dateObj = new Date(dateString);
+        const formattedDate = dateObj.toISOString().slice(0, 10);
+        return formattedDate;
+    }
+    function hideAlerts() {
+        $('#messageSuccess').hide();
+        $('#messageFail').hide();
+
+    }
+    function successMsg(str) {
+        $("#messageSuccess").text('');
+        $("#messageSuccess").append(str);
+        $("#messageSuccess").show().delay(3000).fadeOut();
+    }
+    function alertMsg(str) {
+        $("#messageFail").text('');;
+        $("#messageFail").append(str);
+        $("#messageFail").show().delay(3000).fadeOut();
+    }
+    // for getting dropdown
+    function getDropdownValues() {
+        var dropdown = $("#EmpDepartment, #EditEmpDepartment");
+        dropdown.empty();
+        $.ajax({
+            url: '/KendoComponent/GetDepartment',
+            type: 'GET',
+            success: function (data) {
+                dropdown.kendoDropDownList({
+                    dataSource: data,
+                    optionLabel: "Select Department"
+                });
             }
-        }
-    });
-
-    $("#grid").kendoGrid({
-        dataSource: dataSource,
-        columns: [
-            { field: "c_empid", title: "ID" },
-            { field: "c_empname", title: "Employee Name" },
-            { field: "c_empgender", title: "Gender", editor: EmpGenderEditor },
-            {
-                field: "c_dob",
-                title: "DOB",
-                editor: function (container, options) {
-                    $(container).kendoCalendar({
-                        format: "yyyy/MM/dd",
-                        change: function () {
-                            console.log("Change :: " + kendo.toString(this.value(), 'yyyy/MM/dd'));
-                            options.model.set("c_dob", kendo.toString(this.value(), 'yyyy/MM/dd'));
-                        },
-                        navigate: function () {
-                            console.log("Navigate");
-                        }
-                    });
-                }
-            },
-            {
-                field: "c_shift", title: "Shift", editor: function (container, options) {
-
-                    $(container).kendoCheckBoxGroup({
-                        items: ["Morning", "Afternoon", "Night"],
-                        layout: "horizontal",
-                        change: function () {
-                            var selectedValues = $(container).kendoCheckBoxGroup("value")
-                            console.log(selectedValues);
-                            var arrayExpression = `${selectedValues.join(",")}`;
-                            options.model.set("c_shift", arrayExpression);
-                            console.log("c_shift", arrayExpression);
-                        }
-                    });
-                },
-            },
-            { field: "c_empimage", title: "Image", editor: imageupload, template: "<img src='#: c_empimage #' alt='Employee Photo' style='width: 50px; height:50px;'/>" },
-            {
-                field: "c_department", title: "Department", editor: function (container, options) {
-                    $('<input name="' + options.field + '" id="stateDropdown" checked="checked" optionLabel="Select" style="width: 100%;" />').appendTo(container).kendoDropDownList({
-                        dataSource: {
-                            transport: {
-                                read: "https://localhost:7074/kendoComponent/GetDepartment",
-                                datatype: "json",
-                            }
-                        },
-
-                    });
-                }
-            },
-        ],
-        editable: "popup",
-        toolbar: ["create"],
-        pageable: true,
-        sortable: true,
-        filterable: true,
-    });
-
-    dataSource.bind("requestEnd", function (e) {
-        if (e.type === "create" || e.type === "update" || e.type === "destroy") {
-            dataSource.read();
-        }
-    });
-
-    $("#grid").on("click", ".k-grid-cancel-changes", function () {
-        dataSource.cancelChanges();
-    })
-
-    //RadioButton
-    function EmpGenderEditor(container, options) {
-        var radioButtonsHtml = '<input type="radio" name="c_empgender" value="Male" id="radioMale" class="k-radio" /><label class="k-radio-label" for="radioMale">Male</label>' +
-            '<input type="radio" name="c_empgender" value="Female" id="radioFemale" class="k-radio" /><label class="k-radio-label" for="radioFemale">Female</label>';
-        $(radioButtonsHtml).appendTo(container);
+        });
     }
 
-    //Image Upload
-    function imageupload(container, options) {
-        $('<input name="Image" type="file" id="photo" data-role="upload" data-async=\'{ "saveUrl": "/kendogrid/uploadphoto", "autoUpload": true }\' class="k-input k-textbox">').appendTo(container);
+    //get
+    function GetAll() {
+        var table = $('#TableContent');
+        table.empty();
+        $.ajax({
+            type: "GET",
+            url: "/KendoComponent/AdminGetEmpData",
+            dataType: 'json',
+            success: function (emp) {
+                emp.forEach(function (emp) {
+                    var row = '<tr>';
+                    row += '<td>' + emp.c_empid + '</td>';
+                    row += '<td>' + emp.c_empname + '</td>';
+                    row += '<td>' + emp.c_empgender + '</td>';
+                    row += '<td>' + emp.c_dob + '</td>';
+                    row += '<td>' + emp.c_shift + '</td>';
+                    row += '<td>' + emp.c_department + '</td>';
+                    row += '<td><img src="../wwwroot/uploadsimg/' + emp.c_empimage + '"></td>';
+                    row += '<td>';
+                    row += '<div class="d-flex justify-content-between">';
+                    row += '</div>';
+                    row += '</td>';
+                    row += '</tr>';
+                    table.append(row);
+                });
+            }
+        });
     }
 
+    function initializeGenderRadioButtons() {
+        $("#EditEmpGender").kendoRadioGroup({
+            layout: "horizontal",
+            items: [
+                { label: "Male", value: "Male" },
+                { label: "Female", value: "Female" },
+                { label: "Other", value: "Other" }
+            ]
+        });
+    }
+
+    function initializeShiftCheckboxes() {
+        $("#EditEmpShift").kendoCheckBoxGroup({
+            items: ["Morning", "Afternoon", "Night"],
+            layout: "horizontal"
+        });
+    }
+
+    function initializeDatePicker() {
+        $("#EditEmpDob").kendoDatePicker({
+            format: "yyyy-MM-dd"
+        });
+    }
+    //add
+    $("#FinalEditBtn").click(function () {
+        var formData = new FormData();
+        formData.append("c_empid", $('#EditEmpId').val());
+        formData.append("c_empname", $("#EditEmpName").val());
+        formData.append("c_empgender", $('#EditEmpGender').data("kendoRadioGroup").value());
+        formData.append("c_dob", $("#EditEmpDob").val());
+        var shiftValues = $("#EditEmpShift").data("kendoCheckBoxGroup").value().join(",");
+        formData.append("c_shift", shiftValues);
+        console.log("Shiftvalues"+shiftValues);
+        formData.append("c_department",$("#EditEmpDepartment").data("kendoDropDownList").value());
+        formData.append("c_empimage", $('#EditEmpImage')[0].files[0]);
+
+        $.ajax({
+            url: "/KendoComponent/UserAddEmpData",
+            type: "POST",
+            processData: false,
+            contentType: false,
+            data: formData,
+            success: function (response) {
+                console.log(formData);
+                console.log(response);
+                $("#messageSuccess").text("Employee Added").show();
+                $("#messageFail").hide();
+                GetAll();
+            },
+            error: function (xhr, status, error) {
+                $("#messageFail").text(xhr.responseText).show();
+                $("#messageSuccess").hide();
+            }
+        });
+    });
 });

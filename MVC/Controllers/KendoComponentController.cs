@@ -212,6 +212,7 @@ namespace MVC.Controllers
         public IActionResult UserAddEmpData(EmpModel emp)
         {
             // emp.c_empimage = file;
+            Console.WriteLine("Emp details @ controller"+ emp.c_empid+emp.c_empname+ emp.c_empgender+emp.c_dob+emp.c_shift+ emp.c_department+emp.c_empimage);
             var empData = _empRepo.UserAddEmpData(emp);
             return Json(empData);
         }
