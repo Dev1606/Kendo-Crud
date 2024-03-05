@@ -52,7 +52,6 @@ namespace WebApi.Controllers
         [HttpGet]
         [Route("GetEmpData")]
         [Authorize]
-        // [Authorize]
         public IActionResult GetEmpData()
         {
             var emplist = _empAPIInterface.GetEmpData();
@@ -61,7 +60,6 @@ namespace WebApi.Controllers
 
         [HttpGet]
         [Route("GetDropDepartment")]
-        [Authorize]
         // [Authorize]
         public string[] GetDepartment()
         {
@@ -139,7 +137,7 @@ namespace WebApi.Controllers
         // UserAddEmpData
         [HttpPost]
         [Route("UserAddEmpData")]
-        // [Authorize]
+        [Authorize]
         public IActionResult UserAddEmpData([FromForm] EmpApiModel emp, IFormFile file)
         {
             Console.WriteLine(file);
@@ -172,7 +170,7 @@ namespace WebApi.Controllers
             // emp.c_shift = string.Join(", ", shift);
             // HttpContext.Session.SetInt32("userid", emp.c_userid.GetValueOrDefault());
 
-            _empAPIInterface.UserAddEmpData(emp, imageUrl);
+            _empAPIInterface.UserAddEmpData(emp,imageUrl);
             return Ok(new { success = true, message = "Employee Added !!!!!" });
         }
 

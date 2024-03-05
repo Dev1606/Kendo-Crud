@@ -7,7 +7,6 @@
 
 <link rel="stylesheet" href="https://kendo.cdn.telerik.com/2021.2.616/styles/kendo.common.min.css" />
 <link rel="stylesheet" href="https://kendo.cdn.telerik.com/2021.2.616/styles/kendo.default.min.css" />
-
 <div id="grid"></div>
 
 @section Scripts {
@@ -19,24 +18,29 @@
                 transport: {
                     read: {
                         url: "https://localhost:7068/api/MVCApi/GetEmpData",
-                        //type:"GET",
-                        dataType: "json"
+                        dataType: "json",
+                        headers: {
+                            Authorization: 'Bearer ' + localStorage.getItem('token')
+                        }
                     },
                     update: {
-                        url: function (data) {
-                            return "https://localhost:7068/api/MVCApi/UpdateEmpData";
-                        },
+                        url: "https://localhost:7068/api/MVCApi/UpdateEmpData",
                         type: "PUT",
-                        @* contentType: "application/json" *@
-                        contentType:false,
-                        processData:false
+                        contentType: false,
+                        processData: false,
+                        headers: {
+                            Authorization: 'Bearer ' + localStorage.getItem('token')
+                        },
                     },
                     destroy: {
                         url: function (data) {
                             return "https://localhost:7068/api/MVCApi/DeleteEmpData?id=" + data.c_empid;
                         },
                         type: "DELETE",
-                        contentType: "application/json"
+                        contentType: "application/json",
+                        headers: {
+                            Authorization: 'Bearer ' + localStorage.getItem('token')
+                        }
                     },
                     parameterMap: function (options, operation) {
                         if (operation !== "read") {
@@ -122,6 +126,9 @@
                                     transport: {
                                         read: "https://localhost:7068/api/MVCApi/GetDropDepartment",
                                         datatype: "json",
+                                        headers: {
+                                            Authorization: 'Bearer ' + localStorage.getItem('token')
+                                        }
                                     }
                                 },
                             });
@@ -141,7 +148,7 @@
                 }
             });
             function imageupload(container) {
-                $('<input name="Image" type="file" id="photo" data-role="upload" data-async=\'{ "saveUrl": "/kendogrid/UploadPhoto", "autoUpload": true }\' class="k-input k-textbox">').appendTo(container);
+                $('<input name="c_empimage" type="file" id="photo" data-role="upload" data-async=\'{ "saveUrl": "/kendogrid/UploadPhoto", "autoUpload": true }\' class="k-input k-textbox">').appendTo(container);
             }
             dataSource.bind("requestEnd", function (e) {
                 if (e.type === "create" || e.type === "update" || e.type === "destroy") {
