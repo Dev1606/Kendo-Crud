@@ -88,10 +88,11 @@ namespace MVC.Controllers
         }
 
         [HttpPost]
-        public IActionResult SetUserData(string username){
+        public IActionResult SetUserData(string username, int role){
             var session = _httpContextAccessor.HttpContext.Session;
-            if(username != null){
+            if(username != null && role != null){
                 session.SetString("username", username);
+                session.SetInt32("role", role);
                 return Json(new {success = true});
             }else{
                 return Json(new {success = false});

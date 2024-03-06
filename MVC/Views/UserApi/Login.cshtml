@@ -45,22 +45,62 @@
                     if (data.success == true) {
                         alert('Successfully Logged In!');
                         localStorage.setItem('token', data.tokenStr);
+                        fetchUserData(data.tokenStr);
+                        console.log(data);
+                        @* window.location.href = "/ApiAjax/Index";
                         if (data.role == 1) {
                             console.log(data);
-                            window.location = "/ApiAjax/Index";
-                        } else {
+                            window.location.href = "/ApiAjax/Index";
+                        } 
+                        else {
                             console.log(data);
                             window.location = "/ApiAjax/UserIndex";
-                        }
+                        } *@
                     }
                 }
             });
         }
 
-
-
-
         
+        function fetchUserData(token) {
+            var username = "";
+            var role = "";
+            $.ajax({
+                url: 'https://localhost:7068/api/MVCApi/GetTokenData',
+                type: 'GET',
+                data: { usertoken: token },
+                success: function (userData) {
+                    console.log('User Data:', userData);
+                    username = userData.userName;
+                    role = parseInt(userData.role);
+                    $.ajax({
+                        url: "/User/SetUserData",
+                        method: "POST",
+                        data: { username: username, role: role },
+                        async: false,
+                        success: function (response) {
+                            if (response.success) {
+                                @* window.location.href = "/ApiAjax/Index"; *@
+                                if (response.role == 1) {
+                                    console.log(response);
+                                    window.location.href = "/ApiAjax/Index";
+                                } 
+                                else {
+                                    console.log(response);
+                                    window.location = "/ApiAjax/UserIndex";
+                                }
+                                // Handle successful response, e.g., display a success message
+                                console.log("Username set successfully!");
+                            } else {
+                                // Handle unsuccessful response, e.g., display an error message
+                                console.error("Failed to set username.");
+                            }
+                        }
+                    });
+                }
+            });
 
+        }
+        
     </script>
 }

@@ -42,9 +42,10 @@ namespace WebApi.Controllers
             string userName = claims.Single(c => c.Type == "UserName").Value;
             // string userName = claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
             string email = claims.Single(c => c.Type == "Email").Value;
+            string role = claims.Single(c => c.Type == "Role").Value;
 
             // Use the retrieved claims in your controller logic
-            return Ok(new { userId, userName, email });
+            return Ok(new { userId, userName, email, role });
         }
 
         #region Admin API Calls

@@ -15,21 +15,47 @@ namespace MVC.Controllers
     {
         private readonly ILogger<ApiAjaxController> _logger;
         private readonly IEmpInterface _empAPIInterface;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public ApiAjaxController(ILogger<ApiAjaxController> logger,IEmpInterface empAPIInterface)
+        public ApiAjaxController(ILogger<ApiAjaxController> logger, IEmpInterface empAPIInterface, IHttpContextAccessor httpContextAccessor)
         {
             _empAPIInterface = empAPIInterface;
             _logger = logger;
             empAPIInterface = _empAPIInterface;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         public IActionResult Index()
         {
-            return View();
+            var session = _httpContextAccessor.HttpContext.Session;
+            if (session.GetString("username") != null)
+            {
+                if (session.GetInt32("role") == 1)
+                {
+                    return View();
+                }else{
+                    return RedirectToAction("UserIndex");
+                }
+            }else{
+                return RedirectToAction("Login","UserApi");
+            }
+
         }
 
-        public IActionResult UserIndex(){
-            return View();
+        public IActionResult UserIndex()
+        {
+            var session = _httpContextAccessor.HttpContext.Session;
+            if (session.GetString("username") != null)
+            {
+                if (session.GetInt32("role") == 0)
+                {
+                    return View();
+                }else{
+                    return RedirectToAction("Index");
+                }
+            }else{
+                return RedirectToAction("Login","UserApi");
+            }
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
