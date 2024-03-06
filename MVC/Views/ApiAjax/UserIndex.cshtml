@@ -44,93 +44,103 @@
                 <h1 class="modal-title fs-5" id="AddStudentModelLabel">Add Student</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form method="post" enctype="multipart/form-data">
-                <div class="modal-body">
-                    @* Employee Name *@
-                    <div class="mb-3">
-                        <input id="Empid" hidden> 
-                        <label>Employee Name: </label>
-                        <input type="text" id="EmpName">
-                        <span class="text-danger" id="EditEmpNameHelp"></span>
-                    </div>
-                    @* Gender *@
-                    <div class="mb-3">
-                        <label>Gender: </label>
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="EmpGender" id="Male" value="Male">
-                            <label class="form-check-label" for="English">
-                                Male
+            <div class="formdata">
+                <form id="addEmpForm" enctype="multipart/form-data" method="post">
+                    <div class="modal-body">
+                        @* Employee Name *@
+                        <div class="mb-3">
+                            @* <input name="c_empid" id="c_empid" hidden> *@
+                            <label>Employee Name: </label>
+                            <input type="text" name="c_empname" id="c_empname">
+                            <span class="text-danger" id="EditEmpNameHelp"></span>
+                        </div>
+                        @* Gender *@
+                        <div class="mb-3">
+                            <label>Gender: </label>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="c_empgender" id="c_gender_male"
+                                    value="Male">
+                                <label class="form-check-label" for="c_gender_male">
+                                    Male
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="c_empgender" id="c_gender_female"
+                                    value="Female">
+                                <label class="form-check-label" for="c_gender_female">
+                                    Female
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="c_empgender" id="c_gender_others"
+                                    value="Other">
+                                <label class="form-check-label" for="c_gender_others">
+                                    Others
+                                </label>
+                            </div>
+                            <span class="text-danger" id="EditEmpGenderHelp"></span>
+                        </div>
+                        @* DOB *@
+                        <div class="mb-3">
+                            <label> DOB: </label>
+                            <input type="date" name="c_dob" id="c_dob" class="form-control">
+                            <span class="text-danger" id="EditEmpDobHelp"></span>
+                        </div>
+                        @* Shift *@
+                        <div class="mb-3">
+                            <label>Shift: </label>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="c_shift" id="c_shift_morning"
+                                    value="Morning">
+                                <label class="form-check-label">
+                                    Morning
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="c_shift" id="c_shift_afternoon"
+                                    value="Afternoon">
+                                <label class="form-check-label">
+                                    Afternoon
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="c_shift" id="c_shift_night"
+                                    value="Night">
+                                <label class="form-check-label">
+                                    Night
+                                </label>
+                            </div>
+                            @* <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="EditEmpShift" value="Night"
+                            id="Night">
+                            <label class="form-check-label">
+                            Night
                             </label>
+                            </div> *@
+                            <span class="text-danger" id="EditEmpShiftHelp"></span>
                         </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="EmpGender" id="Female" value="Female">
-                            <label class="form-check-label" for="Female">
-                                Female
-                            </label>
+                        @* Course *@
+                        <div class="mb-3">
+                            <div class="dropdown">
+                                <label>Department Name: </label>
+                                <select class="btn btn-secondary dropdown-toggle" name="c_department" id="c_department">
+                                </select>
+                            </div>
+                            <span class="text-danger" id="EditEmpDepartmentHelp"></span>
                         </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="EmpGender" id="Others" value="Other">
-                            <label class="form-check-label" for="Others">
-                                Others
-                            </label>
+                        @* Image *@
+                        <div class="form-group">
+                            <label class="form-label">Choose An Image</label>
+                            <input name="file" id="file" class="form-control" type="file">
                         </div>
-                        <span class="text-danger" id="EditEmpGenderHelp"></span>
                     </div>
-                    @* DOB *@
-                    <div class="mb-3">
-                        <label> DOB: </label>
-                        <input type="date" id="EmpDob">
-                        <span class="text-danger" id="EditEmpDobHelp"></span>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary" id="FinalEditBtn"
+                            data-bs-dismiss="modal">Add</button>
                     </div>
-                    @* Shift *@
-                    <div class="mb-3">
-                        <label>Shift: </label>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" name="EmpShift" value="Morning"
-                                id="Morning">
-                            <label class="form-check-label" for="Morning">
-                                Morning
-                            </label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" name="EmpShift" value="Afternoon"
-                                id="Afternoon">
-                            <label class="form-check-label" for="Afternoon">
-                                Afternoon
-                            </label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" name="EmpShift" value="Night"
-                                id="Night">
-                            <label class="form-check-label" for="Night">
-                                Night
-                            </label>
-                        </div>
-                        <span class="text-danger" id="EditEmpShiftHelp"></span>
-                    </div>
-                    @* Course *@
-                    <div class="mb-3">
-                        <div class="dropdown">
-                            <label>Department Name: </label>
-                            <select class="btn btn-secondary dropdown-toggle" id="EditEmpDepartment"
-                                name="EmpDepartmentDropdown" id="EmpDepartmentDropdown">
-
-                            </select>
-                        </div>
-                        <span class="text-danger" id="EditEmpDepartmentHelp"></span>
-                    </div>
-                    @* Image *@
-                    <div class="mb-3">
-                        <label for="EditEmpImage" class="form-label">Choose An Image</label>
-                        <input class="form-control" type="file" id="EmpImage">
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary" id="printbtn"
-                        data-bs-dismiss="modal">Add</button>
-                </div>
-            </form>
+                </form>
+            </div>
         </div>
     </div>
 </div>
@@ -138,6 +148,6 @@
     #endregion
 }
 
-@section Scripts{
+@section Scripts {
     <script src="~/js/UserApiAjax.js" asp-append-version="true"></script>
 }
