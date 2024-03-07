@@ -60,7 +60,7 @@ $(document).ready(function () {
                     row += '<td>' + emp.c_dob + '</td>';
                     row += '<td>' + emp.c_shift + '</td>';
                     row += '<td>' + emp.c_department + '</td>';
-                    row += '<td><img src="/uploadsimg\\'+emp.c_empimage +'" alt="Image Not Found" style="height: 15%;width:15%;"></td>';
+                    row += '<td><img src="/uploadsimg\\'+emp.c_empimage +'" alt="Image Not Found" style="height: 100%;width:100%;"></td>';
                     row += '<td>';
                     row += '<div class="d-flex justify-content-between">';
                     row += '<button type="button" id="edit" class="btn btn-outline-success edit" data-id="' + emp.c_empid + '" data-bs-toggle="modal" data-bs-target="#EditEmpModal">Edit</button>';
@@ -117,8 +117,8 @@ $(document).ready(function () {
             $('#EditEmpDob').val(formatDateForInput(employee.c_dob));
             $("#EditEmpDepartment").data("kendoDropDownList").value(employee.c_department);
             $("#EditEmpShift").data("kendoCheckBoxGroup").value(employee.c_shift);
-            $('#EditImage').attr('src', ImagePath);
-            $('#EditImage').attr('data-value', employee.c_empimage);
+            $('#EditEmpImage').attr('src', ImagePath);
+            $('#EditEmpImage').attr('data-value', employee.c_empimage);
             $('#EditModel').modal('show');
         });
     });

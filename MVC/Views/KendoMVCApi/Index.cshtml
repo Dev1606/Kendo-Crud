@@ -30,7 +30,7 @@
                         processData: false,
                         headers: {
                             Authorization: 'Bearer ' + localStorage.getItem('token')
-                        },
+                        }
                     },
                     destroy: {
                         url: function (data) {
@@ -41,11 +41,20 @@
                         headers: {
                             Authorization: 'Bearer ' + localStorage.getItem('token')
                         }
-                    },
+                    },  
                     parameterMap: function (options, operation) {
-                        if (operation !== "read") {
+                        if (operation !== "read" && options) {
                             console.log(options);
-                            return JSON.stringify(options);
+                            if(Image){
+                                var formData=new FormData();
+                                formData.append('Image',Image);
+                                for(var i in options){
+                                    formData.append(i,options[i]);
+                                }
+                                @* console.log(formData); *@
+                                options=formData;
+                            }
+                            return options;
                         }
                     }
                 },
@@ -57,7 +66,7 @@
                             c_empid: { type: "number", editable: false, nullable: false },
                             c_empname: { type: "string", validation: { required: true } },
                             c_empgender: { type: "string", validation: { required: true } },
-                            c_dob: { type: "date", validation: { required: true } },
+                            c_dob: { type: "string", validation: { required: true } },
                             c_shift: { type: "string", validation: { required: true } },
                             c_department: { type: "string", validation: { required: true } },
                             c_empimage: { type: "string", validation: { required: true } },
@@ -90,6 +99,7 @@
                                 change: function () {
                                     console.log("Change :: " + kendo.toString(this.value(), 'yyyy/MM/dd'));
                                     options.model.set("c_dob", kendo.toString(this.value(), 'yyyy/MM/dd'));
+                                 
                                 },
                                 navigate: function () {
                                     console.log("Navigate");
