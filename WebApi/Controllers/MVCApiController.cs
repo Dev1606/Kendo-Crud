@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WebApi.Models;
 using WebApi.Models.ApiModel;
+using WebApi.Repositories;
 using WebApi.Repositories.API_Repositories;
 
 
@@ -18,6 +19,7 @@ namespace WebApi.Controllers
     public class MVCApiController : ControllerBase
     {
         private readonly IEmpAPIInterface _empAPIInterface;
+         private readonly IEmpInterface _empInterface;
 
         private readonly IWebHostEnvironment _environment;
         public MVCApiController(IEmpAPIInterface empAPIInterface, IWebHostEnvironment environment)
@@ -84,6 +86,7 @@ namespace WebApi.Controllers
             if (Image == null)
             {
                 var data = _empAPIInterface.GetEmpDetail(emp.c_empid);
+                Console.WriteLine("null"+data.c_empimage);
                 emp.c_empimage = data.c_empimage;
             }
             else
@@ -103,10 +106,18 @@ namespace WebApi.Controllers
                 {
                     Image.CopyTo(stream);
                 }
-
                 emp.c_empimage = filename;
             }
 
+            _empAPIInterface.UpdateEmp(emp);
+            return Ok(new { success = true, message = "Student updated successfully" });
+        }
+        
+        [HttpPut]
+        [Route("UpdateKendoEmpData")]
+        [Authorize]
+        public IActionResult UpdateKendoEmp([FromForm] EmpApiModel emp)
+        {
             _empAPIInterface.UpdateEmp(emp);
             return Ok(new { success = true, message = "Student updated successfully" });
         }
@@ -120,7 +131,6 @@ namespace WebApi.Controllers
             _empAPIInterface.DeleteEmp(id);
             return Ok(new { success = true, message = "Student deleted successfully" });
         }
-
         #endregion
 
         #region User API Calls
@@ -171,7 +181,7 @@ namespace WebApi.Controllers
             // emp.c_shift = string.Join(", ", shift);
             // HttpContext.Session.SetInt32("userid", emp.c_userid.GetValueOrDefault());
 
-            _empAPIInterface.UserAddEmpData(emp,imageUrl);
+            _empAPIInterface.UserAddEmpData(emp, imageUrl);
             return Ok(new { success = true, message = "Employee Added !!!!!" });
         }
 

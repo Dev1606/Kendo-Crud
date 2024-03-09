@@ -143,7 +143,6 @@ namespace MVC.Controllers
                 // emp.c_empimage=file;
                 // _empRepo.UpdateEmp(emp);
             }
-
             return Json("Image Uploaded");
         }
 
