@@ -106,7 +106,8 @@ $(document).ready(function () {
         formData.append("c_shift", shiftValues);
         console.log("Shiftvalues"+shiftValues);
         formData.append("c_department",$("#EditEmpDepartment").data("kendoDropDownList").value());
-        formData.append("c_empimage", $('#EditEmpImage')[0].files[0]);
+        formData.append("c_empimage",$("#EditEmpImage").val());
+        formData.append("Image", $('#EditEmpImage')[0].files[0]);
 
         $.ajax({
             url: "/KendoComponent/UserAddEmpData",
