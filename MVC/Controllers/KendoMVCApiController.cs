@@ -24,6 +24,13 @@ namespace MVC.Controllers
         {
             return View();
         }
+
+        //Added this cide for api call in user kendo grid:
+        public IActionResult UserApiKendoGrid()
+        {
+            return View();
+        }
+
         public IActionResult AdminApiKendoComp()
         {
             return View();

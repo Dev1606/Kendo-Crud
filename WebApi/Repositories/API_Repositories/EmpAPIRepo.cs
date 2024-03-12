@@ -151,6 +151,50 @@ namespace WebApi.Repositories.API_Repositories
                 return false;
             }
         }
+
+        //Added this code for kendo api call:
+        public  bool UserAddKendoEmpData(EmpApiModel emp)
+        {
+            int rowseffected = 0;
+            //Adding Employee
+            using (NpgsqlConnection con = new NpgsqlConnection(_ConnectionString))
+            {
+                try
+                {
+                    var qry = "INSERT INTO mvc_master_project.t_emp(c_empname, c_empgender, c_dob, c_shift, c_department, c_empimage) VALUES (@c_empname, @c_empgender, @c_dob, @c_shift, @c_department, @c_empimage);";
+                    using (NpgsqlCommand cmd = new NpgsqlCommand(qry, con))
+                    {
+                        cmd.Parameters.AddWithValue("@c_empname", emp.c_empname);
+                        cmd.Parameters.AddWithValue("@c_empgender", emp.c_empgender);
+                        cmd.Parameters.AddWithValue("@c_dob", emp.c_dob);
+                        cmd.Parameters.AddWithValue("@c_shift", emp.c_shift);
+                        cmd.Parameters.AddWithValue("@c_department", emp.c_department);
+                        cmd.Parameters.AddWithValue("@c_empimage", emp.c_empimage);
+                        Console.WriteLine("Emp details @ repo"+emp.c_empname+ emp.c_empgender+emp.c_dob+emp.c_shift+ emp.c_department+emp.c_empimage);
+
+
+                        con.Open();
+                        rowseffected = cmd.ExecuteNonQuery();
+                    }
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine("-------> Add Employee Helper : " + e);
+                }
+                finally
+                {
+                    con.Close();
+                }
+            }
+            if (rowseffected > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
         
         
         #endregion

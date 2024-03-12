@@ -61,7 +61,7 @@ namespace WebApi.Controllers
 
         [HttpGet]
         [Route("GetDropDepartment")]
-        [Authorize]
+        //[Authorize]
         // [Authorize]
         public string[] GetDepartment()
         {
@@ -174,6 +174,15 @@ namespace WebApi.Controllers
 
             _empAPIInterface.UserAddEmpData(emp, imageUrl);
             return Ok(new { success = true, message = "Employee Added !!!!!" });
+        }
+
+        [HttpPost]
+        [Route("AddKendoEmpData")]
+        [Authorize]
+        public IActionResult AddKendoEmp([FromForm] EmpApiModel emp)
+        {
+            _empAPIInterface.UserAddKendoEmpData(emp);
+            return Ok(new { success = true, message = "Emp added successfully" });
         }
 
         #endregion
