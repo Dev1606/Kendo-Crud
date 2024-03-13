@@ -3,17 +3,26 @@ $(document).ready(function(){
         transport: {
             read: {
                 url: "https://localhost:7074/kendoGrid/AdminGetEmpData",
-                dataType: "json"
+                dataType: "json",
+                headers: {
+                    Authorization: 'Bearer ' + localStorage.getItem('token')
+                },
             },
             update: {
                 url: "https://localhost:7074/kendoGrid/AdminUpdateEmpData",
                 type: "POST",
-                dataType: "json"
+                dataType: "json",
+                headers: {
+                    Authorization: 'Bearer ' + localStorage.getItem('token')
+                },
             },
             destroy: {
                 url: function(data){ return "https://localhost:7074/kendoGrid/AdminDeleteEmpConfirm/"+data.c_empid;},
                 type: "POST",
-                dataType: "json"
+                dataType: "json",
+                headers: {
+                    Authorization: 'Bearer ' + localStorage.getItem('token')
+                },
             }
         },
         pageSize: 10,

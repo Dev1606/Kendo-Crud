@@ -7,7 +7,6 @@
 
 <link rel="stylesheet" href="https://kendo.cdn.telerik.com/2021.2.616/styles/kendo.common.min.css" />
 <link rel="stylesheet" href="https://kendo.cdn.telerik.com/2021.2.616/styles/kendo.default.min.css" />
-
 <div id="grid"></div>
 
 @section Scripts {
@@ -19,31 +18,48 @@
                 transport: {
                     read: {
                         url: "https://localhost:7068/api/MVCApi/GetEmpData",
-                        //type:"GET",
-                        dataType: "json"
+                        dataType: "json",
+                        headers: {
+                            Authorization: 'Bearer ' + localStorage.getItem('token')
+                        }
                     },
                     update: {
-                        url: function (data) {
-                            return "https://localhost:7068/api/MVCApi/UpdateEmpData";
-                        },
+                        url: "https://localhost:7068/api/MVCApi/UpdateKendoEmpData",
                         type: "PUT",
-                        @* contentType: "application/json" *@
-                        contentType:false,
-                        processData:false
+                        contentType: false,
+                        processData: false,
+                        headers: {
+                            Authorization: 'Bearer ' + localStorage.getItem('token')
+                        }
                     },
                     destroy: {
                         url: function (data) {
                             return "https://localhost:7068/api/MVCApi/DeleteEmpData?id=" + data.c_empid;
                         },
                         type: "DELETE",
-                        contentType: "application/json"
-                    },
-                    parameterMap: function (options, operation) {
-                        if (operation !== "read") {
-                            console.log(options);
-                            return JSON.stringify(options);
+                        contentType: "application/json",
+                        headers: {
+                            Authorization: 'Bearer ' + localStorage.getItem('token')
                         }
-                    }
+                    },  
+                   parameterMap: function (options, operation) {
+    if (operation !== "read" && options) {
+        console.log(options);
+        var formData = new FormData();
+        for (var prop in options) {
+            if (prop === 'Image') {
+                // Append the file to the form data with the correct name
+                formData.append('Image', options[prop], options[prop].name);
+            } else {
+                formData.append(prop, options[prop]);
+            }
+        }
+        console.log(formData);
+        return formData;
+    }
+    return options;
+}
+
                 },
                 pageSize: 10,
                 schema: {
@@ -53,7 +69,7 @@
                             c_empid: { type: "number", editable: false, nullable: false },
                             c_empname: { type: "string", validation: { required: true } },
                             c_empgender: { type: "string", validation: { required: true } },
-                            c_dob: { type: "date", validation: { required: true } },
+                            c_dob: { type: "string", validation: { required: true } },
                             c_shift: { type: "string", validation: { required: true } },
                             c_department: { type: "string", validation: { required: true } },
                             c_empimage: { type: "string", validation: { required: true } },
@@ -86,6 +102,7 @@
                                 change: function () {
                                     console.log("Change :: " + kendo.toString(this.value(), 'yyyy/MM/dd'));
                                     options.model.set("c_dob", kendo.toString(this.value(), 'yyyy/MM/dd'));
+                                 
                                 },
                                 navigate: function () {
                                     console.log("Navigate");
@@ -122,12 +139,17 @@
                                     transport: {
                                         read: "https://localhost:7068/api/MVCApi/GetDropDepartment",
                                         datatype: "json",
+                                        headers: {
+                                            Authorization: 'Bearer ' + localStorage.getItem('token')
+                                        }
                                     }
                                 },
                             });
                         }
                     },
-                    { field: "c_empimage", title: "Image", editor: imageupload, template: "<img src='#: c_empimage #' alt='Employee Photo' style='width: 50px; height:50px;'/>" },
+                    { field: "c_empimage", title: "Image", editor:function (container, options) {
+        imageupload(container, options);
+    }, template: "<img src='#: c_empimage #' alt='Employee Photo' style='width: 50px; height:50px;'/>" },
                     { command: ["edit", "destroy"], title: "&nbsp;", width: "200px" }],
                 editable: "popup",
                 toolbar: ["create"],
@@ -140,9 +162,19 @@
                     e.container.find(".k-calendar").data("kendoCalendar").value(dob);
                 }
             });
-            function imageupload(container) {
-                $('<input name="Image" type="file" id="photo" data-role="upload" data-async=\'{ "saveUrl": "/kendogrid/UploadPhoto", "autoUpload": true }\' class="k-input k-textbox">').appendTo(container);
-            }
+                function imageupload(container,options) {
+    // Create the file input element
+    var fileInput = $('<input name="Image" type="file" id="photo" data-role="upload" data-async=\'{ "saveUrl": "/kendogrid/UploadPhoto", "autoUpload": true }\' class="k-input k-textbox">');
+    fileInput.appendTo(container);
+    fileInput.on('change', function() {
+        var file = this.files[0];
+         c_empimage =file.name;
+         console.log('Selected file:',c_empimage);
+        console.log('Selected file:', file.name);
+        options.model.set("c_empimage", file.name);
+        console.log("c_empimage", file.name);
+    });
+}
             dataSource.bind("requestEnd", function (e) {
                 if (e.type === "create" || e.type === "update" || e.type === "destroy") {
                     dataSource.read();

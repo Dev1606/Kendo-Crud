@@ -6,7 +6,7 @@ $(document).ready(function () {
         window.location = '/UserApi/Login';
     } else { 
         // Fetch user data using the token
-        fetchUserData(token);
+        // fetchUserData(token);
         // Other initialization functions
         GetAll();
         hideAlerts();
@@ -80,7 +80,7 @@ $(document).ready(function () {
                     row += '<td>' + emp.c_dob + '</td>';
                     row += '<td>' + emp.c_shift + '</td>';
                     row += '<td>' + emp.c_department + '</td>';
-                    row += '<td> <img src="'+emp.c_empimage +'" alt="Image Not Found" style="height: 15%;width:15%;"></td>';
+                    row += '<td> <img src="/uploadsimg\\'+emp.c_empimage +'" alt="Image Not Found" style="height: 15%;width:15%;"></td>';
                     row += '<td>';
                     row += '<div class="d-flex justify-content-between">';
                     row += '<button type="button" id="edit" class="btn btn-outline-success edit" data-id="' + emp.c_empid + '">Edit</button>';
@@ -146,6 +146,9 @@ $(document).ready(function () {
             data: formData,
             processData: false,
             contentType: false,
+            headers: {
+                Authorization: 'Bearer ' + localStorage.getItem('token')
+            },
             success: function (response) {
                 GetAll();
                 console.log(response);
@@ -156,59 +159,30 @@ $(document).ready(function () {
         });
     });
 
-//Delete employee
-$(document).on('click', '#del', function () {
-    var Id = $(this).data('id');
-    console.log(Id);
-    if (confirm("Are you sure you want to delete this data?")) {
-        $.ajax({
-            url: 'https://localhost:7068/api/MVCApi/DeleteEmpData?id=' + Id,
-            type: 'DELETE',
-            dataType: "json",
-            contentType: "application/json",
-            headers: {
-                Authorization: 'Bearer ' + localStorage.getItem('token')
-            },
-            success: function (data) {
-                console.log(data);
-                GetAll();
-                alert(data.message);
-            }
-        });
-    }
-});
-
-function fetchUserData(token) {
-    var username = "";
-    $.ajax({
-        url: 'https://localhost:7068/api/MVCApi/GetTokenData',
-        type: 'GET',
-        data: { usertoken: token },
-        success: function (userData) {
-            console.log('User Data:', userData);
-            username = userData.userName;
+    //Delete employee
+    $(document).on('click', '#del', function () {
+        var Id = $(this).data('id');
+        console.log(Id);
+        if (confirm("Are you sure you want to delete this data?")) {
             $.ajax({
-                url: "/User/SetUserData",
-                method: "POST",
-                data: { username: username },
-                async: false,
-                success: function (response) {
-                    if (response.success) {
-                        // Handle successful response, e.g., display a success message
-                        console.log("Username set successfully!");
-                    } else {
-                        // Handle unsuccessful response, e.g., display an error message
-                        console.error("Failed to set username.");
-                    }
+                url: 'https://localhost:7068/api/MVCApi/DeleteEmpData?id=' + Id,
+                type: 'DELETE',
+                dataType: "json",
+                contentType: "application/json",
+                headers: {
+                    Authorization: 'Bearer ' + localStorage.getItem('token')
+                },
+                success: function (data) {
+                    console.log(data);
+                    GetAll();
+                    alert(data.message);
                 }
             });
         }
     });
 
-}
-
-function GetToken() {
-    var token = localStorage.getItem('token');
-    console.log(token);
-}
+    function GetToken() {
+        var token = localStorage.getItem('token');
+        console.log(token);
+    }
 });

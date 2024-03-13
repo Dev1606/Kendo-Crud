@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WebApi.Models;
 using WebApi.Models.ApiModel;
+using WebApi.Repositories;
 using WebApi.Repositories.API_Repositories;
 
 
@@ -18,6 +19,7 @@ namespace WebApi.Controllers
     public class MVCApiController : ControllerBase
     {
         private readonly IEmpAPIInterface _empAPIInterface;
+         private readonly IEmpInterface _empInterface;
 
         private readonly IWebHostEnvironment _environment;
         public MVCApiController(IEmpAPIInterface empAPIInterface, IWebHostEnvironment environment)
@@ -42,9 +44,10 @@ namespace WebApi.Controllers
             string userName = claims.Single(c => c.Type == "UserName").Value;
             // string userName = claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
             string email = claims.Single(c => c.Type == "Email").Value;
+            string role = claims.Single(c => c.Type == "Role").Value;
 
             // Use the retrieved claims in your controller logic
-            return Ok(new { userId, userName, email });
+            return Ok(new { userId, userName, email, role });
         }
 
         #region Admin API Calls
@@ -52,7 +55,6 @@ namespace WebApi.Controllers
         [HttpGet]
         [Route("GetEmpData")]
         [Authorize]
-        // [Authorize]
         public IActionResult GetEmpData()
         {
             var emplist = _empAPIInterface.GetEmpData();
@@ -61,7 +63,6 @@ namespace WebApi.Controllers
 
         [HttpGet]
         [Route("GetDropDepartment")]
-        [Authorize]
         // [Authorize]
         public string[] GetDepartment()
         {
@@ -85,6 +86,7 @@ namespace WebApi.Controllers
             if (Image == null)
             {
                 var data = _empAPIInterface.GetEmpDetail(emp.c_empid);
+                Console.WriteLine("null"+data.c_empimage);
                 emp.c_empimage = data.c_empimage;
             }
             else
@@ -104,10 +106,18 @@ namespace WebApi.Controllers
                 {
                     Image.CopyTo(stream);
                 }
-
                 emp.c_empimage = filename;
             }
 
+            _empAPIInterface.UpdateEmp(emp);
+            return Ok(new { success = true, message = "Student updated successfully" });
+        }
+        
+        [HttpPut]
+        [Route("UpdateKendoEmpData")]
+        [Authorize]
+        public IActionResult UpdateKendoEmp([FromForm] EmpApiModel emp)
+        {
             _empAPIInterface.UpdateEmp(emp);
             return Ok(new { success = true, message = "Student updated successfully" });
         }
@@ -121,7 +131,6 @@ namespace WebApi.Controllers
             _empAPIInterface.DeleteEmp(id);
             return Ok(new { success = true, message = "Student deleted successfully" });
         }
-
         #endregion
 
         #region User API Calls
@@ -140,7 +149,7 @@ namespace WebApi.Controllers
         [HttpPost]
         [Route("UserAddEmpData")]
         [Authorize]
-        public IActionResult UserAddEmpData([FromForm] EmpApiModel emp,IFormFile file)
+        public IActionResult UserAddEmpData([FromForm] EmpApiModel emp, IFormFile file)
         {
             Console.WriteLine(file);
             //Code For File Upload:
