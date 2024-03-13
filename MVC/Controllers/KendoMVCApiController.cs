@@ -13,10 +13,12 @@ namespace MVC.Controllers
     public class KendoMVCApiController : Controller
     {
         private readonly ILogger<KendoMVCApiController> _logger;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public KendoMVCApiController(ILogger<KendoMVCApiController> logger)
+        public KendoMVCApiController(ILogger<KendoMVCApiController> logger,IHttpContextAccessor httpContextAccessor)
         {
             _logger = logger;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         //[Route("Index")]
@@ -33,12 +35,34 @@ namespace MVC.Controllers
 
         public IActionResult AdminApiKendoComp()
         {
-            return View();
+            var session = _httpContextAccessor.HttpContext.Session;
+            if (session.GetString("username") != null)
+            {
+                if (session.GetInt32("role") == 1)
+                {
+                    return View();
+                }else{
+                    return RedirectToAction("UserApiKendoComp", "KendoMVCApi");
+                }
+            }else{
+                return RedirectToAction("Login", "KendoComponent");
+            }
         }
 
         public IActionResult UserApiKendoComp()
         {
-            return View();
+            var session = _httpContextAccessor.HttpContext.Session;
+            if (session.GetString("username") != null)
+            {
+                if (session.GetInt32("role") == 0)
+                {
+                    return View();
+                }else{
+                    return RedirectToAction("AdminApiKendoComp", "KendoMVCApi");
+                }
+            }else{
+                return RedirectToAction("Login", "KendoComponent");
+            }
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
