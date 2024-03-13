@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -20,6 +21,22 @@ namespace MVC.Controllers
 
         //[Route("Index")]
         public IActionResult Index()
+        {
+            return View();
+        }
+
+        //Added this cide for api call in user kendo grid:
+        public IActionResult UserApiKendoGrid()
+        {
+            return View();
+        }
+
+        public IActionResult AdminApiKendoComp()
+        {
+            return View();
+        }
+
+        public IActionResult UserApiKendoComp()
         {
             return View();
         }

@@ -15,6 +15,9 @@ namespace WebApi.Repositories.API_Repositories
         List<EmpModel> UserGetEmpData();
         bool UserAddEmpData(EmpModel employee);
         bool UserAddEmpData(EmpApiModel employee,string c_empimage);
+
+        //Added this code for kendo api call: 
+        bool UserAddKendoEmpData(EmpApiModel employee);
         #endregion 
           
 

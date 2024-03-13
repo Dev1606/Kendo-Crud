@@ -1,5 +1,5 @@
 @{
-    ViewData["Title"] = "Kendo Component MVC";
+    ViewData["Title"] = "AdminApiKendoComp";
 }
 
 <center>
@@ -12,9 +12,7 @@
         <div class="alert alert-success text-center" role="alert" id="messageSuccess"></div>
         <div class="alert alert-danger text-center" role="alert" id="messageFail"></div>
     </center>
-   <button type="button" class="btn btn-primary mb-3" id="EditEmployeeModalBtn"  data-bs-toggle="modal" data-bs-target="#EditEmpModal">
-        Add Employee
-    </button>
+
     @* Table HTML *@
     <table class="table table-dark table-striped">
         <thead>
@@ -25,6 +23,7 @@
             <th scope="col">Shift</th>
             <th scope="col">Department</th>
             <th scope="col">Image</th>
+            <th scope="col">Action</th>
         </thead>
         <tbody id="TableContent">
 
@@ -35,12 +34,12 @@
 @{
     #region Edit Modal
 }
-<!-- Add Modal -->
+<!-- Edit Modal -->
 <div class="modal fade" id="EditEmpModal" tabindex="-1" aria-labelledby="EditEmpModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h1 class="modal-title fs-5" id="EditEmpModalLabel">Add Student</h1>
+                <h1 class="modal-title fs-5" id="EditEmpModalLabel">Edit Student</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <form method="post">
@@ -85,7 +84,7 @@
                     @* Image *@
                     <div class="mb-3">
                         <label for="EditEmpImage" class="form-label">Choose An Image</label>
-                        <input class="form-control" name="Image" type="file" id="EditEmpImage">
+                        <input class="form-control" type="file" id="EditEmpImage">
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -103,5 +102,5 @@
 
 
 @section Scripts {
-    <script src="~/js/UserKendoComponentMVC.js" asp-append-version="true"></script>
+    <script src="~/js/AdminApiKendoComp.js" asp-append-version="true"></script>
 }

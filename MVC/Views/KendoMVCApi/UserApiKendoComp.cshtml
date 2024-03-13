@@ -43,7 +43,7 @@
                 <h1 class="modal-title fs-5" id="EditEmpModalLabel">Add Student</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form method="post">
+            <form method="post" enctype="multipart/form-data">
                 <div class="modal-body">
                     @* ID *@
                     <div class="row">
@@ -51,7 +51,7 @@
                     </div>
                     @* Employee Name *@
                     <div class="mb-3">
-                        <label>Student Name: </label>
+                        <label>Employee Name: </label>
                         <div class="row">
                             <input id="EditEmpName">
                         </div>
@@ -85,13 +85,13 @@
                     @* Image *@
                     <div class="mb-3">
                         <label for="EditEmpImage" class="form-label">Choose An Image</label>
-                        <input class="form-control" name="Image" type="file" id="EditEmpImage">
+                        <input class="form-control" name="file" type="file" id="EditEmpImage">
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                     <button type="button" class="btn btn-primary" id="FinalEditBtn"
-                        data-bs-dismiss="modal">Edit</button>
+                        data-bs-dismiss="modal">Add</button>
                 </div>
             </form>
         </div>
@@ -103,5 +103,5 @@
 
 
 @section Scripts {
-    <script src="~/js/UserKendoComponentMVC.js" asp-append-version="true"></script>
+    <script src="~/js/UserKendoComonentAPI.js" asp-append-version="true"></script>
 }
