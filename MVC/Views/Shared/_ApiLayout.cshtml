@@ -1,4 +1,4 @@
-﻿@{
+@{
     string username = Context.Session.GetString("username");
 }
 <!DOCTYPE html>
@@ -49,16 +49,12 @@
                         {
                             <ul class="navbar-nav navbar-right">
                                 <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="MVCView"
-                                        asp-action="Index" id="MVCCrudLink">MVC Crud</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="MVCAjax"
-                                        asp-action="Index" id="MVCAjaxCrudLink">MVC Ajax Crud</a>
-                                </li>
-                                <li class="nav-item">
                                     <a class="nav-link text-dark" asp-area="" asp-controller="ApiAjax"
                                         asp-action="Index">Api Ajax</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="KendoMVCApi"
+                                        asp-action="Index">Kendo Grid Api</a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link text-dark">

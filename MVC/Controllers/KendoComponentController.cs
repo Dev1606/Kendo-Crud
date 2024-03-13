@@ -36,7 +36,18 @@ namespace MVC.Controllers
 
         public IActionResult AdminIndex()
         {
-            return View();
+            var session = _httpContextAccessor.HttpContext.Session;
+            if (session.GetString("userid") != null)
+            {
+                if (session.GetInt32("isRole") == 1)
+                {
+                    return View();
+                }else{
+                    return RedirectToAction("UserKendoMVC", "KendoComponent");
+                }
+            }else{
+                return RedirectToAction("Login", "KendoComponent");
+            }
         }
         [HttpGet]
         public IActionResult Register(){
@@ -94,14 +105,7 @@ namespace MVC.Controllers
                 return RedirectToAction("Login", "User");
             }
         }
-        public IActionResult KendoAPI()
-        {
-            return View();
-        }
-        public IActionResult KendoMVC()
-        {
-            return View();
-        }
+
         #region Admin
         
         [Produces("application/json")]
@@ -198,7 +202,18 @@ namespace MVC.Controllers
 
         public IActionResult UserKendoMVC()
         {
-            return View();
+            var session = _httpContextAccessor.HttpContext.Session;
+            if (session.GetString("userid") != null)
+            {
+                if (session.GetInt32("isRole") == 0)
+                {
+                    return View();
+                }else{
+                    return RedirectToAction("AdminIndex", "KendoComponent");
+                }
+            }else{
+                return RedirectToAction("Login", "KendoComponent");
+            }
         }
 
         [Produces("application/json")]

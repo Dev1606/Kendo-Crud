@@ -29,11 +29,33 @@ namespace MVC.Controllers
         }
         public IActionResult UserKendoMVC()
         {
-            return View();
+            var session = _httpContextAccessor.HttpContext.Session;
+            if (session.GetString("userid") != null)
+            {
+                if (session.GetInt32("isRole") == 0)
+                {
+                    return View();
+                }else{
+                    return RedirectToAction("AdminKendoMVC", "KendoGrid");
+                }
+            }else{
+                return RedirectToAction("Login", "KendoComponent");
+            }
         }
-         public IActionResult AdminKendoMVC()
+        public IActionResult AdminKendoMVC()
         {
-            return View();
+            var session = _httpContextAccessor.HttpContext.Session;
+            if (session.GetString("userid") != null)
+            {
+                if (session.GetInt32("isRole") == 1)
+                {
+                    return View();
+                }else{
+                    return RedirectToAction("UserKendoMVC", "KendoGrid");
+                }
+            }else{
+                return RedirectToAction("Login", "KendoComponent");
+            }
         }
 
         [Produces("application/json")]
@@ -57,7 +79,7 @@ namespace MVC.Controllers
         }
         static string file = "";
 
-        
+
         #region Admin
 
         [Produces("application/json")]
