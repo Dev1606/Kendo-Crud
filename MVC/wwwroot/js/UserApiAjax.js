@@ -111,6 +111,9 @@ $(document).ready(function () {
             data: formData,
             processData: false,
             contentType: false,
+            headers: {
+                Authorization: 'Bearer ' + localStorage.getItem('token')
+            },
             success: function (response) {
                 GetAllUser();
                 console.log(response);

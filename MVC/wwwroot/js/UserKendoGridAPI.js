@@ -123,7 +123,8 @@ $(document).ready(function () {
                     imageupload(container, options);
                 }, template: "<img src='#: c_empimage #' alt='Employee Photo' style='width: 50px; height:50px;'/>"
             },
-            { command: ["edit", "destroy"], title: "&nbsp;", width: "200px" }],
+            // { command: ["edit", "destroy"], title: "&nbsp;", width: "200px" }
+        ],
         editable: "popup",
         toolbar: ["create"],
         pageable: true,

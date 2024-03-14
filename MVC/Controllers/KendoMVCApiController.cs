@@ -24,13 +24,37 @@ namespace MVC.Controllers
         //[Route("Index")]
         public IActionResult Index()
         {
-            return View();
+            var session = _httpContextAccessor.HttpContext.Session;
+            if (session.GetString("username") != null)
+            {
+                if (session.GetInt32("role") == 1)
+                {
+                    return View();
+                }else{
+                    return RedirectToAction("UserApiKendoGrid", "KendoMVCApi");
+                }
+            }else{
+                return RedirectToAction("Login", "KendoComponent");
+            }
+            // return View();
         }
 
         //Added this cide for api call in user kendo grid:
         public IActionResult UserApiKendoGrid()
         {
-            return View();
+            var session = _httpContextAccessor.HttpContext.Session;
+            if (session.GetString("username") != null)
+            {
+                if (session.GetInt32("role") == 0)
+                {
+                    return View();
+                }else{
+                    return RedirectToAction("Index", "KendoMVCApi");
+                }
+            }else{
+                return RedirectToAction("Login", "KendoComponent");
+            }
+            // return View();
         }
 
         public IActionResult AdminApiKendoComp()
