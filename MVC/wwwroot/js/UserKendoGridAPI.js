@@ -121,7 +121,7 @@ $(document).ready(function () {
             {
                 field: "c_empimage", title: "Image", editor: function (container, options) {
                     imageupload(container, options);
-                }, template: "<img src='#: c_empimage #' alt='Employee Photo' style='width: 50px; height:50px;'/>"
+                }, template: "<img src='/uploadsimg/#= c_empimage #' alt='Employee Photo' style='width: 50px; height:50px;'/>" 
             },
             // { command: ["edit", "destroy"], title: "&nbsp;", width: "200px" }
         ],
