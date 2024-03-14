@@ -66,7 +66,8 @@ $(document).ready(function () {
                     row += '<td>' + emp.c_dob + '</td>';
                     row += '<td>' + emp.c_shift + '</td>';
                     row += '<td>' + emp.c_department + '</td>';
-                    row += '<td><img src="../wwwroot/uploadsimg/'+emp.c_empimage+'"></td>';
+                    // row += '<td><img src="../wwwroot/uploadsimg/'+emp.c_empimage+'"></td>';
+                    row += '<td><img src="/uploadsimg/'+emp.c_empimage+'" alt="Image not found" height="50"></td>';
                     row += '</tr>';
                     table.append(row);
                 });
