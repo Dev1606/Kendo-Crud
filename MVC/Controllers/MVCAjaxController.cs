@@ -145,7 +145,8 @@ namespace MVC.Controllers
             // }
             Console.WriteLine("------->"+emp.c_empimage);
             _empRepo.UpdateEmp(emp);
-            return RedirectToAction("AdminGetEmpData");
+             return Json(new {success = true, message ="Updated"});
+            //return RedirectToAction("AdminGetEmpData");
         }
 
         [HttpGet]

@@ -65,7 +65,7 @@ $(document).ready(function () {
                     row += '<td>' + emp.c_dob + '</td>';
                     row += '<td>' + emp.c_shift + '</td>';
                     row += '<td>' + emp.c_department + '</td>';
-                    row += '<td><img src="../wwwroot/uploadsimg/'+emp.c_empimage+'"></td>';
+                    row += '<td><img src="/uploadsimg/'+emp.c_empimage+'" alt="Image not found" height="50"></td>';
                     row += '<td>';
                     row += '<div class="d-flex justify-content-between">';
                     row += '<button type="button" id="edit" class="btn btn-outline-success edit" data-id="' + emp.c_empid + '" data-bs-toggle="modal" data-bs-target="#EditEmpModal">Edit</button>';
@@ -94,7 +94,7 @@ $(document).ready(function () {
         console.log(eid);
         $.get("/MVCAjax/GetEmpDetail", { id: eid }, function (employee) {
             console.log(employee);
-            var ImagePath = "~/uploadsimg/" + employee.c_empimage;
+            var ImagePath = "/uploadsimg/" + employee.c_empimage;
             ImageFileName = employee.c_empimage;
             $('#EditEmpId').attr('data-id', eid);
             $('#EditEmpName').val(employee.c_empname);
